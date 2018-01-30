@@ -21,9 +21,13 @@
         </el-col>
         <el-col :span="8" style="text-align:right;">
           <el-button-group>
-            <el-button type="primary" icon="el-icon-edit"></el-button>
-            <el-button type="primary" icon="el-icon-share"></el-button>
-            <el-button type="primary" icon="el-icon-delete"></el-button>
+            <el-button type="primary" icon="el-icon-edit">普通街道地图</el-button>
+            <el-button type="primary" icon="el-icon-share">卫星地图</el-button>
+            <el-button type="primary" icon="el-icon-delete">卫星和网路的混合视图</el-button>
+            <el-button type="primary" icon="el-icon-delete">全图</el-button>
+            <el-button type="primary" icon="el-icon-delete" @click="mapZoomIn">放大</el-button>
+            <el-button type="primary" icon="el-icon-delete" @click="mapZoomOut">缩小</el-button>
+            <el-button type="primary" icon="el-icon-delete" @click="mapLineTool">测距</el-button>
           </el-button-group>
         </el-col>
       </el-row>
@@ -82,9 +86,7 @@
         </el-col>
       </el-row>
     </div>
-
   </div>
-
 </div>
 </body>
 <!-- 先引入 Vue -->
@@ -103,7 +105,10 @@
         defaultProps: {
           children: 'children',
           label: 'label'
-        }
+        },
+        map: undefined,
+        lineTool: undefined,
+        zoom: 12
       }
     },
     mounted() {
@@ -112,8 +117,37 @@
     },
     methods: {
       drawMap() {
-        const map = new T.Map('mapDiv')
-        map.centerAndZoom(new T.LngLat(116.40769, 39.89945), 12)
+        this.map = new T.Map('mapDiv')
+        this.map.centerAndZoom(new T.LngLat(116.40769, 39.89945), this.zoom)
+        // 允许鼠标双击放大地图
+        this.map.enableScrollWheelZoom()
+
+        // 添加鹰眼控件
+        var miniMap = new T.Control.OverviewMap({
+          isOpen: true,
+          size: new T.Point(150, 150)
+        })
+        this.map.addControl(miniMap)
+
+        // 添加比例尺控件
+        var scale = new T.Control.Scale()
+        this.map.addControl(scale)
+
+        // 添加缩放控件
+        var zoom = new T.Control.Zoom()
+        this.map.addControl(zoom)
+
+        // 创建标注工具对象
+        this.lineTool = new T.PolylineTool(this.map, {showLabel: true})
+      },
+      mapZoomIn() {
+        this.map.zoomIn()
+      },
+      mapZoomOut() {
+        this.map.zoomOut()
+      },
+      mapLineTool() {
+        this.lineTool.open()
       },
       handleNodeClick(data) {
         console.log(data)
