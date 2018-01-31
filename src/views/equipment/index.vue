@@ -2,8 +2,9 @@
   <div class="app-container">
 
     <div class="filter-container" style="padding-bottom: 10px;">
-      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.code" style="width: 200px;" class="filter-item" placeholder="DPF设备序号">
-    </el-input>
+      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.code" style="width: 200px;" class="filter-item"
+                placeholder="DPF设备序号">
+      </el-input>
       <el-select v-model="listQuery.supplier" placeholder="请选择" :loading="true">
         <el-option v-for="item in supplierList" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
@@ -55,8 +56,8 @@
           label="操作"
           width="160">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button type="primary" size="mini" icon="el-icon-delete" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -84,7 +85,8 @@
           </el-form-item>
           <el-form-item label="供应商">
             <el-select v-model="tempModel.supplier_id" placeholder="请选择供应商">
-              <el-option v-for="item in supplierList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              <el-option v-for="item in supplierList" :key="item.value" :label="item.label"
+                         :value="item.value"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="设备型号">
@@ -205,6 +207,11 @@
           this.loadingSubmit = false
           // 关闭dialog
           this.dialogFormVisible = false
+          // 弹出提醒信息
+          this.$message({
+            type: 'success',
+            message: '操作成功!'
+          })
           // 重新请求数据(带着原先的查询参数)
           this.getList()
         }, 2000)

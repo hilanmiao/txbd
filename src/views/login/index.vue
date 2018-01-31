@@ -3,7 +3,7 @@
     <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
              label-width="0px"
              class="card-box login-form">
-      <h3 class="title">vue-element-admin</h3>
+      <h3 class="title">天星北斗</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user"/>
@@ -26,7 +26,7 @@
       </el-form-item>
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin </span>
+        <span> password: 1 </span>
       </div>
     </el-form>
   </div>

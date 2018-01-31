@@ -52,6 +52,9 @@ const user = {
           const data = response.data
           commit('SET_TOKEN', data.token)
           setToken(response.data.token)
+          // TODO：记得改
+          // commit('SET_TOKEN', data)
+          // setToken(response.data)
           resolve()
         }).catch(error => {
           reject(error)

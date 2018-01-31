@@ -1,28 +1,31 @@
 import request from '@/utils/request'
 
+export function loginByUsername(username, password) {
+  // const data = {
+  //   username,
+  //   password
+  // }
+  // return request({
+  //   url: '/user/login',
+  //   method: 'post',
+  //   data
+  // })
+  return new Promise((resolve, reject) => {
+    resolve({"code":20000,"data":{"token":"admin"}})
+  })
+}
+
 // export function loginByUsername(username, password) {
-//   const data = {
+//   const params = {
 //     username,
 //     password
 //   }
 //   return request({
-//     url: '/user/login',
+//     url: '/v1/user/login',
 //     method: 'post',
-//     data
+//     params
 //   })
 // }
-
-export function loginByUsername(username, password) {
-  const params = {
-    username,
-    password
-  }
-  return request({
-    url: '/v1/user/login',
-    method: 'post',
-    params
-  })
-}
 
 export function logout() {
   return request({
@@ -32,11 +35,21 @@ export function logout() {
 }
 
 export function getUserInfo(token) {
-  return Promise.reject({"code":20000,"data":{"roles":["admin"],"role":["admin"],"name":"admin","avatar":"https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"}})
   // return request({
   //   url: '/user/info',
   //   method: 'get',
   //   params: {token}
   // })
+  return new Promise((resolve, reject) => {
+    resolve({
+      "code": 20000,
+      "data": {
+        "roles": ["admin"],
+        "role": ["admin"],
+        "name": "admin",
+        "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+      }
+    })
+  })
 }
 

@@ -24,6 +24,7 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   {path: '/login', component: _import('login/index'), hidden: true},
   {path: '/home', component: _import('home/index'), hidden: true},
+  {path: '/home2', component: _import('home/index2'), hidden: true},
   {path: '/404', component: _import('errorPage/404'), hidden: true},
   {path: '/401', component: _import('errorPage/401'), hidden: true},
   {path: '/map_print', name: 'map_print', component: _import('home/map_print'), hidden: true},
@@ -38,42 +39,42 @@ export const constantRouterMap = [
       path: 'dashboard',
       component: _import('dashboard/index')
     }]
-  },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: {title: 'Example', icon: 'example'},
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: _import('table/index'),
-        meta: {title: 'Table', icon: 'table'}
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: _import('tree/index'),
-        meta: {title: 'Tree', icon: 'tree'}
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: _import('form/index'),
-        meta: {title: 'Form', icon: 'form'}
-      }
-    ]
   }
+
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/table',
+  //   name: 'Example',
+  //   meta: {title: 'Example', icon: 'example'},
+  //   children: [
+  //     {
+  //       path: 'table',
+  //       name: 'Table',
+  //       component: _import('table/index'),
+  //       meta: {title: 'Table', icon: 'table'}
+  //     },
+  //     {
+  //       path: 'tree',
+  //       name: 'Tree',
+  //       component: _import('tree/index'),
+  //       meta: {title: 'Tree', icon: 'tree'}
+  //     }
+  //   ]
+  // },
+  //
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: _import('form/index'),
+  //       meta: {title: 'Form', icon: 'form'}
+  //     }
+  //   ]
+  // }
 ]
 
 export default new Router({
@@ -84,68 +85,41 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
-    path: '/System',
-    component: Layout,
-    redirect: '/department',
-    name: '系统管理',
-    meta: {title: '系统管理', icon: 'example', roles: ['admin']},
-    children: [
-      {
-        path: 'department',
-        name: '机构管理',
-        component: _import('department/index'),
-        meta: {title: '机构管理', icon: 'table'}
-      },
-      {
-        path: 'part',
-        name: '角色管理',
-        component: _import('part/index'),
-        meta: {title: '角色管理', icon: 'table'}
-      },
-      {
-        path: 'user',
-        name: '用户管理',
-        component: _import('user/index'),
-        meta: {title: '用户管理', icon: 'table'}
-      }
-    ]
-  },
-  {
     path: '/dpf',
     component: Layout,
     redirect: '/supplier',
     name: 'DPF信息管理',
-    meta: {title: 'DPF信息管理', icon: 'example', roles: ['editor']},
+    meta: {title: 'DPF信息管理', icon: 'form', roles: ['editor']},
     children: [
       {
         path: 'supplier',
         name: '供应商管理',
         component: _import('supplier/index'),
-        meta: {title: '供应商管理', icon: 'table', roles: ['admin']}
+        meta: {title: '供应商管理', roles: ['admin']}
       },
       {
         path: 'register',
         name: '登记信息管理',
         component: _import('register/index'),
-        meta: {title: '登记信息管理', icon: 'table'}
+        meta: {title: '登记信息管理'}
       },
       {
         path: 'equipment',
         name: '设备信息管理',
         component: _import('equipment/index'),
-        meta: {title: '设备信息管理', icon: 'table'}
+        meta: {title: '设备信息管理'}
       },
       {
         path: 'maintenance',
         name: '维修厂管理',
         component: _import('maintenance/index'),
-        meta: {title: '维修厂管理', icon: 'table'}
+        meta: {title: '维修厂管理'}
       },
       {
         path: 'maintenance_record',
         name: '维修管理',
         component: _import('maintenance_record/index'),
-        meta: {title: '维修管理', icon: 'table'}
+        meta: {title: '维修管理'}
       }
     ]
   },
@@ -154,70 +128,138 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/vehicle_report_run',
     name: '统计分析',
-    meta: {title: '统计分析', icon: 'example', roles: ['admin']},
+    meta: {title: '统计分析', icon: 'chart', roles: ['admin']},
     children: [
       {
         path: 'vehicle_report_run',
         name: '统计报表生成',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '统计报表生成', icon: 'table'}
+        meta: {title: '统计报表生成'}
       },
       {
         path: 'vehicle_report_run',
         name: '报表推送',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '报表推送', icon: 'table'}
+        meta: {title: '报表推送'}
       },
       {
         path: 'vehicle_report_run',
-        name: '在（上）线率统计',
+        name: '在线率统计',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '在（上）线率统计', icon: 'table'}
+        meta: {title: '在线率统计'}
       },
       {
         path: 'vehicle_report_run',
-        name: '车辆信息统计分析',
+        name: '车辆信息统计',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '车辆信息统计分析', icon: 'table'}
+        meta: {title: '车辆信息统计'}
       },
       {
         path: 'vehicle_report_run',
         name: '车辆报警统计',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '车辆报警统计', icon: 'table'}
+        meta: {title: '车辆报警统计'}
       },
       {
         path: 'vehicle_report_run',
-        name: '24小时车辆不在线统计',
+        name: '车辆不在线统计',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '24小时车辆不在线统计', icon: 'table'}
+        meta: {title: '车辆不在线统计'}
       },
       {
         path: 'vehicle_report_run',
         name: '里程统计',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '里程统计', icon: 'table'}
+        meta: {title: '里程统计'}
       },
       {
         path: 'vehicle_report_run',
         name: '地市车辆统计',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '地市车辆统计', icon: 'table'}
+        meta: {title: '地市车辆统计'}
       },
       {
         path: 'vehicle_report_run',
         name: '汽车指标统计',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '汽车指标统计', icon: 'table'}
+        meta: {title: '汽车指标统计'}
       },
       {
         path: 'vehicle_report_run',
         name: '单车指标统计',
         component: _import('vehicle_report_run/index'),
-        meta: {title: '单车指标统计', icon: 'table'}
+        meta: {title: '单车指标统计'}
       }
     ]
   },
-
+  {
+    path: '/System',
+    component: Layout,
+    redirect: '/department',
+    name: '日志管理',
+    meta: {title: '日志管理', icon: 'excel', roles: ['admin']},
+    children: [
+      {
+        path: 'department',
+        name: '系统日志',
+        component: _import('department/index'),
+        meta: {title: '系统日志'}
+      },
+      {
+        path: 'part',
+        name: '平台日志',
+        component: _import('part/index'),
+        meta: {title: '平台日志'}
+      },
+      {
+        path: 'user',
+        name: '审核日志',
+        component: _import('user/index'),
+        meta: {title: '审核日志'}
+      }
+    ]
+  },
+  {
+    path: '/System',
+    component: Layout,
+    redirect: '/department',
+    name: '公告管理管理',
+    meta: {title: '公告管理', icon: 'documentation', roles: ['admin']},
+    children: [
+      {
+        path: 'department',
+        name: '公告管理',
+        component: _import('department/index'),
+        meta: {title: '公告管理', icon: 'documentation'}
+      }
+    ]
+  },
+  {
+    path: '/System',
+    component: Layout,
+    redirect: '/department',
+    name: '系统管理',
+    meta: {title: '系统管理', icon: 'password', roles: ['admin']},
+    children: [
+      {
+        path: 'department',
+        name: '机构管理',
+        component: _import('department/index'),
+        meta: {title: '机构管理'}
+      },
+      {
+        path: 'part',
+        name: '角色管理',
+        component: _import('part/index'),
+        meta: {title: '角色管理'}
+      },
+      {
+        path: 'user',
+        name: '用户管理',
+        component: _import('user/index'),
+        meta: {title: '用户管理'}
+      }
+    ]
+  },
   {path: '*', redirect: '/404', hidden: true}
 ]

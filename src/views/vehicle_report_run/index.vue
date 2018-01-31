@@ -1,50 +1,87 @@
 <template>
-  <div class="app-container">
-    <div id="main" style="width: 600px;height:400px;"></div>
-    <div id="mapDiv" style="position:absolute;width:500px; height:400px"></div>
+  <div class="dashboard-editor-container">
+    <el-row :gutter="32">
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          <bar-chart-city></bar-chart-city>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          <pie-chart></pie-chart>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          <bar-chart></bar-chart>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-  import echarts from 'echarts'
-  import T from 'T'
+<script>
+  import PanelGroup from './components/PanelGroup'
+  import LineChart from './components/LineChart'
+  import RaddarChart from './components/RaddarChart'
+  import PieChart from './components/PieChart'
+  import BarChart from './components/BarChart'
+  import BarChartCity from './components/BarChartCity'
+  import SystemLogsTable from './components/SystemLogsTable'
+  import PlatformLogsTable from './components/PlatformLogsTable'
+
+  const lineChartData = {
+    newVisitis: {
+      expectedData: [100, 120, 161, 134, 105, 160, 165],
+      actualData: [120, 82, 91, 154, 162, 140, 145]
+    },
+    messages: {
+      expectedData: [200, 192, 120, 144, 160, 130, 140],
+      actualData: [180, 160, 151, 106, 145, 150, 130]
+    },
+    purchases: {
+      expectedData: [80, 100, 121, 104, 105, 90, 100],
+      actualData: [120, 90, 100, 138, 142, 130, 130]
+    },
+    shoppings: {
+      expectedData: [130, 140, 141, 142, 145, 150, 160],
+      actualData: [120, 82, 91, 154, 162, 140, 130]
+    }
+  }
 
   export default {
-    data() {
-      return {}
+    name: 'dashboard-admin',
+    components: {
+      PanelGroup,
+      LineChart,
+      RaddarChart,
+      PieChart,
+      BarChart,
+      BarChartCity,
+      SystemLogsTable,
+      PlatformLogsTable
     },
-    mounted() {
-      this.drawLine()
-      this.drawMap()
+    data() {
+      return {
+        lineChartData: lineChartData.newVisitis
+      }
     },
     methods: {
-      drawLine() {
-        // 基于准备好的dom，初始化echarts实例
-        const myChart = echarts.init(document.getElementById('main'))
-        // 绘制图表
-        myChart.setOption({
-          title: {text: '在Vue中使用echarts'},
-          tooltip: {},
-          xAxis: {
-            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-          },
-          yAxis: {},
-          series: [{
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
-          }]
-        })
-      },
-      drawMap() {
-        const map = new T.Map('mapDiv')
-        map.centerAndZoom(new T.LngLat(116.40769, 39.89945), 12)
+      handleSetLineChartData(type) {
+        this.lineChartData = lineChartData[type]
       }
     }
   }
 </script>
 
-<style scoped>
-
-
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .dashboard-editor-container {
+    padding: 32px;
+    background-color: rgb(240, 242, 245);
+    .chart-wrapper {
+      background: #fff;
+      padding: 16px 16px 0;
+      margin-bottom: 32px;
+    }
+  }
 </style>

@@ -4,14 +4,14 @@
     <div class="filter-container" style="padding-bottom: 10px;">
       <el-input style="width: 200px;" class="filter-item" placeholder="名称">
       </el-input>
-      <el-select value="" placeholder="下级平台类型">
+      <el-select value="" placeholder="地区">
         <el-option
-          label="市级平台"
-          value="">
+          label="济南"
+          value="济南">
         </el-option>
         <el-option
-          label="供应商平台"
-          value="李四">
+          label="潍坊"
+          value="潍坊">
         </el-option>
       </el-select>
       <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
@@ -24,32 +24,43 @@
         :data="tableData"
         border
         stripe
-        height="600"
+        height="700"
         style="width: 100%">
         <el-table-column
           prop="name"
-          label="下级平台名称"
-          width="150">
+          label="供应商名称">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="下级平台类型"
-          width="150">
+          prop="city"
+          label="城市">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="名称"
-          width="150">
+          prop="linkman1"
+          label="联系人">
         </el-table-column>
         <el-table-column
-          prop="linkman"
-          label="联系人"
-          width="120">
+          prop="phone1"
+          label="电话">
         </el-table-column>
         <el-table-column
-          prop="phone"
-          label="电话"
-          width="120">
+          prop="code"
+          label="企业代码">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="企业地址">
+        </el-table-column>
+        <el-table-column
+          prop="business"
+          label="主营范围">
+        </el-table-column>
+        <el-table-column
+          prop="linkman2"
+          label="财务联系人">
+        </el-table-column>
+        <el-table-column
+          prop="phone2"
+          label="财务联系人电话">
         </el-table-column>
         <el-table-column
           prop="remark"
@@ -58,11 +69,11 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="230">
+          width="190">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleView(scope.row)">查看</el-button>
-            <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button type="success" size="mini" icon="el-icon-search" @click="handleView(scope.row)"></el-button>
+            <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
+            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -74,6 +85,7 @@
         :page-size="listQuery.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
+        background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       >
@@ -223,18 +235,173 @@
           this.tableData = [
             {
               id: '0',
-              name: '济南',
-              linkman: '张三',
-              phone: '123456',
-              remark: '这是济南市'
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
             },
             {
-              id: '1',
-              name: '潍坊',
-              linkman: '李四',
-              phone: '123456',
-              remark: '这是潍坊市'
-            }
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
+            {
+              id: '0',
+              name: 'DPF供应商',
+              city: '济南',
+              linkman1: '王晓红',
+              phone1: '18353674766',
+              address: '济南市高新区创业大厦A座109',
+              linkman2: '王晓红',
+              phone2: '18353674766',
+              code: '92360108MA37PPAE11',
+              business: 'DPF设备',
+              remark: 'dpf供应商'
+            },
           ]
           this.tableLoading = false
         }, 1000)

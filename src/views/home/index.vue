@@ -2,17 +2,107 @@
   <div class="home-container">
     <div class="" style="padding-bottom: 10px;padding-top: 10px;">
       <el-row type="flex" justify="space-between">
-        <el-col :span="16">
+        <el-col :span="14">
           <el-button-group>
-            <el-button type="primary" icon="el-icon-location">定时定位车辆查询</el-button>
+            <el-button type="primary" icon="el-icon-location" @click="goToDashboard">定时定位车辆查询</el-button>
             <el-button type="primary" icon="el-icon-location">数据统计</el-button>
             <el-button type="primary" icon="el-icon-location">信息管理</el-button>
             <el-button type="primary" icon="el-icon-location">系统管理</el-button>
             <el-button type="primary" icon="el-icon-location">系统帮助</el-button>
           </el-button-group>
         </el-col>
-        <el-col :span="8" style="text-align:right;">
+        <el-col :span="10" style="text-align:right;">
+          <el-tooltip content="普通街道地图" placement="bottom">
+            <div class="map-icon-wrapper">
+              <div class="icon-wrapper icon-jiedao">
+                <svg-icon icon-class="jiedao"/>
+              </div>
+            </div>
+          </el-tooltip>
+
+          <el-tooltip content="混合地图" placement="bottom">
+            <div class="map-icon-wrapper">
+              <div class="icon-wrapper icon-luwang">
+                <svg-icon icon-class="luwang"/>
+              </div>
+            </div>
+          </el-tooltip>
+          <el-tooltip content="卫星地图" placement="bottom">
+            <div class="map-icon-wrapper">
+              <div class="icon-wrapper icon-weixing">
+                <svg-icon icon-class="weixing"/>
+              </div>
+            </div>
+          </el-tooltip>
+          <el-tooltip content="全图" placement="bottom">
+            <div class="map-icon-wrapper">
+              <div class="icon-wrapper icon-diqiu">
+                <svg-icon icon-class="diqiu"/>
+              </div>
+            </div>
+          </el-tooltip>
+          <el-tooltip content="放大" placement="bottom">
+            <div class="map-icon-wrapper">
+              <div class="icon-wrapper icon-fangda">
+                <svg-icon icon-class="fangda"/>
+              </div>
+            </div>
+          </el-tooltip>
+          <el-tooltip content="缩小" placement="bottom">
+            <div class="map-icon-wrapper">
+              <div class="icon-wrapper icon-suoxiao">
+                <svg-icon icon-class="suoxiao"/>
+              </div>
+            </div>
+          </el-tooltip>
+          <el-tooltip content="测距工具" placement="bottom">
+            <div class="map-icon-wrapper">
+              <div class="icon-wrapper icon-biaochi">
+                <svg-icon icon-class="biaochi"/>
+              </div>
+            </div>
+          </el-tooltip>
+          <el-tooltip content="清除覆盖物" placement="bottom">
+            <div class="map-icon-wrapper">
+              <div class="icon-wrapper icon-shanchu">
+                <svg-icon icon-class="shanchu"/>
+              </div>
+            </div>
+          </el-tooltip>
+          <el-tooltip content="打印地图" placement="bottom">
+            <div class="map-icon-wrapper">
+              <div class="icon-wrapper icon-dayin">
+                <svg-icon icon-class="dayin"/>
+              </div>
+            </div>
+          </el-tooltip>
+          <el-select size="mini" value="" placeholder="地域">
+            <el-option label="济南" value="济南"></el-option>
+            <el-option label="潍坊" value="潍坊"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+            <el-option label="青岛" value="青岛"></el-option>
+          </el-select>
+          <el-tooltip content="退出" placement="bottom">
+            <div class="map-icon-wrapper" @click="iconHandleTuichu">
+              <div class="icon-wrapper icon-guanbi">
+                <svg-icon icon-class="guanbi"/>
+              </div>
+            </div>
+          </el-tooltip>
+
           <el-button-group>
+
             <el-button type="primary" icon="el-icon-edit" @click="mapTileLayerClear">普通街道地图</el-button>
             <el-button type="primary" icon="el-icon-share" @click="mapShowImgLayer">卫星地图</el-button>
             <el-button type="primary" icon="el-icon-delete" @click="mapShowImgAndCiaLayer">卫星和网路的混合视图</el-button>
@@ -32,7 +122,7 @@
     </div>
     <div>
       <el-row>
-        <el-col :span="6">
+        <el-col :span="4">
           <div class="filter-container">
 
           </div>
@@ -52,9 +142,9 @@
             ></el-tree>
           </div>
         </el-col>
-        <el-col :span="18">
+        <el-col :span="20">
           <div class="map-container">
-            <div id="mapDiv" class="map" style="height: 700px;">
+            <div ref="map" id="mapDiv" class="map" style="height: 700px;">
 
             </div>
           </div>
@@ -89,6 +179,7 @@
 <script type="text/ecmascript-6">
   import T from 'T'
   import Control from './components/control'
+  import {debounce} from '@/utils'
 
   export default {
     components: {
@@ -124,6 +215,12 @@
     mounted() {
       this.getTreeData()
       this.drawMap()
+      this.$refs.map.style.height = '300px'
+      // // 监听resize事件
+      // this.__resizeHanlder = debounce(() => {
+      //   this.$refs.map.style.height = '300px'
+      // }, 100)
+      // window.addEventListener('resize', this.__resizeHanlder)
     },
     methods: {
       drawMap() {
@@ -239,6 +336,8 @@
       },
       mapCarTrack() {
         // 或者使用更简单的“添加线”
+        window.map.panTo(new T.LngLat(116.26802, 39.90623))
+        window.map.setZoom(12)
         const datas = {
           'type': 'FeatureCollection',
           'features': [
@@ -532,12 +631,28 @@
           })
         }
       },
-      treeNodeClick(data) {
-        // 将地图的中心点变换到指定的地理坐标
-        this.carData.some(item => {
-          if (item.id === data.id) {
-            window.map.panTo(new T.LngLat(item.car_longitude, item.car_latitude))
-          }
+      treeNodeClick(data, node, component) {
+        console.log(data, node, component)
+        if (node.checked) {
+          // 将地图的中心点变换到指定的地理坐标
+          this.carData.some(item => {
+            if (item.id === data.id) {
+              window.map.panTo(new T.LngLat(item.car_longitude, item.car_latitude))
+            }
+          })
+        }
+      },
+      goToDashboard () {
+        // 解析路由
+        const {href} = this.$router.resolve({
+          name: 'dashboard'
+        })
+        window.open(href, '_blank')
+      },
+      iconHandleTuichu() {
+        this.$store.dispatch('LogOut').then(() => {
+          // 为了重新实例化vue-router对象 避免bug
+          location.reload()
         })
       },
       getTreeData() {
@@ -687,6 +802,82 @@
   }
 </script>
 
-<style scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .map-icon-wrapper {
+    cursor: pointer;
+    display: inline-block;
+    &:hover {
+      .icon-wrapper {
+        color: #fff;
+      }
+      .icon-jiedao {
+        background: #303F9F
+      }
+      .icon-luwang {
+        background: #388E3C
+      }
+      .icon-weixing {
+        background: #FF9800
+      }
+      .icon-diqiu {
+        background: #FF5252
+      }
+      .icon-fangda {
+        background: #795548
+      }
+      .icon-suoxiao {
+        background: #607D8B
+      }
+      .icon-biaochi {
+        background: #7B1FA2
+      }
+      .icon-shanchu {
+        background: #7C4DFF
+      }
+      .icon-dayin {
+        background: #03A9F4
+      }
+      .icon-guanbi {
+        background: #FF5252
+      }
+    }
 
+    .icon-wrapper {
+      border-radius: 4px;
+      padding: 6px;
+      margin: 4px 0 0 4px;
+      font-size: 24px;
+    }
+  }
+
+  .icon-jiedao {
+    color: #303F9F
+  }
+  .icon-luwang {
+    color: #388E3C
+  }
+  .icon-weixing {
+    color: #FF9800
+  }
+  .icon-diqiu {
+    color: #FF5252
+  }
+  .icon-fangda {
+    color: #795548
+  }
+  .icon-suoxiao {
+    color: #607D8B
+  }
+  .icon-biaochi {
+    color: #7B1FA2
+  }
+  .icon-shanchu {
+    color: #7C4DFF
+  }
+  .icon-dayin {
+    color: #03A9F4
+  }
+  .icon-guanbi {
+    color: #FF5252
+  }
 </style>
