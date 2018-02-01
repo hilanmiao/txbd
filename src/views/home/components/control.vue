@@ -7,7 +7,7 @@
           <el-table
             ref="table1"
             :data="list1"
-            height="250"
+            height="88"
             border
             style="width: 100%"
           >
@@ -53,7 +53,7 @@
           <el-table
             ref="table2"
             :data="list2"
-            height="250"
+            height="88"
             border
             style="width: 100%"
           >
@@ -105,7 +105,7 @@
           <el-table
             ref="table3"
             :data="list3"
-            height="250"
+            height="88"
             border
             style="width: 100%"
           >

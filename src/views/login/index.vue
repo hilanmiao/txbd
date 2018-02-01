@@ -80,7 +80,7 @@
             this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
               this.loading = false
               this.$router.push({
-                path: '/'
+                path: '/home'
               })
             }).catch(() => {
               this.loading = false

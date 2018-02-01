@@ -50,11 +50,11 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
           const data = response.data
-          commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
+          // commit('SET_TOKEN', data.token)
+          // setToken(response.data.token)
           // TODO：记得改
-          // commit('SET_TOKEN', data)
-          // setToken(response.data)
+          commit('SET_TOKEN', data)
+          setToken(response.data)
           resolve()
         }).catch(error => {
           reject(error)

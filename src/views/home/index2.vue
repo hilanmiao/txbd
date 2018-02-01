@@ -11,82 +11,78 @@
         </el-col>
 
         <el-col>
-          <el-dropdown>
+          <el-dropdown @command="handleCommand">
 						      <span class="el-dropdown-link">
-						        <i class="el-icon-location" style="margin-right: 2px;"></i>定时定位车辆查询
-						      </span>
-          </el-dropdown>
-        </el-col>
-
-        <el-col>
-          <el-dropdown>
-						      <span class="el-dropdown-link">
-						       <i class="el-icon-location"></i> 数据统计<i class="el-icon-arrow-down el-icon--right"></i>
+						       <i class="el-icon-edit-outline"></i> DPF信息管理<i class="el-icon-arrow-down el-icon--right"></i>
 						      </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>里程查询统计</el-dropdown-item>
-              <el-dropdown-item>警情数据统计</el-dropdown-item>
+              <el-dropdown-item>供应商管理</el-dropdown-item>
+              <el-dropdown-item>登记信息管理</el-dropdown-item>
+              <el-dropdown-item>设备信息管理</el-dropdown-item>
+              <el-dropdown-item>维修厂管理</el-dropdown-item>
+              <el-dropdown-item>维修管理</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
 
         <el-col>
-          <el-dropdown>
+          <el-dropdown @command="handleCommand">
 						      <span class="el-dropdown-link">
-							      	<i class="el-icon-message"></i>
-							        信息管理
+							      	<i class="el-icon-printer"></i>
+							        统计分析
 							        <i class="el-icon-arrow-down el-icon--right"></i>
 						      </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>上级平台管理</el-dropdown-item>
-              <el-dropdown-item>短信管理</el-dropdown-item>
-              <el-dropdown-item>运管资料管理</el-dropdown-item>
+              <el-dropdown-item>在线率统计</el-dropdown-item>
+              <el-dropdown-item>里程统计</el-dropdown-item>
+              <el-dropdown-item>车辆信息统计</el-dropdown-item>
+              <el-dropdown-item>车辆不在线统计</el-dropdown-item>
+              <el-dropdown-item>汽车指标统计</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
 
         <el-col>
-          <el-dropdown>
+          <el-dropdown @command="handleCommand">
+						      	<span class="el-dropdown-link">
+						      		<i class="el-icon-bell"></i>
+						       	 公告管理<i class="el-icon-arrow-down el-icon--right"></i>
+						      	</span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>公告管理</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+
+        <el-col>
+          <el-dropdown @command="handleCommand">
+						      	<span class="el-dropdown-link">
+							      	<i class="el-icon-message"></i>
+							        日志管理<i class="el-icon-arrow-down el-icon--right"></i>
+						      	</span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>平台日志管理</el-dropdown-item>
+              <el-dropdown-item>审核日志查询</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+
+        <el-col>
+          <el-dropdown @command="handleCommand">
 						      	<span class="el-dropdown-link">
 						      		<i class="el-icon-setting"></i>
-						        系统设置<i class="el-icon-arrow-down el-icon--right"></i>
+						        系统管理<i class="el-icon-arrow-down el-icon--right"></i>
 						      	</span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>密码修改</el-dropdown-item>
-              <el-dropdown-item>重置密码</el-dropdown-item>
+              <el-dropdown-item>机构管理</el-dropdown-item>
+              <el-dropdown-item>角色管理</el-dropdown-item>
+              <el-dropdown-item>用户管理</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
 
         <el-col>
-          <el-dropdown>
-						      	<span class="el-dropdown-link">
-							      	<i class="el-icon-warning"></i>
-							        报警设置<i class="el-icon-arrow-down el-icon--right"></i>
-						      	</span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>终端报警设置</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-col>
-
-        <el-col>
-          <el-dropdown>
-						      	<span class="el-dropdown-link">
-						      		<i class="el-icon-warning"></i>
-						       	 终端管理<i class="el-icon-arrow-down el-icon--right"></i>
-						      	</span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>车辆资料管理</el-dropdown-item>
-              <el-dropdown-item>车辆品牌管理</el-dropdown-item>
-              <el-dropdown-item>停用信息查询</el-dropdown-item>
-              <el-dropdown-item>车辆管理</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-col>
-
-        <el-col>
-          <el-dropdown>
+          <el-dropdown @command="handleCommand">
 						      <span class="el-dropdown-link">
 						      	<i class="el-icon-info"></i>
 						        系统帮助
@@ -98,6 +94,13 @@
       </el-row>
 
       <el-row class="fr">
+        <el-tooltip content="全屏" placement="bottom">
+          <div class="map-icon-wrapper" @click="screenfull">
+            <div class="icon-wrapper icon-quanping">
+              <svg-icon icon-class="quanping"/>
+            </div>
+          </div>
+        </el-tooltip>
         <el-tooltip content="普通街道地图" placement="bottom">
           <div class="map-icon-wrapper" @click="mapTileLayerClear">
             <div class="icon-wrapper icon-jiedao">
@@ -162,6 +165,13 @@
             </div>
           </div>
         </el-tooltip>
+        <el-tooltip content="汽车轨迹" placement="bottom">
+          <div class="map-icon-wrapper" @click="mapCarTrack">
+            <div class="icon-wrapper ">
+              <svg-icon icon-class="qiche"/>
+            </div>
+          </div>
+        </el-tooltip>
         <el-select size="mini" value="" placeholder="地域">
           <el-option label="济南" value="济南"></el-option>
           <el-option label="潍坊" value="潍坊"></el-option>
@@ -180,7 +190,7 @@
           <el-option label="青岛" value="青岛"></el-option>
         </el-select>
         <el-tooltip content="退出" placement="bottom">
-          <div class="map-icon-wrapper" @click="iconHandleTuichu">
+          <div class="map-icon-wrapper" @click="logOut">
             <div class="icon-wrapper icon-guanbi">
               <svg-icon icon-class="guanbi"/>
             </div>
@@ -190,10 +200,11 @@
     </div>
     <div>
       <el-row>
-        <el-col :span="4" class="left">
-          <div class="content">
+        <el-col :span="4" class="left" ref="left">
+          <div class="content" ref="leftContent">
             <div class="filter-container">
-              <span class="fl">监控面板</span><span class="fr"><i class="el-icon-d-arrow-right"></i></span>
+              <span class="fl">监控面板</span>
+              <!--<span class="fr"><i class="el-icon-d-arrow-right"></i></span>-->
             </div>
 
             <el-collapse style="padding-top: 10px;background: #f2f2f2;">
@@ -205,10 +216,20 @@
               <div class="clearfix" style="padding-top: 10px;">
                 <el-tabs type="border-card" style="width: 99%;">
                   <el-tab-pane label="车辆列表" style="width: 33.33%;">
-                    <div ref="treeContainer" class="tree-container clearfix" v-loading="treeLoading" element-loading-text="加载中..."
+                    <div ref="treeContainer" class="tree-container clearfix" v-loading="treeLoading"
+                         element-loading-text="加载中..."
                          style="background: #f2f2f2;">
-                      <el-tree ref="tree" node-key="id" show-checkbox default-expand-all :data="treeData"
-                               :props="defaultProps" highlight-current></el-tree>
+                      <el-tree
+                        ref="tree"
+                        node-key="id"
+                        show-checkbox
+                        default-expand-all
+                        :data="treeData"
+                        :props="defaultProps"
+                        highlight-current
+                        @node-click="treeNodeClick"
+                        @check-change="treeCheckChange"
+                      ></el-tree>
                     </div>
                   </el-tab-pane>
                   <el-tab-pane label="查询结果" style="width: 33.33%;">查询结果</el-tab-pane>
@@ -219,121 +240,82 @@
             </el-collapse>
           </div>
 
-          <div class="collapse"
-               style="width: 10px;height: 52px;position: absolute; left:16.7%; top: 50%; transform: translate(-50%,-50%);z-index: 999;" :style="backgroundDiv1"></div>
-          <div class="collapse1"
-               style="display: none;width: 10px;height: 52px;position: absolute; left:5px; top: 50%; transform: translate(-50%,-50%);z-index: 999;" :style="backgroundDiv2"></div>
+          <div ref="collapseClose" @click="collapseClose" class="collapse"
+               style="width: 10px;height: 52px;position: absolute; left:16.7%; top: 50%; transform: translate(-50%,-50%);z-index: 999;"
+               :style="backgroundDiv1"></div>
+          <div ref="collapseOpen" @click="collapseOpen" class="collapse1"
+               style="display: none;width: 10px;height: 52px;position: absolute; left:5px; top: 50%; transform: translate(-50%,-50%);z-index: 999;"
+               :style="backgroundDiv2"></div>
         </el-col>
 
-        <el-col :span="20" class="right">
+        <el-col :span="20" class="right" ref="right">
           <div class="map-container">
             <div ref="map" id="mapDiv" class="map" style="height: 600px;">
 
             </div>
           </div>
           <div class="control">
-            <div>
-              <el-tabs type="border-card">
-                <el-tab-pane>
-                  <span slot="label"><i class="el-icon-date"></i>车辆信息</span>
-                  <template>
-                    <el-table border style="width: 100%">
-                      <el-table-column prop="number" label="车牌号码" width="120"></el-table-column>
-                      <el-table-column prop="name" label="公司" width="120"></el-table-column>
-                      <el-table-column prop="address" label="是否定位"></el-table-column>
-                      <el-table-column prop="date" label="定位时间"></el-table-column>
-                      <el-table-column prop="status" label="状态信息" width="120"></el-table-column>
-                      <el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>
-                      <el-table-column prop="direction" label="方向"></el-table-column>
-                      <el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>
-                      <el-table-column prop="attach" label="附加信息" width="120"></el-table-column>
-                    </el-table>
-                  </template>
-                </el-tab-pane>
-                <el-tab-pane label="指令信息">
-                  <template>
-                    <el-table border style="width: 100%">
-                      <el-table-column prop="number" label="消息类型" width="120"></el-table-column>
-                      <el-table-column prop="name" label="公司" width="120"></el-table-column>
-                      <el-table-column prop="address" label="是否定位"></el-table-column>
-                      <el-table-column prop="date" label="定位时间"></el-table-column>
-                      <el-table-column prop="status" label="状态信息" width="120"></el-table-column>
-                      <el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>
-                      <el-table-column prop="direction" label="方向"></el-table-column>
-                      <el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>
-                      <el-table-column prop="attach" label="附加信息" width="120"></el-table-column>
-                    </el-table>
-                  </template>
-                </el-tab-pane>
-                <el-tab-pane label="车平台登录">
-                  <template>
-                    <el-table border style="width: 100%">
-                      <el-table-column prop="number" label="车牌号码" width="120"></el-table-column>
-                      <el-table-column prop="name" label="公司" width="120"></el-table-column>
-                      <el-table-column prop="address" label="是否定位"></el-table-column>
-                      <el-table-column prop="date" label="定位时间"></el-table-column>
-                      <el-table-column prop="status" label="状态信息" width="120"></el-table-column>
-                      <el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>
-                      <el-table-column prop="direction" label="方向"></el-table-column>
-                      <el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>
-                      <el-table-column prop="attach" label="附加信息" width="120"></el-table-column>
-                    </el-table>
-                  </template>
-                </el-tab-pane>
-                <el-tab-pane label="历史记录信息">
-                  <template>
-                    <el-table border style="width: 100%">
-                      <el-table-column prop="number" label="车牌号码" width="120"></el-table-column>
-                      <el-table-column prop="name" label="公司" width="120"></el-table-column>
-                      <el-table-column prop="address" label="是否定位"></el-table-column>
-                      <el-table-column prop="date" label="定位时间"></el-table-column>
-                      <el-table-column prop="status" label="状态信息" width="120"></el-table-column>
-                      <el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>
-                      <el-table-column prop="direction" label="方向"></el-table-column>
-                      <el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>
-                      <el-table-column prop="attach" label="附加信息" width="120"></el-table-column>
-                    </el-table>
-                  </template>
-                </el-tab-pane>
-                <el-tab-pane label="终端上报警情(预处警)">
-                  <template>
-                    <el-table border style="width: 100%">
-                      <el-table-column prop="number" label="车牌号码" width="120"></el-table-column>
-                      <el-table-column prop="name" label="公司" width="120"></el-table-column>
-                      <el-table-column prop="address" label="是否定位"></el-table-column>
-                      <el-table-column prop="date" label="定位时间"></el-table-column>
-                      <el-table-column prop="status" label="状态信息" width="120"></el-table-column>
-                      <el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>
-                      <el-table-column prop="direction" label="方向"></el-table-column>
-                      <el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>
-                      <el-table-column prop="attach" label="附加信息" width="120"></el-table-column>
-                    </el-table>
-                  </template>
-                </el-tab-pane>
-                <el-tab-pane label="拍摄图片">
-                  <template>
-                    <el-table border style="width: 100%">
-                      <el-table-column prop="number" label="车牌号码" width="120"></el-table-column>
-                      <el-table-column prop="name" label="公司" width="120"></el-table-column>
-                      <el-table-column prop="address" label="是否定位"></el-table-column>
-                      <el-table-column prop="date" label="定位时间"></el-table-column>
-                      <el-table-column prop="status" label="状态信息" width="120"></el-table-column>
-                      <el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>
-                      <el-table-column prop="direction" label="方向"></el-table-column>
-                      <el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>
-                      <el-table-column prop="attach" label="附加信息" width="120"></el-table-column>
-                    </el-table>
-                  </template>
-                </el-tab-pane>
-              </el-tabs>
-            </div>
+            <control :list-car="listCar"></control>
+            <!--<div>-->
+            <!--<el-tabs type="border-card">-->
+            <!--<el-tab-pane>-->
+            <!--<span slot="label"><i class="el-icon-date"></i>车辆信息</span>-->
+            <!--<template>-->
+            <!--<el-table border style="width: 100%">-->
+            <!--<el-table-column prop="number" label="车牌号码" width="120"></el-table-column>-->
+            <!--<el-table-column prop="name" label="公司" width="120"></el-table-column>-->
+            <!--<el-table-column prop="address" label="是否定位"></el-table-column>-->
+            <!--<el-table-column prop="date" label="定位时间"></el-table-column>-->
+            <!--<el-table-column prop="status" label="状态信息" width="120"></el-table-column>-->
+            <!--<el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>-->
+            <!--<el-table-column prop="direction" label="方向"></el-table-column>-->
+            <!--<el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>-->
+            <!--<el-table-column prop="attach" label="附加信息" width="120"></el-table-column>-->
+            <!--</el-table>-->
+            <!--</template>-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane label="历史记录信息">-->
+            <!--<template>-->
+            <!--<el-table border style="width: 100%">-->
+            <!--<el-table-column prop="number" label="车牌号码" width="120"></el-table-column>-->
+            <!--<el-table-column prop="name" label="公司" width="120"></el-table-column>-->
+            <!--<el-table-column prop="address" label="是否定位"></el-table-column>-->
+            <!--<el-table-column prop="date" label="定位时间"></el-table-column>-->
+            <!--<el-table-column prop="status" label="状态信息" width="120"></el-table-column>-->
+            <!--<el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>-->
+            <!--<el-table-column prop="direction" label="方向"></el-table-column>-->
+            <!--<el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>-->
+            <!--<el-table-column prop="attach" label="附加信息" width="120"></el-table-column>-->
+            <!--</el-table>-->
+            <!--</template>-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane label="终端上报警情(预处警)">-->
+            <!--<template>-->
+            <!--<el-table border style="width: 100%">-->
+            <!--<el-table-column prop="number" label="车牌号码" width="120"></el-table-column>-->
+            <!--<el-table-column prop="name" label="公司" width="120"></el-table-column>-->
+            <!--<el-table-column prop="address" label="是否定位"></el-table-column>-->
+            <!--<el-table-column prop="date" label="定位时间"></el-table-column>-->
+            <!--<el-table-column prop="status" label="状态信息" width="120"></el-table-column>-->
+            <!--<el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>-->
+            <!--<el-table-column prop="direction" label="方向"></el-table-column>-->
+            <!--<el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>-->
+            <!--<el-table-column prop="attach" label="附加信息" width="120"></el-table-column>-->
+            <!--</el-table>-->
+            <!--</template>-->
+            <!--</el-tab-pane>-->
+            <!--</el-tabs>-->
+            <!--</div>-->
           </div>
         </el-col>
       </el-row>
     </div>
 
+    <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
+    <remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/D3SvgOverlay.js"></remote-js>
+    <remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/CarTrack.js"></remote-js>
+    <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
   </div>
-
 </template>
 
 <script type="text/ecmascript-6">
@@ -342,6 +324,8 @@
   import logo from '@/assets/home_images/logo.png'
   import collapse from '@/assets/home_images/collapse.png'
   import collapse1 from '@/assets/home_images/collapse1.png'
+  import screenfull from 'screenfull'
+  import {debounce} from '@/utils'
 
   export default {
     components: {
@@ -388,17 +372,45 @@
       this.setLayout()
       this.getTreeData()
       this.drawMap()
-      // this.$refs.map.style.height = '300px'
-      // // 监听resize事件
-      // this.__resizeHanlder = debounce(() => {
-      //   this.$refs.map.style.height = '300px'
-      // }, 100)
-      // window.addEventListener('resize', this.__resizeHanlder)
+      // 监听resize事件
+      this.__resizeHanlder = debounce(() => {
+        // 重新设置布局
+        this.setLayout()
+      }, 100)
+      window.addEventListener('resize', this.__resizeHanlder)
     },
     methods: {
       setLayout() {
         this.$refs.map.style.height = (window.innerHeight - 236) + 'px'
         this.$refs.treeContainer.style.height = (window.innerHeight - 228) + 'px'
+      },
+      collapseClose() {
+        this.$refs.leftContent.style.display = 'none'
+        this.$refs.collapseClose.style.display = 'none'
+        this.$refs.collapseOpen.style.display = 'block'
+        this.$refs.collapseOpen.style.left = '0'
+        this.$refs.right.$el.style.width = '100%'
+        // 通知地图容器大小已经改变
+        window.map.checkResize()
+      },
+      collapseOpen() {
+        this.$refs.leftContent.style.display = 'block'
+        this.$refs.collapseClose.style.display = 'block'
+        this.$refs.collapseOpen.style.display = 'none'
+        this.$refs.left.$el.style.width = '16.6667%'
+        this.$refs.right.$el.style.width = '83.3333%'
+        // 通知地图容器大小已经改变
+        window.map.checkResize()
+      },
+      screenfull() {
+        if (!screenfull.enabled) {
+          this.$message({
+            message: '你的浏览器不支持全屏',
+            type: 'warning'
+          })
+          return false
+        }
+        screenfull.toggle()
       },
       drawMap() {
         window.map = new T.Map('mapDiv')
@@ -819,6 +831,9 @@
           })
         }
       },
+      handleCommand(command) {
+        this.goToDashboard()
+      },
       goToDashboard() {
         // 解析路由
         const {href} = this.$router.resolve({
@@ -826,8 +841,8 @@
         })
         window.open(href, '_blank')
       },
-      iconHandleTuichu() {
-        this.$store.dispatch('LogOut').then(() => {
+      logOut() {
+        this.$store.dispatch('FedLogOut').then(() => {
           // 为了重新实例化vue-router对象 避免bug
           location.reload()
         })
@@ -1017,106 +1032,63 @@
       .icon-guanbi {
         background: #FF5252
       }
+      .icon-quanping {
+        background: #ffffff;
+        color: #333;
+      }
     }
 
     .icon-wrapper {
       border-radius: 4px;
       padding: 0 10px;
       /*margin: 4px 0 0 4px;*/
-      /*font-size: 24px;*/
+      font-size: 22px;
     }
   }
 
   .icon-jiedao {
     color: #303F9F
   }
+
   .icon-luwang {
     color: #388E3C
   }
+
   .icon-weixing {
     color: #FF9800
   }
+
   .icon-diqiu {
     color: #FF5252
   }
+
   .icon-fangda {
     color: #795548
   }
+
   .icon-suoxiao {
     color: #607D8B
   }
+
   .icon-biaochi {
     color: #7B1FA2
   }
+
   .icon-shanchu {
     color: #7C4DFF
   }
+
   .icon-dayin {
-    color: #03A9F4
+    color: #FF9800
   }
+
   .icon-guanbi {
     color: #FF5252
   }
 
-  .nav{display: table;width: 99%;margin-bottom: 10px;height: 50px;line-height: 50px;background: #409EFF;padding: 0 0.5%;}
-  .nav .el-button{padding: 4px 4px;}
-  .nav .el-button--primary{color: #000;background: none !important;border-color: rgba(0,0,0,0) !important;}
-  .nav .el-button--primary:hover{border-color: #ccc;border-radius: 4px !important;color: #000;border:1px solid #f00 !important;}
+  .icon-quanping {
+    color: #fff
+  }
 
-  .nav .el-dropdown-link{color: #fff;}
-  .nav .el-input__inner{height: 30px;line-height: 30px;}
-  .el-collapse, .el-collapse-item__header, .el-collapse-item__wrap{border-bottom: 0;}
-
-  .nav .fl i{font-size: 12px;margin-right: -3px;}
-
-  .nav .fr .el-button--text{color: #fff;}
-  .nav .fr .el-button+.el-button{margin: 0;}
-  .nav .fr .el-button{padding: 4px 0;border: 0;}
-  .nav .fr .el-dropdown .el-button--primary:hover {background: none;border: 1px solid rgba(0,0,0,0) !important;}
-  .nav .fr .el-select {width: 100px;}
-
-  .el-dropdown-menu__item {line-height: 28px;}
-  .nav .el-col{width: auto;padding-right: 9px;}
-  .el-icon--right {margin-left: 0px;}
-  .nav .el-row{display: inline-block;}
-  .fl{float: left;}
-  .fr{float:right;}
-  .clearfix{clear: both;overflow: hidden;}
-
-  .filter-container{background: #409EFF;height: 30px;line-height: 30px;padding: 0 10px;font-size: 14px;}
-  .filter-container span{display: inline-block;color: #fff;}
-
-  .left{padding: 0 10px;}
-  .left .el-input{width: 70%;}
-  .left .el-input__inner{height: 30px;}
-  .left .el-button{padding: 7px 0;width: 28%;}
-
-  .left .el-collapse-item__header{height: 29px;line-height: 29px;}
-  .left .el-collapse-item__arrow{line-height: 29px;}
-  .el-collapse-item__wrap{display: block !important;border: 0;}
-  .el-tabs--border-card>.el-tabs__header .el-tabs__item {color: #fff;}
-  .el-tabs--border-card>.el-tabs__header .el-tabs__item:hover{color: #fff;background: #0075c4;}
-  .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {color: #fff;background-color: #0075c4;border:0;border-right: 1px solid #fff;}
-  .el-tabs--border-card>.el-tabs__header .el-tabs__item{margin: 0;border: 0;border-right: 1px solid #fff;background: #409EFF;}
-  .el-tabs__nav{width: 99%;}
-  .left .el-tabs__item{width: 33.7%;text-align: center;padding: 0;}
-  .left .el-tabs__content .el-tab-pane{width: 100% !important;}
-  .left .el-tabs--top.el-tabs--border-card .el-tabs__item:nth-child(2){padding: 0;}
-  .left .el-tabs--top.el-tabs--border-card .el-tabs__item:last-child{padding: 0;border: 0;}
-  .left .el-tabs--border-card>.el-tabs__content {background: #f2f2f2;}
-  .left .el-tree-node{background: #f2f2f2;}
-
-  .right{position: relative;padding-bottom: 171px;}
-  .right .el-tabs__item{height: 30px;line-height: 30px;}
-  .el-table td, .el-table th{padding: 2px 0;}
-  .right .el-button{padding: 0 10px 0;margin: 3px 0;}
-  .right .classify{background: #c0c1c3;color: #fff;}
-  .right .classify .el-button{border-right: 1px solid #fff;color: #fff;}
-  .right .classify .el-button:hover {color: #0065a7;}
-
-
-  .el-tabs--border-card{box-shadow: none;}
-  .control{padding-top: 10px;position: absolute;right: 0;bottom: 10px;width: 100%;}
-  .control .el-tree{background: #f2f2f2;}
 
 </style>

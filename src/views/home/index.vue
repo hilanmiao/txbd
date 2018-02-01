@@ -650,7 +650,7 @@
         window.open(href, '_blank')
       },
       iconHandleTuichu() {
-        this.$store.dispatch('LogOut').then(() => {
+        this.$store.dispatch('FedLogOut').then(() => {
           // 为了重新实例化vue-router对象 避免bug
           location.reload()
         })

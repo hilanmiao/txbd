@@ -1,28 +1,43 @@
 import request from '@/utils/request'
 
+// 获取列表数据
 export function getListEnquipment(params) {
   return request({
-    url: '/supplier/list',
+    url: 'v1/dpfInfo/dpfInfos',
     method: 'get',
     params
   })
 }
-
-export function postModelEnquipment(name, phone) {
+// 创建
+export function postModelEnquipment(data) {
   return request({
-    url: '/supplier/post',
+    url: 'v1/dpfInfo/dpfInfo',
     method: 'post',
-    data: {
-      name,
-      phone
-    }
+    data
   })
 }
 
-export function deleteModelEnquipment(params) {
+// 修改
+export function putModelEnquipment(data) {
   return request({
-    url: '/supplier/delete',
-    method: 'delete',
-    params
+    url: 'v1/dpfInfo/dpfInfo',
+    method: 'post',
+    data
+  })
+}
+
+// 删除
+export function deleteModelEnquipment(id) {
+  return request({
+    url: 'v1/dpfInfo/' + id,
+    method: 'delete'
+  })
+}
+
+// 获取详情
+export function getModelEnquipment(id) {
+  return request({
+    url: 'v1/dpfInfo/' + id,
+    method: 'get'
   })
 }
