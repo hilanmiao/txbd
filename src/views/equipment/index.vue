@@ -61,7 +61,7 @@
             <el-tooltip content="编辑" placement="top">
               <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="编辑" placement="top">
+            <el-tooltip content="删除" placement="top">
               <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
             </el-tooltip>
           </template>
@@ -91,8 +91,8 @@
           </el-form-item>
           <el-form-item label="供应商">
             <el-select v-model="tempModel.supplier_id" placeholder="请选择供应商">
-              <el-option v-for="item in listSupplier" :key="item.value" :label="item.label"
-                         :value="item.value"></el-option>
+              <el-option v-for="item in listSupplier" :key="item.id" :label="item.name"
+                         :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="设备型号">
@@ -204,12 +204,14 @@
         this.dialogFormVisible = true
       },
       handleEdit(row) {
-        this.tempModel = row
+        // 使用对象拷贝赋值
+        this.tempModel = Object.assign({}, row)
         // 编辑处理
         this.dialogFormVisible = true
       },
       handleDelete(row) {
-        this.tempModel = row
+        // 使用对象拷贝赋值
+        this.tempModel = Object.assign({}, row)
         // 删除确认
         this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -256,7 +258,7 @@
         // 显示loading
         this.loadingExport = true
 
-        const rows = [['id', 'DPF设备序号', 'DPF供应商', 'DPF设备型号', '状态', '创建时间', '创建人']]
+        const rows = [['DPF设备序号', 'DPF供应商', 'DPF设备型号', '状态', '创建时间', '创建人']]
         this.tableData.forEach(item => {
           rows.push([
             item.dpf_code,
@@ -303,16 +305,16 @@
       },
       _deleteModelEnquipment() {
         deleteModelEnquipment(this.tempModel.id).then(response => {
-          if (response.code === '200') {
+          if (response.code === '204') {
             this.$message({
               type: 'success',
               message: '删除成功!'
             })
             // 重新请求数据(带着原先的查询参数)
-            this.getList()
+            this._getList()
           } else {
             this.$message({
-              type: 'danger',
+              type: 'error',
               message: response.message
             })
           }
@@ -321,10 +323,6 @@
       _postModelEnquipment() {
         postModelEnquipment(this.tempModel).then(response => {
           if (response.code === '201') {
-            // 取消加载中
-            this.loadingSubmit = false
-            // 关闭dialog
-            this.dialogFormVisible = false
             // 弹出提醒信息
             this.$message({
               type: 'success',
@@ -334,33 +332,36 @@
             this._getList()
           } else {
             this.$message({
-              type: 'danger',
+              type: 'error',
               message: response.message
             })
           }
+          // 取消加载中
+          this.loadingSubmit = false
+          // 关闭dialog
+          this.dialogFormVisible = false
         })
       },
       _putModelEnquipment() {
-        this.tempModel.supplier_id = 0
         putModelEnquipment(this.tempModel).then(response => {
-          if (response.code === '200') {
-            // 取消加载中
-            this.loadingSubmit = false
-            // 关闭dialog
-            this.dialogFormVisible = false
+          if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
               type: 'success',
               message: '操作成功!'
             })
             // 重新请求数据(带着原先的查询参数)
-            this.getList()
+            this._getList()
           } else {
             this.$message({
-              type: 'danger',
+              type: 'error',
               message: response.message
             })
           }
+          // 关闭dialog
+          this.dialogFormVisible = false
+          // 取消加载中
+          this.loadingSubmit = false
         })
       },
       _getList() {
@@ -377,7 +378,7 @@
             this.total = response.data.count
           } else {
             this.$message({
-              type: 'danger',
+              type: 'error',
               message: response.message
             })
           }
@@ -386,7 +387,12 @@
         })
       },
       _getListSupplier() {
-        // getListSupplier().then(response => {
+        // TODO: 接口不对模拟一下
+        this.listSupplier.push({
+          id: '61cb1b6182404d6aaed661338ff63711',
+          name: '青岛高新DPF长'
+        })
+        // getListSupplier({}).then(response => {
         //   this.listSupplier = response.data.data
         // })
       }

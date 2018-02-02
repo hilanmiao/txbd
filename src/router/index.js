@@ -120,6 +120,12 @@ export const asyncRouterMap = [
         name: '维修管理',
         component: _import('maintenance_record/index'),
         meta: {title: '维修管理'}
+      },
+      {
+        path: 'platform',
+        name: '下级平台管理',
+        component: _import('lower_platform/index'),
+        meta: {title: '下级平台管理'}
       }
     ]
   },
@@ -241,12 +247,6 @@ export const asyncRouterMap = [
     name: '系统管理',
     meta: {title: '系统管理', icon: 'password', roles: ['admin']},
     children: [
-      {
-        path: 'department',
-        name: '机构管理',
-        component: _import('department/index'),
-        meta: {title: '机构管理'}
-      },
       {
         path: 'part',
         name: '角色管理',

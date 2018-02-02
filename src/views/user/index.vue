@@ -2,65 +2,69 @@
   <div class="app-container">
 
     <div class="filter-container" style="padding-bottom: 10px;">
-      <el-input style="width: 200px;" class="filter-item" placeholder="姓名">
+      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.name" style="width: 200px;"
+                class="filter-item"
+                placeholder="名称">
       </el-input>
-      <el-select value="" placeholder="请选择机构">
-        <el-option
-          v-for="item in departmentData"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" icon="el-icon-edit" @click="handleEdit({})">添加</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+      <el-button type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
     </div>
 
     <div class="table-container">
       <el-table
-        v-loading="tableLoading" element-loading-text="加载中..."
-        :data="tableData"
+        v-loading="loadingList" element-loading-text="加载中..."
+        :data="list"
         border
         stripe
-        height="600"
+        fit
+        highlight-current-row
         style="width: 100%">
         <el-table-column
-          prop="loginName"
-          label="登录账号"
-          width="120">
+          prop="username"
+          label="登录名">
         </el-table-column>
         <el-table-column
-          prop="departmentName"
-          label="机构名称"
-          width="150">
+          prop="password"
+          label="密码">
         </el-table-column>
         <el-table-column
-          prop="partName"
-          label="角色"
-          width="150">
+          prop="role_name"
+          label="角色">
         </el-table-column>
         <el-table-column
-          prop="linkman"
-          label="姓名"
-          width="120">
+          width="120"
+          prop="name"
+          label="昵称">
         </el-table-column>
         <el-table-column
+          width="120"
           prop="phone"
-          label="电话"
-          width="120">
+          label="手机号">
         </el-table-column>
         <el-table-column
-          prop="remark"
-          label="备注">
+          width="120"
+          prop="city_name"
+          label="城市">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          label="平台">
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.from_system | typeTagFilter">{{scope.row.from_system | typeFilter}}</el-tag>
+          </template>
         </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
-          width="230">
+          width="130">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleView(scope.row)">查看</el-button>
-            <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+            <el-tooltip content="编辑" placement="top">
+              <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+              <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -68,10 +72,12 @@
 
     <div class="pagination-container" style="margin-top: 20px">
       <el-pagination
-        :page-sizes="[20, 40, 70, 100]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
+        :page-sizes="[10, 40, 80, 100, 1000]"
+        :page-size="listQuery.limit"
+        :current-page.sync="listQuery.page"
         :total="total"
+        layout="total, sizes, prev, pager, next, jumper"
+        background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       >
@@ -79,63 +85,41 @@
     </div>
 
     <div class="others-container">
-      <el-dialog :visible.sync="visible" title="添加&编辑" :before-close="handleBeforeClose">
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="机构">
-            <el-select v-model="form.department" placeholder="请选择">
-              <el-option
-                v-for="item in departmentData"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
+      <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
+        <el-form ref="form" :model="tempModel" label-width="80px">
+          <el-form-item label="登录名">
+            <el-input v-model="tempModel.username"></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input v-model="tempModel.password"></el-input>
+          </el-form-item>
+          <el-form-item label="昵称">
+            <el-input v-model="tempModel.name"></el-input>
+          </el-form-item>
+          <el-form-item label="电话">
+            <el-input v-model="tempModel.phone"></el-input>
+          </el-form-item>
+          <el-form-item label="平台">
+            <el-select v-model="tempModel.type" placeholder="请选择">
+              <el-option label="省级" value="0"></el-option>
+              <el-option label="市级" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="城市">
+            <el-select v-model="tempModel.city_id" placeholder="请选择">
+              <el-option v-for="item in listCity" :key="item.id" :label="item.name"
+                         :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="角色">
-            <el-select v-model="form.part" placeholder="请选择">
-              <el-option
-                v-for="item in partData"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
+            <el-select v-model="tempModel.role_id" placeholder="请选择">
+              <el-option v-for="item in listRole" :key="item.id" :label="item.name"
+                         :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="登录账号">
-            <el-input v-model="form.loginName"></el-input>
-          </el-form-item>
-          <el-form-item label="姓名">
-            <el-input v-model="form.linkman"></el-input>
-          </el-form-item>
-          <el-form-item label="电话">
-            <el-input v-model="form.phone"></el-input>
-          </el-form-item>
-          <el-form-item label="备注">
-            <el-input type="textarea" v-model="form.remark"></el-input>
-          </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleSubmit" :loading="submitLoading">保存</el-button>
-            <el-button @click="visible = false">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-
-      <el-dialog :visible.sync="visibleView" title="查看">
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="机构名称">
-            <el-input v-model="form.name" :disabled="true"></el-input>
-          </el-form-item>
-          <el-form-item label="联系人">
-            <el-input v-model="form.linkman" :disabled="true"></el-input>
-          </el-form-item>
-          <el-form-item label="电话">
-            <el-input v-model="form.phone" :disabled="true"></el-input>
-          </el-form-item>
-          <el-form-item label="备注">
-            <el-input type="textarea" v-model="form.remark" :disabled="true"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button @click="visibleView = false">关闭</el-button>
+            <el-button type="primary" @click="handleSubmit" :loading="loadingSubmit">保存</el-button>
+            <el-button @click="dialogFormVisible = false">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -144,84 +128,111 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform} from '@/api/lower_platform'
+
   export default {
     data() {
       return {
         // 列表相关
-        tableData: [],
-        tableLoading: false,
+        list: [],
+        total: 0,
+        loadingList: false,
+        listQuery: {
+          page: 1,
+          limit: 10,
+          offset: 0,
+          username: '',
+          sort: '+id'
+        },
         // 表单相关
-        form: {},
-        submitLoading: false,
-        visible: false,
-        visibleView: false,
-        // 分页相关
-        start: 0,
-        pageSize: 20,
-        total: 400,
-        // 搜索相关
-        searchName: '',
+        listCity: [],
+        listRole: [],
+        tempModel: {
+          id: '',
+          username: '',
+          password: '',
+          name: '',
+          phone: '',
+          city_id: '',
+          role_id: '',
+          from_system: '0'
+        },
+        loadingSubmit: false,
+        dialogFormVisible: false,
 
-        // 其他数据
-        departmentData: [],
-        partData: []
+        // 导出相关
+        loadingExport: false
+      }
+    },
+    watch: {
+      'listQuery.page': {
+        handler: function (val, oldVal) {
+          // 拼装查询用的offset
+          if (val > 1) {
+            this.listQuery.offset = (val - 1) * this.listQuery.limit
+          } else {
+            this.listQuery.offset = 0
+          }
+        },
+        deep: true
+      }
+    },
+    filters: {
+      typeFilter(status) {
+        const statusMap = {
+          0: '省级',
+          1: '市级'
+        }
+        return statusMap[status]
+      },
+      typeTagFilter(status) {
+        const statusMap = {
+          0: 'success',
+          1: 'info'
+        }
+        return statusMap[status]
       }
     },
     created() {
-      this.fetchData()
-      this.getDepartmentData()
-      this.getPartData()
+      // 获取列表数据
+      this._getList()
     },
     methods: {
-      fetchData() {
-        this.tableLoading = true
-        setTimeout(() => {
-          this.tableData = [
-            {
-              id: '0',
-              loginName: 'zhangsan',
-              linkman: '张三',
-              phone: '123456',
-              remark: '这是济南市',
-              department: '1',
-              departmentName: '济南',
-              part: '1',
-              partName: '超级管理员'
-            },
-            {
-              id: '1',
-              loginName: 'lisi',
-              linkman: '李四',
-              phone: '123456',
-              remark: '这是潍坊市',
-              department: '2',
-              departmentName: '潍坊',
-              part: '2',
-              partName: '市级管理员'
-            }
-          ]
-          this.tableLoading = false
-        }, 1000)
+      resetTempModel() {
+        // 重置表单
+        this.tempModel = {
+          id: '',
+          username: '',
+          password: '',
+          name: '',
+          phone: '',
+          city_id: '',
+          role_id: '',
+          from_system: '0'
+        }
       },
-      handleView(row) {
-        this.form = row
-        this.visibleView = true
+      handleCreate() {
+        // 添加处理
+        this.resetTempModel()
+        this.dialogFormVisible = true
       },
       handleEdit(row) {
-        this.form = row
-        this.visible = true
+        // 使用对象拷贝赋值
+        this.tempModel = Object.assign({}, row)
+        // 编辑处理
+        this.dialogFormVisible = true
       },
       handleDelete(row) {
-        this.form = row
+        // 使用对象拷贝赋值
+        this.tempModel = Object.assign({}, row)
+        // 删除确认
         this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
+          // 删除
+          this._deleteModelPlatform()
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -229,73 +240,166 @@
           })
         })
       },
-      handleSearch() {
-        this.fetchData()
-      },
-      handleSizeChange(val) {
-        this.fetchData()
-      },
-      handleCurrentChange(val) {
-        this.fetchData()
-      },
       handleSubmit() {
-        this.submitLoading = true
+        // TODO: 提交前检查，必填项等。临时使用这种方式，以后或改为form自带的验证
+        if (!this.tempModel.name) {
+          this.$message({
+            type: 'error',
+            message: '平台名称必填'
+          })
+          return
+        }
+        // 提交处理
+        this.loadingSubmit = true
         // 提交数据
-        setTimeout(() => {
-          // 取消加载中
-          this.submitLoading = false
-          // 关闭dialog
-          this.visible = false
-        }, 2000)
+        if (!this.tempModel.id) {
+          // 没有id，是新建
+          this._postModelPlatform()
+        } else {
+          // 有id，是编辑
+          this._putModelPlatform()
+        }
       },
       handleBeforeClose(done) {
-        if (!this.submitLoading) {
+        // dialog关闭前处理(http请求未完成时dialog不能关闭)
+        if (!this.loadingSubmit) {
           done()
         }
       },
-      getDepartmentData() {
-        this.departmentData = [
-          {
-            value: '1',
-            label: '济南'
-          },
-          {
-            value: '2',
-            label: '潍坊'
-          },
-          {
-            value: '3',
-            label: '北京'
-          },
-          {
-            value: '4',
-            label: '上海'
+      handleExport() {
+        // 导出处理（简单做，后期可能会改用插件）
+        // 显示loading
+        this.loadingExport = true
+
+        const rows = [['id', '登录名', '密码', '昵称', '电话', '城市', '角色', '平台']]
+        this.tableData.forEach(item => {
+          rows.push([
+            item.id,
+            item.username,
+            item.password,
+            item.name,
+            item.phone,
+            item.city_name,
+            item.role_name,
+            item.from_system
+          ])
+        })
+        let csvContent = 'data:text/csv;charset=utf-8,'
+        rows.forEach(rowArray => {
+          const row = rowArray.join(',')
+          csvContent += row + '\r\n'
+        })
+
+        // window.open(encodedUri)
+        const encodedUri = encodeURI(csvContent)
+        const link = document.createElement('a')
+        link.setAttribute('href', encodedUri)
+        link.setAttribute('download', 'download.csv')
+        document.body.appendChild(link) // Required for FF
+        link.click() // This will download the data file named "my_data.csv".
+
+        // 隐藏loading
+        this.loadingExport = false
+      },
+      handleFilter() {
+        // 搜索处理
+        this.total = 0
+        this.listQuery.page = 1
+        this._getList()
+      },
+      handleSizeChange(val) {
+        // 每页显示条数改变处理
+        this.listQuery.limit = val
+        this.listQuery.page = 1
+        this._getList()
+      },
+      handleCurrentChange(val) {
+        // 页码改变处理
+        this.listQuery.page = val
+        this._getList()
+      },
+      _deleteModelPlatform() {
+        deleteModelPlatform(this.tempModel.id).then(response => {
+          if (response.code === '204') {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            // 重新请求数据(带着原先的查询参数)
+            this._getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
           }
-        ]
+        })
       },
-      getPartData() {
-        this.partData = [
-          {
-            value: '1',
-            label: '超级管理员'
-          },
-          {
-            value: '2',
-            label: '市级管理员'
-          },
-          {
-            value: '3',
-            label: '环检站'
+      _postModelPlatform() {
+        postModelPlatform(this.tempModel).then(response => {
+          if (response.code === '201') {
+            // 弹出提醒信息
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            })
+            // 重新请求数据(带着原先的查询参数)
+            this._getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
           }
-        ]
+          // 取消加载中
+          this.loadingSubmit = false
+          // 关闭dialog
+          this.dialogFormVisible = false
+        })
       },
-      _getTableData() {
-        //  hh
+      _putModelPlatform() {
+        putModelPlatform(this.tempModel).then(response => {
+          if (response.code === '201') {
+            // 弹出提醒信息
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            })
+            // 重新请求数据(带着原先的查询参数)
+            this._getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 关闭dialog
+          this.dialogFormVisible = false
+          // 取消加载中
+          this.loadingSubmit = false
+        })
       },
-      _postForm() {
-        setTimeout(() => {
-          console.log('提交中')
-        }, 2000)
+      _getList() {
+        // 清空表格数据
+        this.list = []
+        // 设置表格loading效果
+        this.loadingList = true
+        // 请求表格数据
+        getListPlatform(this.listQuery).then(response => {
+          if (response.code === '200') {
+            // 设置表格数据
+            this.list = response.data.dataList
+            // 设置分页插件数据总数
+            this.total = response.data.count
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 取消表格loading效果
+          this.loadingList = false
+        })
       }
     }
   }

@@ -117,7 +117,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListEnquipment, postModelEnquipment, putModelEnquipment, deleteModelEnquipment} from '@/api/enquipment'
+  import {getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform} from '@/api/lower_platform'
 
   export default {
     data() {
@@ -212,7 +212,7 @@
           type: 'warning'
         }).then(() => {
           // 删除
-          this._deleteModelEnquipment()
+          this._deleteModelPlatform()
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -234,10 +234,10 @@
         // 提交数据
         if (!this.tempModel.id) {
           // 没有id，是新建
-          this._postModelEnquipment()
+          this._postModelPlatform()
         } else {
           // 有id，是编辑
-          this._putModelEnquipment()
+          this._putModelPlatform()
         }
       },
       handleBeforeClose(done) {
@@ -298,8 +298,8 @@
         this.listQuery.page = val
         this._getList()
       },
-      _deleteModelEnquipment() {
-        deleteModelEnquipment(this.tempModel.id).then(response => {
+      _deleteModelPlatform() {
+        deleteModelPlatform(this.tempModel.id).then(response => {
           if (response.code === '204') {
             this.$message({
               type: 'success',
@@ -315,8 +315,8 @@
           }
         })
       },
-      _postModelEnquipment() {
-        postModelEnquipment(this.tempModel).then(response => {
+      _postModelPlatform() {
+        postModelPlatform(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
@@ -337,8 +337,8 @@
           this.dialogFormVisible = false
         })
       },
-      _putModelEnquipment() {
-        putModelEnquipment(this.tempModel).then(response => {
+      _putModelPlatform() {
+        putModelPlatform(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
@@ -365,7 +365,7 @@
         // 设置表格loading效果
         this.loadingList = true
         // 请求表格数据
-        getListEnquipment(this.listQuery).then(response => {
+        getListPlatform(this.listQuery).then(response => {
           if (response.code === '200') {
             // 设置表格数据
             this.list = response.data.dataList

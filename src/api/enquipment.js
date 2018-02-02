@@ -21,7 +21,7 @@ export function postModelEnquipment(data) {
 export function putModelEnquipment(data) {
   return request({
     url: 'v1/dpfInfo/dpfInfo',
-    method: 'post',
+    method: 'put',
     data
   })
 }

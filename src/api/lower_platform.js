@@ -1,43 +1,43 @@
 import request from '@/utils/request'
 
 // 获取列表数据
-export function getListEnquipment(params) {
+export function getListPlatform(params) {
   return request({
-    url: 'v1/dpfInfo/dpfInfos',
+    url: 'v1/lower_platform/lowerPlatforms',
     method: 'get',
     params
   })
 }
 // 创建
-export function postModelEnquipment(data) {
+export function postModelPlatform(data) {
   return request({
-    url: 'v1/dpfInfo/dpfInfo',
+    url: 'v1/lower_platform/save',
     method: 'post',
     data
   })
 }
 
 // 修改
-export function putModelEnquipment(data) {
+export function putModelPlatform(data) {
   return request({
-    url: 'v1/dpfInfo/dpfInfo',
-    method: 'post',
+    url: 'v1/lower_platform/update',
+    method: 'put',
     data
   })
 }
 
 // 删除
-export function deleteModelEnquipment(id) {
+export function deleteModelPlatform(id) {
   return request({
-    url: 'v1/dpfInfo/' + id,
+    url: 'v1/lower_platform/' + id,
     method: 'delete'
   })
 }
 
 // 获取详情
-export function getModelEnquipment(id) {
+export function getModelPlatform(id) {
   return request({
-    url: 'v1/dpfInfo/' + id,
+    url: 'v1/lower_platform/' + id,
     method: 'get'
   })
 }

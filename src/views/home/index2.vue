@@ -3,13 +3,8 @@
     <div class="nav">
       <el-row class="fl">
         <el-col>
-          <el-dropdown>
-						      <span class="el-dropdown-link">
-						        <img :src="logo" style="vertical-align: middle;"/>
-						      </span>
-          </el-dropdown>
+          <img :src="logo" style="vertical-align: middle;"/>
         </el-col>
-
         <el-col>
           <el-dropdown @command="handleCommand">
 						      <span class="el-dropdown-link">
@@ -45,18 +40,6 @@
         <el-col>
           <el-dropdown @command="handleCommand">
 						      	<span class="el-dropdown-link">
-						      		<i class="el-icon-bell"></i>
-						       	 公告管理<i class="el-icon-arrow-down el-icon--right"></i>
-						      	</span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>公告管理</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-col>
-
-        <el-col>
-          <el-dropdown @command="handleCommand">
-						      	<span class="el-dropdown-link">
 							      	<i class="el-icon-message"></i>
 							        日志管理<i class="el-icon-arrow-down el-icon--right"></i>
 						      	</span>
@@ -82,14 +65,15 @@
         </el-col>
 
         <el-col>
-          <el-dropdown @command="handleCommand">
-						      <span class="el-dropdown-link">
-						      	<i class="el-icon-info"></i>
-						        系统帮助
-						      </span>
-          </el-dropdown>
+          <el-button style="color:#ffffff" type="text" icon="el-icon-bell">公告管理</el-button>
         </el-col>
 
+        <el-col>
+          <el-button style="color:#ffffff" type="text" icon="el-icon-info">系统帮助</el-button>
+        </el-col>
+
+        <el-button type="success" icon="el-icon-search" @click="webSocket">开启websocket</el-button>
+        <el-button type="warning" icon="el-icon-search" @click="webSocketClose">关闭websocket</el-button>
 
       </el-row>
 
@@ -197,7 +181,9 @@
           </div>
         </el-tooltip>
       </el-row>
+
     </div>
+
     <div>
       <el-row>
         <el-col :span="4" class="left" ref="left">
@@ -256,56 +242,6 @@
           </div>
           <div class="control">
             <control :list-car="listCar"></control>
-            <!--<div>-->
-            <!--<el-tabs type="border-card">-->
-            <!--<el-tab-pane>-->
-            <!--<span slot="label"><i class="el-icon-date"></i>车辆信息</span>-->
-            <!--<template>-->
-            <!--<el-table border style="width: 100%">-->
-            <!--<el-table-column prop="number" label="车牌号码" width="120"></el-table-column>-->
-            <!--<el-table-column prop="name" label="公司" width="120"></el-table-column>-->
-            <!--<el-table-column prop="address" label="是否定位"></el-table-column>-->
-            <!--<el-table-column prop="date" label="定位时间"></el-table-column>-->
-            <!--<el-table-column prop="status" label="状态信息" width="120"></el-table-column>-->
-            <!--<el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>-->
-            <!--<el-table-column prop="direction" label="方向"></el-table-column>-->
-            <!--<el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>-->
-            <!--<el-table-column prop="attach" label="附加信息" width="120"></el-table-column>-->
-            <!--</el-table>-->
-            <!--</template>-->
-            <!--</el-tab-pane>-->
-            <!--<el-tab-pane label="历史记录信息">-->
-            <!--<template>-->
-            <!--<el-table border style="width: 100%">-->
-            <!--<el-table-column prop="number" label="车牌号码" width="120"></el-table-column>-->
-            <!--<el-table-column prop="name" label="公司" width="120"></el-table-column>-->
-            <!--<el-table-column prop="address" label="是否定位"></el-table-column>-->
-            <!--<el-table-column prop="date" label="定位时间"></el-table-column>-->
-            <!--<el-table-column prop="status" label="状态信息" width="120"></el-table-column>-->
-            <!--<el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>-->
-            <!--<el-table-column prop="direction" label="方向"></el-table-column>-->
-            <!--<el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>-->
-            <!--<el-table-column prop="attach" label="附加信息" width="120"></el-table-column>-->
-            <!--</el-table>-->
-            <!--</template>-->
-            <!--</el-tab-pane>-->
-            <!--<el-tab-pane label="终端上报警情(预处警)">-->
-            <!--<template>-->
-            <!--<el-table border style="width: 100%">-->
-            <!--<el-table-column prop="number" label="车牌号码" width="120"></el-table-column>-->
-            <!--<el-table-column prop="name" label="公司" width="120"></el-table-column>-->
-            <!--<el-table-column prop="address" label="是否定位"></el-table-column>-->
-            <!--<el-table-column prop="date" label="定位时间"></el-table-column>-->
-            <!--<el-table-column prop="status" label="状态信息" width="120"></el-table-column>-->
-            <!--<el-table-column prop="speed" label="速度(km/h)" width="120"></el-table-column>-->
-            <!--<el-table-column prop="direction" label="方向"></el-table-column>-->
-            <!--<el-table-column prop="quantity" label="卫星数" width="120"></el-table-column>-->
-            <!--<el-table-column prop="attach" label="附加信息" width="120"></el-table-column>-->
-            <!--</el-table>-->
-            <!--</template>-->
-            <!--</el-tab-pane>-->
-            <!--</el-tabs>-->
-            <!--</div>-->
           </div>
         </el-col>
       </el-row>
@@ -326,6 +262,7 @@
   import collapse1 from '@/assets/home_images/collapse1.png'
   import screenfull from 'screenfull'
   import {debounce} from '@/utils'
+  import {getToken} from '@/utils/auth'
 
   export default {
     components: {
@@ -360,12 +297,15 @@
         },
         // map相关
         lineTool: null,
-        zoom: 16,
+        zoom: 12,
         lineToolIsClose: true,
         tileLayerImg: null,
         tileLayerCia: null,
         // 子组件相关
-        listCar: []
+        listCar: [],
+        // websocket
+        ws: undefined,
+        listMarker: []
       }
     },
     mounted() {
@@ -414,7 +354,13 @@
       },
       drawMap() {
         window.map = new T.Map('mapDiv')
-        window.map.centerAndZoom(new T.LngLat(116.986110, 36.670660), this.zoom)
+        // 济南
+        // window.map.centerAndZoom(new T.LngLat(116.986110, 36.670660), this.zoom)
+        // 北京
+        // window.map.centerAndZoom(new T.LngLat(116.26802, 39.90623), this.zoom)
+        // 潍坊
+        window.map.centerAndZoom(new T.LngLat(119.097980,36.695950), this.zoom)
+
         // 允许鼠标双击放大地图
         window.map.enableScrollWheelZoom()
 
@@ -989,6 +935,71 @@
             t3: '80℃'
           }
         ]
+      },
+      webSocket() {
+        const self = this
+        // 创建标注
+        const marker = new T.Marker(new T.LngLat(119.097980, 36.695950))
+        window.map.addOverLay(marker)
+        // 创建标注的文字标签
+        const label = new T.Label({
+          text: `<b style="color:red">测试websocket<b>`,
+          position: marker.getLngLat(),
+          offset: new T.Point(3, -30)
+        })
+        window.map.addOverLay(label)
+        // 创建信息窗口
+        const infoWin = new T.InfoWindow()
+        let content = `
+          <div>
+            <b>车辆状态：aaasd</b><br>
+          </div>
+        `
+        infoWin.setContent(content)
+        marker.addEventListener('click', function (type, target, lnglat, containerPoint) {
+          marker.openInfoWindow(infoWin)
+          console.log(type, target, lnglat, containerPoint)
+        })
+        // window.map.panTo(marker.getLngLat())
+        this.listMarker.push(
+          {
+            car: '鲁g12345',
+            marker: marker,
+            label: label,
+            infoWin: infoWin
+          }
+        )
+
+        const token = getToken()
+        const car = '鲁g12345'
+        this.ws = new WebSocket(`ws://192.168.1.198:8087/socketServer/${token}/${car}`)
+        this.ws.onopen = function (evt) {
+          console.log('Connection open ...')
+          // ws.send('Hello WebSockets!')
+        }
+        this.ws.onmessage = function (evt) {
+          const data = JSON.parse(evt.data)
+          console.log('Received Message: ' + evt.data)
+          marker.setLngLat(new T.LngLat(data.lt, data.la))
+          label.setLngLat(marker.getLngLat())
+          infoWin.setLngLat(marker.getLngLat())
+          content = `
+          <div>
+            <b>车辆状态：${data.upTime}</b><br>
+          </div>
+          `
+          infoWin.setContent(content)
+          infoWin.update()
+        }
+        this.ws.onclose = function (evt) {
+          console.log('Connection closed.')
+        }
+      },
+      webSocketClose() {
+        this.ws.close()
+        window.map.removeOverLay(this.listMarker[0].marker)
+        window.map.removeOverLay(this.listMarker[0].label)
+        window.map.removeOverLay(this.listMarker[0].infoWin)
       }
     }
   }
