@@ -2,7 +2,7 @@
   <div class="app-container">
 
     <div class="filter-container" style="padding-bottom: 10px;">
-      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.name_code" style="width: 200px;"
+      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.name" style="width: 200px;"
                 class="filter-item"
                 placeholder="平台名称">
       </el-input>
@@ -61,8 +61,11 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="130">
+          width="200">
           <template slot-scope="scope">
+            <el-tooltip content="授权" placement="top">
+              <el-button type="success" size="mini" icon="el-icon-success"></el-button>
+            </el-tooltip>
             <el-tooltip content="编辑" placement="top">
               <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
             </el-tooltip>
@@ -92,13 +95,13 @@
       <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
         <el-form ref="form" :model="tempModel" label-width="80px">
           <el-form-item label="平台名称">
-            <el-input v-model="tempModel.dpf_code"></el-input>
+            <el-input v-model="tempModel.name"></el-input>
           </el-form-item>
           <el-form-item label="联系人">
-            <el-input v-model="tempModel.dpf_code"></el-input>
+            <el-input v-model="tempModel.link_name"></el-input>
           </el-form-item>
           <el-form-item label="电话">
-            <el-input v-model="tempModel.dpf_code"></el-input>
+            <el-input v-model="tempModel.link_phone"></el-input>
           </el-form-item>
           <el-form-item label="类型">
             <el-select v-model="tempModel.type" placeholder="请选择">
@@ -139,6 +142,7 @@
           id: '',
           name: '',
           link_name: '',
+          link_phone: '',
           type: '0'
         },
         loadingSubmit: false,
@@ -188,6 +192,7 @@
           id: '',
           name: '',
           link_name: '',
+          link_phone: '',
           type: '0'
         }
       },

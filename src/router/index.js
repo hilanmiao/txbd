@@ -87,7 +87,7 @@ export const asyncRouterMap = [
   {
     path: '/dpf',
     component: Layout,
-    redirect: '/supplier',
+    redirect: '/dpf/supplier',
     name: 'DPF信息管理',
     meta: {title: 'DPF信息管理', icon: 'form', roles: ['editor']},
     children: [
@@ -199,51 +199,80 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/System',
+    path: '/Logs',
     component: Layout,
-    redirect: '/department',
+    redirect: '/Logs/system',
     name: '日志管理',
     meta: {title: '日志管理', icon: 'excel', roles: ['admin']},
     children: [
       {
-        path: 'department',
+        path: 'system',
         name: '系统日志',
-        component: _import('department/index'),
+        component: _import('logs/system'),
         meta: {title: '系统日志'}
       },
       {
-        path: 'part',
+        path: 'platform',
         name: '平台日志',
-        component: _import('part/index'),
+        component: _import('logs/platform'),
         meta: {title: '平台日志'}
       },
       {
-        path: 'user',
+        path: 'valid',
         name: '审核日志',
-        component: _import('user/index'),
+        component: _import('logs/valid'),
         meta: {title: '审核日志'}
       }
     ]
   },
   {
-    path: '/System',
+    path: '/Notice',
     component: Layout,
-    redirect: '/department',
-    name: '公告管理管理',
+    redirect: '/Notice/notice',
+    name: '公告管理',
     meta: {title: '公告管理', icon: 'documentation', roles: ['admin']},
     children: [
       {
-        path: 'department',
+        path: 'notice',
         name: '公告管理',
-        component: _import('department/index'),
+        component: _import('notice/index'),
         meta: {title: '公告管理', icon: 'documentation'}
+      },
+      {
+        path: 'notice_create',
+        name: '公告添加编辑',
+        hidden: true,
+        component: _import('notice/create'),
+        meta: {title: '添加编辑', icon: 'documentation'}
+      }
+    ]
+  },
+  {
+    path: '/Warning',
+    component: Layout,
+    redirect: '/warning/sms',
+    name: '报警管理',
+    meta: {title: '公告管理', icon: 'documentation', roles: ['admin']},
+    children: [
+      {
+        path: 'sms',
+        name: '报警短信',
+        component: _import('sms/index'),
+        meta: {title: '报警短信', icon: 'documentation'}
+      },
+      {
+        path: 'notice_create',
+        name: '实时报警',
+        hidden: true,
+        component: _import('notice/create'),
+        meta: {title: '添加编辑', icon: 'documentation'}
       }
     ]
   },
   {
     path: '/System',
     component: Layout,
-    redirect: '/department',
+    redirect: '/System/user',
     name: '系统管理',
     meta: {title: '系统管理', icon: 'password', roles: ['admin']},
     children: [

@@ -28,7 +28,7 @@
         style="width: 100%">
         <el-table-column
           prop="name"
-          label="供应商名称">
+          label="省">
         </el-table-column>
         <el-table-column
           prop="city"
@@ -36,31 +36,83 @@
         </el-table-column>
         <el-table-column
           prop="linkman1"
-          label="联系人">
+          label="供应商">
         </el-table-column>
         <el-table-column
           prop="phone1"
-          label="电话">
+          label="DPF型号">
         </el-table-column>
         <el-table-column
           prop="code"
-          label="企业代码">
+          label="DPFID">
         </el-table-column>
         <el-table-column
           prop="address"
-          label="企业地址">
+          label="车牌">
         </el-table-column>
         <el-table-column
           prop="business"
-          label="主营范围">
+          label="车身颜色">
         </el-table-column>
         <el-table-column
           prop="linkman2"
-          label="财务联系人">
+          label="车型编号">
         </el-table-column>
         <el-table-column
           prop="phone2"
-          label="财务联系人电话">
+          label="车主姓名">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="车主身份证号">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="车主电话">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="发动机编号">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="安装地点信息">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="安装人姓名">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="安装人电话">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="45度照片信息">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="安装前照片">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="安装后照片">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="唯一标识">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="出场日期">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="上传人">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="上传时间">
         </el-table-column>
         <el-table-column
           prop="remark"

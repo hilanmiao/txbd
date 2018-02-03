@@ -10,6 +10,7 @@ import request from '@/utils/request'
 //   //   method: 'post',
 //   //   data
 //   // })
+//   // TODO: 记得改
 //   return new Promise((resolve, reject) => {
 //     resolve({"code":20000,"data":{"token":"admin"}})
 //   })
@@ -40,6 +41,7 @@ export function getUserInfo(token) {
   //   method: 'get',
   //   params: {token}
   // })
+  // TODO：记得改
   return new Promise((resolve, reject) => {
     resolve({
       "code": 20000,

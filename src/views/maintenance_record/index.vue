@@ -28,39 +28,71 @@
         style="width: 100%">
         <el-table-column
           prop="name"
-          label="供应商名称">
+          label="DPF安装信息ID">
         </el-table-column>
         <el-table-column
           prop="city"
-          label="城市">
+          label="维护时间">
         </el-table-column>
         <el-table-column
           prop="linkman1"
-          label="联系人">
+          label="维护内容">
         </el-table-column>
         <el-table-column
           prop="phone1"
-          label="电话">
+          label="车主姓名">
         </el-table-column>
         <el-table-column
           prop="code"
-          label="企业代码">
+          label="车辆型号">
         </el-table-column>
         <el-table-column
           prop="address"
-          label="企业地址">
+          label="车主联系电话">
         </el-table-column>
         <el-table-column
           prop="business"
-          label="主营范围">
+          label="车牌号">
         </el-table-column>
         <el-table-column
           prop="linkman2"
-          label="财务联系人">
+          label="DPF型号">
         </el-table-column>
         <el-table-column
           prop="phone2"
-          label="财务联系人电话">
+          label="DPF编码">
+        </el-table-column>
+        <el-table-column
+          prop="phone2"
+          label="DPF供应商">
+        </el-table-column>
+        <el-table-column
+          prop="phone2"
+          label="维修人员姓名">
+        </el-table-column>
+        <el-table-column
+          prop="phone2"
+          label="维修人员电话">
+        </el-table-column>
+        <el-table-column
+          prop="phone2"
+          label="维修厂ID">
+        </el-table-column>
+        <el-table-column
+          prop="phone2"
+          label="信息上传时间">
+        </el-table-column>
+        <el-table-column
+          prop="phone2"
+          label="信息上传人">
+        </el-table-column>
+        <el-table-column
+          prop="phone2"
+          label="车辆所属城市">
+        </el-table-column>
+        <el-table-column
+          prop="phone2"
+          label="车辆所属省">
         </el-table-column>
         <el-table-column
           prop="remark"

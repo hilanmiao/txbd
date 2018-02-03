@@ -2,17 +2,12 @@
   <div class="app-container">
 
     <div class="filter-container" style="padding-bottom: 10px;">
-      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.name" style="width: 200px;"
+      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.title" style="width: 200px;"
                 class="filter-item"
-                placeholder="平台名称">
-      </el-input>
-      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.link_name" style="width: 200px;"
-                class="filter-item"
-                placeholder="联系人">
+                placeholder="标题">
       </el-input>
       <el-button type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
     </div>
 
     <div class="table-container">
@@ -26,13 +21,32 @@
         style="width: 100%">
         <el-table-column
           prop="name"
-          label="内容"
-          width="120"
-        >
+          label="标题">
         </el-table-column>
         <el-table-column
-          prop="link_name"
+          width="120"
+          prop="createTime"
           label="创建时间">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          label="状态">
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.status | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          width="200">
+          <template slot-scope="scope">
+            <el-tooltip content="编辑" placement="top">
+              <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+              <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
+            </el-tooltip>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -54,20 +68,11 @@
     <div class="others-container">
       <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
         <el-form ref="form" :model="tempModel" label-width="80px">
-          <el-form-item label="平台名称">
-            <el-input v-model="tempModel.name"></el-input>
+          <el-form-item label="标题">
+            <el-input v-model="tempModel.title"></el-input>
           </el-form-item>
-          <el-form-item label="联系人">
-            <el-input v-model="tempModel.link_name"></el-input>
-          </el-form-item>
-          <el-form-item label="电话">
-            <el-input v-model="tempModel.link_phone"></el-input>
-          </el-form-item>
-          <el-form-item label="类型">
-            <el-select v-model="tempModel.type" placeholder="请选择">
-              <el-option label="市级平台" value="0"></el-option>
-              <el-option label="供应商平台" value="1"></el-option>
-            </el-select>
+          <el-form-item label="内容">
+
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="loadingSubmit">保存</el-button>
@@ -93,20 +98,18 @@
           page: 1,
           limit: 10,
           offset: 0,
-          name: '',
-          link_name: '',
+          title: '',
           sort: '+id'
         },
         // 表单相关
         tempModel: {
           id: '',
           name: '',
-          link_name: '',
-          link_phone: '',
-          type: '0'
+          title: ''
         },
         loadingSubmit: false,
         dialogFormVisible: false,
+        editor: undefined,
 
         // 导出相关
         loadingExport: false
@@ -128,15 +131,15 @@
     filters: {
       typeFilter(status) {
         const statusMap = {
-          0: '市级平台',
-          1: '供应商平台'
+          0: '未发布',
+          1: '已发布'
         }
         return statusMap[status]
       },
       typeTagFilter(status) {
         const statusMap = {
-          0: 'success',
-          1: 'info'
+          0: 'warning',
+          1: 'success'
         }
         return statusMap[status]
       }
@@ -157,9 +160,9 @@
         }
       },
       handleCreate() {
-        // 添加处理
-        this.resetTempModel()
-        this.dialogFormVisible = true
+        this.$router.push({
+          name: '公告添加编辑'
+        })
       },
       handleEdit(row) {
         // 使用对象拷贝赋值
@@ -210,41 +213,6 @@
         if (!this.loadingSubmit) {
           done()
         }
-      },
-      handleExport() {
-        // 导出处理（简单做，后期可能会改用插件）
-        // 显示loading
-        this.loadingExport = true
-
-        const rows = [['id', '平台名称', '联系人', '电话', '状态', '创建时间', 'accessKey', 'accessSecret']]
-        this.tableData.forEach(item => {
-          rows.push([
-            item.id,
-            item.name,
-            item.link_name,
-            item.link_phone,
-            item.type,
-            item.createTime,
-            item.accessKey,
-            item.accessSecret
-          ])
-        })
-        let csvContent = 'data:text/csv;charset=utf-8,'
-        rows.forEach(rowArray => {
-          const row = rowArray.join(',')
-          csvContent += row + '\r\n'
-        })
-
-        // window.open(encodedUri)
-        const encodedUri = encodeURI(csvContent)
-        const link = document.createElement('a')
-        link.setAttribute('href', encodedUri)
-        link.setAttribute('download', 'download.csv')
-        document.body.appendChild(link) // Required for FF
-        link.click() // This will download the data file named "my_data.csv".
-
-        // 隐藏loading
-        this.loadingExport = false
       },
       handleFilter() {
         // 搜索处理

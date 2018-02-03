@@ -32,6 +32,10 @@
         </el-table-column>
         <el-table-column
           prop="city"
+          label="省">
+        </el-table-column>
+        <el-table-column
+          prop="city"
           label="城市">
         </el-table-column>
         <el-table-column
@@ -40,7 +44,15 @@
         </el-table-column>
         <el-table-column
           prop="phone1"
+          label="手机">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
           label="电话">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="传真">
         </el-table-column>
         <el-table-column
           prop="code"
@@ -51,20 +63,52 @@
           label="企业地址">
         </el-table-column>
         <el-table-column
+          prop="phone1"
+          label="产品描述">
+        </el-table-column>
+        <el-table-column
           prop="business"
           label="主营范围">
         </el-table-column>
         <el-table-column
           prop="linkman2"
-          label="财务联系人">
+          label="生产许可编码">
         </el-table-column>
         <el-table-column
           prop="phone2"
+          label="营业执照图片地址">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="开票信息">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="财务联系人">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
           label="财务联系人电话">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="企业法人">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="法人电话">
         </el-table-column>
         <el-table-column
           prop="remark"
           label="备注">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="授权key">
+        </el-table-column>
+        <el-table-column
+          prop="phone1"
+          label="授权secret">
         </el-table-column>
         <el-table-column
           fixed="right"

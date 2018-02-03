@@ -28,7 +28,11 @@
         style="width: 100%">
         <el-table-column
           prop="name"
-          label="供应商名称">
+          label="名称">
+        </el-table-column>
+        <el-table-column
+          prop="city"
+          label="省">
         </el-table-column>
         <el-table-column
           prop="city"
@@ -36,35 +40,83 @@
         </el-table-column>
         <el-table-column
           prop="linkman1"
-          label="联系人">
+          label="法人名称">
         </el-table-column>
         <el-table-column
           prop="phone1"
-          label="电话">
+          label="法人电话">
         </el-table-column>
         <el-table-column
           prop="code"
-          label="企业代码">
+          label="地址">
         </el-table-column>
         <el-table-column
           prop="address"
-          label="企业地址">
+          label="经度">
         </el-table-column>
         <el-table-column
           prop="business"
-          label="主营范围">
+          label="纬度">
         </el-table-column>
         <el-table-column
           prop="linkman2"
-          label="财务联系人">
+          label="主营范围">
         </el-table-column>
         <el-table-column
           prop="phone2"
+          label="企业代码">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="注册资本">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="员工数量">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="企业类别">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="企业总资产规模">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="企业占地面积">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="维修汽车类型">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="营业执照图片地址">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="开票信息">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="财务联系人名称">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
           label="财务联系人电话">
         </el-table-column>
         <el-table-column
           prop="remark"
-          label="备注">
+          label="备注信息">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="添加人">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="添加时间">
         </el-table-column>
         <el-table-column
           fixed="right"
