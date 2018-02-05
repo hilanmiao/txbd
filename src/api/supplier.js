@@ -1,9 +1,40 @@
 import request from '@/utils/request'
 
-export function getListSupplier(params) {
+export function getSuppList(params) {
   return request({
-    url: '/supplier/list',
+    url: 'v1/web_supplier/suppliers',
     method: 'get',
     params
+  })
+}
+
+export function editSupp(data) {
+  return request({
+    url: 'v1/web_supplier/',
+    method: 'put',
+    data
+  })
+}
+
+export function addSupp(data) {
+  return request({
+    url: 'v1/web_supplier/',
+    method: 'post',
+    data
+  })
+}
+
+export function lookSupp(params, id) {
+  return request({
+    url: 'v1/web_supplier/' + id,
+    method: 'get',
+    params
+  })
+}
+
+export function deleSupp(id) {
+  return request({
+    url: 'v1/web_supplier/' + id,
+    method: 'delete'
   })
 }

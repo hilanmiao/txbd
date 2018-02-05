@@ -137,63 +137,63 @@ export const asyncRouterMap = [
     meta: {title: '统计分析', icon: 'chart', roles: ['admin']},
     children: [
       {
-        path: 'vehicle_report_run',
+        path: 'report_create',
         name: '统计报表生成',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_create/index'),
         meta: {title: '统计报表生成'}
       },
       {
-        path: 'vehicle_report_run',
+        path: 'report_push',
         name: '报表推送',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_push/index'),
         meta: {title: '报表推送'}
       },
       {
-        path: 'vehicle_report_run',
+        path: 'report_online',
         name: '在线率统计',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_online/index'),
         meta: {title: '在线率统计'}
       },
       {
-        path: 'vehicle_report_run',
+        path: 'report_info',
         name: '车辆信息统计',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_info/index'),
         meta: {title: '车辆信息统计'}
       },
       {
-        path: 'vehicle_report_run',
+        path: 'report_alarm',
         name: '车辆报警统计',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_alarm/index'),
         meta: {title: '车辆报警统计'}
       },
       {
-        path: 'vehicle_report_run',
+        path: 'report_offline',
         name: '车辆不在线统计',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_offline/index'),
         meta: {title: '车辆不在线统计'}
       },
       {
-        path: 'vehicle_report_run',
+        path: 'report_mileage',
         name: '里程统计',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_mileage/index'),
         meta: {title: '里程统计'}
       },
       {
-        path: 'vehicle_report_run',
+        path: 'report_vehicle_city',
         name: '地市车辆统计',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_vehicle_city/index'),
         meta: {title: '地市车辆统计'}
       },
       {
-        path: 'vehicle_report_run',
+        path: 'report_vehicle',
         name: '汽车指标统计',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_vehicle/index'),
         meta: {title: '汽车指标统计'}
       },
       {
-        path: 'vehicle_report_run',
+        path: 'report_vehicle_single',
         name: '单车指标统计',
-        component: _import('vehicle_report_run/index'),
+        component: _import('report_vehicle_single/index'),
         meta: {title: '单车指标统计'}
       }
     ]
@@ -234,9 +234,9 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'notice',
-        name: '公告管理',
+        name: '平台公告',
         component: _import('notice/index'),
-        meta: {title: '公告管理', icon: 'documentation'}
+        meta: {title: '平台公告', icon: 'documentation'}
       },
       {
         path: 'notice_create',
@@ -252,7 +252,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/warning/sms',
     name: '报警管理',
-    meta: {title: '公告管理', icon: 'documentation', roles: ['admin']},
+    meta: {title: '报警管理', icon: 'documentation', roles: ['admin']},
     children: [
       {
         path: 'sms',
