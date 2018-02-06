@@ -416,6 +416,7 @@
           responce.data.img_url = JSON.parse(responce.data.img_url)
           this.form = Object.assign({}, responce.data)
         })
+
         this.visibleView = true
       },
       handleEdit(row) {
