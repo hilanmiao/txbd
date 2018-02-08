@@ -237,14 +237,27 @@
         <el-col :span="20" class="right" ref="right">
           <div class="map-container">
             <div ref="map" id="mapDiv" class="map" style="height: 600px;">
-
             </div>
           </div>
           <div class="control">
-            <control :list-car="listCar"></control>
+            <control :list-car="listCar" :loading-submit="componentLoadingSubmit"
+                     :dialog-form-visible="componentDialogFormVisible"
+                     @componentHandleSetHistory="componentHandleSetHistory"
+            ></control>
           </div>
         </el-col>
       </el-row>
+
+      <div class="others-container">
+        <el-dialog width="20%" :modal="false" :visible.sync="dialogFormVisibleCar" title="历史轨迹" v-loading="loadingTrack">
+          <el-form ref="form" label-width="80px">
+            <el-form-item>
+              <el-button type="primary" @click="carTrackStart" >开始</el-button>
+              <el-button @click="carTrackPause">暂停</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+      </div>
     </div>
 
     <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
@@ -263,6 +276,7 @@
   import screenfull from 'screenfull'
   import {debounce} from '@/utils'
   import {getToken} from '@/utils/auth'
+  import {getListHistory} from '@/api/history'
 
   export default {
     components: {
@@ -301,11 +315,16 @@
         lineToolIsClose: true,
         tileLayerImg: null,
         tileLayerCia: null,
+        carTrack: undefined,
+        dialogFormVisibleCar: false,
+        loadingTrack: false,
         // 子组件相关
         listCar: [],
         // websocket
         ws: undefined,
-        listMarker: []
+        listMarker: [],
+        componentLoadingSubmit: false,
+        componentDialogFormVisible: false
       }
     },
     mounted() {
@@ -359,7 +378,7 @@
         // 北京
         // window.map.centerAndZoom(new T.LngLat(116.26802, 39.90623), this.zoom)
         // 潍坊
-        window.map.centerAndZoom(new T.LngLat(119.097980,36.695950), this.zoom)
+        window.map.centerAndZoom(new T.LngLat(119.097980, 36.695950), this.zoom)
 
         // 允许鼠标双击放大地图
         window.map.enableScrollWheelZoom()
@@ -718,7 +737,7 @@
             }
           ]
         }
-        const carTrack = new T.CarTrack(window.map, {
+        this.carTrack = new T.CarTrack(window.map, {
           interval: 5,
           speed: 10,
           dynamicLine: false,
@@ -732,7 +751,12 @@
               }
             )
         })
-        carTrack.start()
+      },
+      carTrackStart() {
+        this.carTrack.start()
+      },
+      carTrackPause() {
+        this.carTrack.pause()
       },
       mapPrint() {
         // 解析路由
@@ -963,7 +987,7 @@
         // window.map.panTo(marker.getLngLat())
         this.listMarker.push(
           {
-            car: '鲁g12345',
+            car: '鲁G12345',
             marker: marker,
             label: label,
             infoWin: infoWin
@@ -1000,6 +1024,36 @@
         window.map.removeOverLay(this.listMarker[0].marker)
         window.map.removeOverLay(this.listMarker[0].label)
         window.map.removeOverLay(this.listMarker[0].infoWin)
+      },
+      componentHandleSetHistory(listQuery) {
+        // 弹出控制面板
+        this.dialogFormVisibleCar = true
+        this.loadingTrack = true
+
+        const params = {
+          token: getToken(),
+          starttime: listQuery.dateRange[0],
+          endtime: listQuery.dateRange[1],
+          carCode: listQuery.carCode
+        }
+        getListHistory(params).then(response => {
+          if (response.code === '200') {
+            // 弹出提醒信息
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            })
+            // 设置轨迹
+            this.mapCarTrack(response.data)
+            // 取消轨迹loading
+            this.loadingTrack = false
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
       }
     }
   }

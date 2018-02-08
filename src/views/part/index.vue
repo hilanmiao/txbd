@@ -43,6 +43,9 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {getListRole} from '@/api/part'
+  import {asyncRouterMap} from '@/router'
+
   export default {
     data() {
       return {
@@ -74,12 +77,33 @@
       }
     },
     created() {
-      this.fetchData()
+      // 获取权限列表
+      this._getListRole()
+      // 获取菜单列表
+      this.createMenuList()
     },
     methods: {
-      fetchData() {
+      createMenuList() {
         this.treeLoading = true
-        this._getTreeData()
+        // 过滤路由表，生成菜单树
+        asyncRouterMap.forEach(item => {
+          if (item.children) {
+            const menuGroup = {}
+            menuGroup.isGroup = true
+            menuGroup.id = item.id
+            menuGroup.label = item.name
+            menuGroup.children = []
+            item.children.forEach(child => {
+              menuGroup.children.push({
+                id: child.id,
+                label: child.name
+              })
+            })
+            this.treeDataMenu.push(menuGroup)
+          }
+        })
+
+        this.treeLoading = false
       },
       handleEdit() {
         if (!this.newLabel) {
@@ -142,7 +166,6 @@
         console.log(data)
         this.curId = data.id
         this.curLabel = data.label
-        this._getTreeDataMenu()
       },
       handleSubmitMenu() {
         //  s
@@ -151,69 +174,8 @@
         // s
         this.$refs.treeMenu.setCheckedKeys([])
       },
-      _getTreeDataMenu() {
-        setTimeout(() => {
-          this.treeDataMenu = [
-            {
-              id: '1',
-              label: '系统管理',
-              isGroup: true,
-              children: [
-                {
-                  id: '11',
-                  label: '用户管理'
-                },
-                {
-                  id: '12',
-                  label: '角色管理'
-                },
-                {
-                  id: '13',
-                  label: '部门管理'
-                }
-              ]
-            },
-            {
-              id: '2',
-              label: '供应商管理',
-              isGroup: true,
-              children: [
-                {
-                  id: '21',
-                  label: '功能1'
-                },
-                {
-                  id: '22',
-                  label: '功能2'
-                },
-                {
-                  id: '23',
-                  label: '功能3'
-                }
-              ]
-            }
-          ]
-          this.tableLoading = false
-        }, 1000)
-      },
-      _getTreeData() {
-        setTimeout(() => {
-          this.treeData = [
-            {
-              id: '0',
-              label: '超级管理员'
-            },
-            {
-              id: '1',
-              label: '市级管理员'
-            },
-            {
-              id: '2',
-              label: '环检站管理员'
-            }
-          ]
-          this.treeLoading = false
-        }, 1000)
+      _getListRole() {
+
       },
       _postForm() {
         setTimeout(() => {

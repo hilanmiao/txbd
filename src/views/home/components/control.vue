@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <el-tabs type="border-card" @tab-click="tabClick">
-      <el-tab-pane >
+      <el-tab-pane>
         <span slot="label"><i class="el-icon-date"></i>车辆信息</span>
         <template>
           <el-table
@@ -96,6 +96,16 @@
                 {{scope.row.car_longitude + ',' + scope.row.car_latitude}}
               </template>
             </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="200">
+              <template slot-scope="scope">
+                <el-button type="success" size="mini" icon="el-icon-success"
+                           @click="handleHistory(scope.row)">历史轨迹
+                </el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </template>
       </el-tab-pane>
@@ -156,6 +166,32 @@
         </template>
       </el-tab-pane>
     </el-tabs>
+
+    <div class="others-container">
+      <el-dialog :visible.sync="dialogFormVisible" title="选择">
+        <el-form ref="form" label-width="80px">
+          <el-form-item label="车牌号">
+            <el-input v-model="listQuery.carCode"></el-input>
+          </el-form-item>
+          <el-date-picker
+            v-model="listQuery.dateRange"
+            type="daterange"
+            align="right"
+            unlink-panels
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            :change="pickerChange"
+            value-format="yyyy-MM-dd HH:mm:ss"
+          >
+          </el-date-picker>
+          <el-form-item>
+            <el-button type="primary" @click="handleSubmit">确认</el-button>
+            <el-button @click="dialogFormVisible = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -170,7 +206,41 @@
       return {
         list1: [],
         list2: [],
-        list3: []
+        list3: [],
+
+        // 表单相关
+        listQuery: {
+          dateRange: [],
+          carCode: '鲁G12345'
+        },
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
+        dialogFormVisible: false
       }
     },
     watch: {
@@ -307,6 +377,17 @@
             }
           })
         })
+      },
+      pickerChange() {
+        console.log(this.listQuery.dateRange)
+      },
+      handleHistory(row) {
+        // 编辑处理
+        this.dialogFormVisible = true
+      },
+      handleSubmit() {
+        this.dialogFormVisible = false
+        this.$emit('componentHandleSetHistory', this.listQuery)
       }
     }
   }

@@ -85,6 +85,7 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
+    id: 1,
     path: '/dpf',
     component: Layout,
     redirect: '/dpf/supplier',
@@ -92,36 +93,42 @@ export const asyncRouterMap = [
     meta: {title: 'DPF信息管理', icon: 'form', roles: ['editor']},
     children: [
       {
+        id: 11,
         path: 'supplier',
         name: '供应商管理',
         component: _import('supplier/index'),
         meta: {title: '供应商管理', roles: ['admin']}
       },
       {
+        id: 12,
         path: 'register',
         name: '登记信息管理',
         component: _import('register/index'),
         meta: {title: '登记信息管理'}
       },
       {
+        id: 13,
         path: 'equipment',
         name: '设备信息管理',
         component: _import('equipment/index'),
         meta: {title: '设备信息管理'}
       },
       {
+        id: 14,
         path: 'maintenance',
         name: '维修厂管理',
         component: _import('maintenance/index'),
         meta: {title: '维修厂管理'}
       },
       {
+        id: 15,
         path: 'maintenance_record',
         name: '维修管理',
         component: _import('maintenance_record/index'),
         meta: {title: '维修管理'}
       },
       {
+        id: 16,
         path: 'platform',
         name: '下级平台管理',
         component: _import('lower_platform/index'),
@@ -130,6 +137,7 @@ export const asyncRouterMap = [
     ]
   },
   {
+    id: 2,
     path: '/Report',
     component: Layout,
     redirect: '/vehicle_report_run',
@@ -137,60 +145,70 @@ export const asyncRouterMap = [
     meta: {title: '统计分析', icon: 'chart', roles: ['admin']},
     children: [
       {
+        id: 21,
         path: 'report_create',
         name: '统计报表生成',
         component: _import('report_create/index'),
         meta: {title: '统计报表生成'}
       },
       {
+        id: 22,
         path: 'report_push',
         name: '报表推送',
         component: _import('report_push/index'),
         meta: {title: '报表推送'}
       },
       {
+        id: 23,
         path: 'report_online',
         name: '在线率统计',
         component: _import('report_online/index'),
         meta: {title: '在线率统计'}
       },
       {
+        id: 24,
         path: 'report_info',
         name: '车辆信息统计',
         component: _import('report_info/index'),
         meta: {title: '车辆信息统计'}
       },
       {
+        id: 25,
         path: 'report_alarm',
         name: '车辆报警统计',
         component: _import('report_alarm/index'),
         meta: {title: '车辆报警统计'}
       },
       {
+        id: 26,
         path: 'report_offline',
         name: '车辆不在线统计',
         component: _import('report_offline/index'),
         meta: {title: '车辆不在线统计'}
       },
       {
+        id: 27,
         path: 'report_mileage',
         name: '里程统计',
         component: _import('report_mileage/index'),
         meta: {title: '里程统计'}
       },
       {
+        id: 28,
         path: 'report_vehicle_city',
         name: '地市车辆统计',
         component: _import('report_vehicle_city/index'),
         meta: {title: '地市车辆统计'}
       },
       {
+        id: 29,
         path: 'report_vehicle',
         name: '汽车指标统计',
         component: _import('report_vehicle/index'),
         meta: {title: '汽车指标统计'}
       },
       {
+        id: 30,
         path: 'report_vehicle_single',
         name: '单车指标统计',
         component: _import('report_vehicle_single/index'),
@@ -199,6 +217,7 @@ export const asyncRouterMap = [
     ]
   },
   {
+    id: 3,
     path: '/Logs',
     component: Layout,
     redirect: '/Logs/system',
@@ -206,18 +225,21 @@ export const asyncRouterMap = [
     meta: {title: '日志管理', icon: 'excel', roles: ['admin']},
     children: [
       {
+        id: 31,
         path: 'system',
         name: '系统日志',
         component: _import('logs/system'),
         meta: {title: '系统日志'}
       },
       {
+        id: 32,
         path: 'platform',
         name: '平台日志',
         component: _import('logs/platform'),
         meta: {title: '平台日志'}
       },
       {
+        id: 33,
         path: 'valid',
         name: '审核日志',
         component: _import('logs/valid'),
@@ -226,6 +248,7 @@ export const asyncRouterMap = [
     ]
   },
   {
+    id: 4,
     path: '/Notice',
     component: Layout,
     redirect: '/Notice/notice',
@@ -233,12 +256,14 @@ export const asyncRouterMap = [
     meta: {title: '公告管理', icon: 'documentation', roles: ['admin']},
     children: [
       {
+        id: 41,
         path: 'notice',
         name: '平台公告',
         component: _import('notice/index'),
         meta: {title: '平台公告', icon: 'documentation'}
       },
       {
+        id: 42,
         path: 'notice_create',
         name: '公告添加编辑',
         hidden: true,
@@ -248,6 +273,7 @@ export const asyncRouterMap = [
     ]
   },
   {
+    id: 5,
     path: '/Warning',
     component: Layout,
     redirect: '/warning/sms',
@@ -255,12 +281,14 @@ export const asyncRouterMap = [
     meta: {title: '报警管理', icon: 'documentation', roles: ['admin']},
     children: [
       {
+        id: 51,
         path: 'sms',
         name: '报警短信',
         component: _import('sms/index'),
         meta: {title: '报警短信', icon: 'documentation'}
       },
       {
+        id: 52,
         path: 'notice_create',
         name: '实时报警',
         hidden: true,
@@ -270,6 +298,7 @@ export const asyncRouterMap = [
     ]
   },
   {
+    id: 6,
     path: '/System',
     component: Layout,
     redirect: '/System/user',
@@ -277,12 +306,14 @@ export const asyncRouterMap = [
     meta: {title: '系统管理', icon: 'password', roles: ['admin']},
     children: [
       {
+        id: 61,
         path: 'part',
         name: '角色管理',
         component: _import('part/index'),
         meta: {title: '角色管理'}
       },
       {
+        id: 62,
         path: 'user',
         name: '用户管理',
         component: _import('user/index'),

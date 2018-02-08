@@ -1,44 +1,43 @@
 import request from '@/utils/request'
 
 // 获取列表数据
-export function getListRole(params) {
+export function getListHistory(params) {
   return request({
-    url: 'v1/user/role',
+    url: 'v1/gis/history',
     method: 'get',
     params
   })
 }
-
 // 创建
-export function postModelRole(data) {
+export function postModelEnquipment(data) {
   return request({
-    url: 'v1/user/role',
+    url: 'v1/dpfInfo/dpfInfo',
     method: 'post',
     data
   })
 }
 
 // 修改
-export function putModelPlatform(data) {
+export function putModelEnquipment(data) {
   return request({
-    url: 'v1/lowerplatform/update',
+    url: 'v1/dpfInfo/dpfInfo',
     method: 'put',
     data
   })
 }
 
 // 删除
-export function deleteModelPlatform(id) {
+export function deleteModelEnquipment(id) {
   return request({
-    url: 'v1/lowerplatform/' + id,
+    url: 'v1/dpfInfo/' + id,
     method: 'delete'
   })
 }
 
 // 获取详情
-export function getModelPlatform(id) {
+export function getModelEnquipment(id) {
   return request({
-    url: 'v1/lowerplatform/' + id,
+    url: 'v1/dpfInfo/' + id,
     method: 'get'
   })
 }
