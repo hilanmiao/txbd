@@ -35,7 +35,7 @@ module.exports = {
       //   // 设置这个参数可以避免跨域
       //   changeOrigin: true,
       //   pathRewrite: {
-      //     '/v1': '/'
+      //     '^/v1': ''
       //   }
       // }
     },

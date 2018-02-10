@@ -259,7 +259,7 @@
         noEdit: false,
         imageView: false,
         imgDetail: '',
-        upImg: 'v1/unit/img?token=' + getToken(),
+        upImg: process.env.BASE_API + '/v1/unit/img?token=' + getToken(),
         // 表单相关
         form: {
           accessSecret: '',

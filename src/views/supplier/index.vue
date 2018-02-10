@@ -301,7 +301,7 @@
           page: 1
         },
         // 上传相关
-        uploadUrl: 'v1/unit/img?token=' + getToken()
+        uploadUrl: process.env.BASE_API + '/v1/unit/img?token=' + getToken()
       }
     },
     watch: {
