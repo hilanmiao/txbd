@@ -100,8 +100,13 @@
     </div>
 
     <div class="others-container">
+      <el-dialog :visible.sync="imageView" title="查看图片">
+        <img :src="imgDetail" @click="closeImage" width="100%">
+      </el-dialog>
+    </div>
 
 
+    <div class="others-container">
       <el-dialog :visible.sync="visibleView" :title="titMsg">
         <el-form ref="form" :model="form" label-width="120px">
 
@@ -109,16 +114,29 @@
             <el-col :span="10">
               <el-input v-model="form.name" style="width:80%;" :disabled="lookOrEdit"></el-input>
             </el-col>
-            <el-col :span="4">企业占地面积</el-col>
+            <el-col :span="4">企业代码</el-col>
             <el-col :span="8">
-              <el-input v-model="form.area" :disabled="lookOrEdit"></el-input>
+              <el-input v-model="form.shopId" :disabled="noEdit"></el-input>
             </el-col>
           </el-form-item>
-          <el-form-item label="企业人数">
-            <el-input v-model="form.employees" :disabled="lookOrEdit"></el-input>
+          <el-form-item label="企业面积">
+            <el-col :span="10">
+              <el-input v-model="form.area" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">企业人数</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.employees" :disabled="lookOrEdit"></el-input>
+            </el-col>
           </el-form-item>
+
           <el-form-item label="业务范围">
-            <el-input v-model="form.business" :disabled="lookOrEdit"></el-input>
+            <el-col :span="10">
+              <el-input v-model="form.business" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">企业类别</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.type" :disabled="lookOrEdit"></el-input>
+            </el-col>
           </el-form-item>
 
           <el-form-item label="省份">
@@ -127,7 +145,7 @@
             </el-col>
             <el-col :span="4">城市</el-col>
             <el-col :span="8">
-              <el-select v-model="form.city_id" :disabled="lookOrEdit" placeholder="请选择供应商">
+              <el-select v-model="form.city_id" style="width:100%;" :disabled="lookOrEdit" placeholder="请选择供应商">
                 <el-option v-for="item in listCity" :key="item.id" :label="item.name"
                            :value="item.id"></el-option>
               </el-select>
@@ -153,19 +171,19 @@
             </el-col>
           </el-form-item>
 
-          <el-form-item label="营业执照">
-            <el-input v-model="form.imgUrl" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
 
           <el-form-item label="营业执照">
             <el-upload
-              limit="1"
+              :limit="1"
+              :on-preview="handleUploadPreview"
+              :on-remove="handleUploadRemove"
               class="upload-demo"
-              action="v1/unit/img"
+              :action="upImg"
               list-type="picture"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-              :data="{token:'0347837e3da63dd46786479e20f149140528ade8a5ac4d1597d687e1237fe6b8'}"
+              name="img"
+              accept="image/*"
+              :file-list="form.imgUrl"
+              :on-success="handleUploadSuccess"
             >
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -182,6 +200,16 @@
             </el-col>
           </el-form-item>
 
+          <el-form-item label="注册资本">
+            <el-col :span="10">
+              <el-input v-model="form.registeredCapital" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">总资产规模</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.assets" :disabled="lookOrEdit"></el-input>
+            </el-col>
+          </el-form-item>
+
           <el-form-item label="开票信息">
             <el-input v-model="form.invoiceMsg" :disabled="lookOrEdit"></el-input>
           </el-form-item>
@@ -194,24 +222,8 @@
             <el-input v-model="form.location" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="注册资本">
-            <el-input v-model="form.registeredCapital" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
           <el-form-item label="维修车型">
             <el-input v-model="form.repireCarType" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="总资产规模">
-            <el-input v-model="form.assets" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="企业代码">
-            <el-input v-model="form.shopId" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="企业类别">
-            <el-input v-model="form.type" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
           <el-form-item label="备注信息">
@@ -219,7 +231,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="handleSubmit" :loading="submitLoading" :disabled="lookOrEdit">保存
+            <el-button type="primary" @click="handleSubmit" :loading="submitLoading" v-if="!lookOrEdit">保存
             </el-button>
             <el-button @click="visibleView = false">关闭</el-button>
           </el-form-item>
@@ -233,6 +245,7 @@
   import {getMainList, addMain, editMain, lookMain, deleMain} from '@/api/maintenance'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
+  import {IMG_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -243,7 +256,10 @@
         dateArea: '',
         loadingExport: false,
         tableLoading: false,
-        imgUp: {name: '', url: ''},
+        noEdit: false,
+        imageView: false,
+        imgDetail: '',
+        upImg: 'v1/unit/img?token=' + getToken(),
         // 表单相关
         form: {
           accessSecret: '',
@@ -258,7 +274,7 @@
           financeName: '',
           financePhone: '',
           id: '',
-          imgUrl: '123123',
+          imgUrl: [],
           invoiceMsg: '',
           isDelete: '',
           latitude: '',
@@ -327,7 +343,7 @@
           financeName: '',
           financePhone: '',
           id: '',
-          imgUrl: '123123',
+          imgUrl: [],
           invoiceMsg: '',
           isDelete: '',
           latitude: '',
@@ -367,47 +383,57 @@
         // 取消表格loading效果
         this.tableLoading = false
       },
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw)
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg'
-        const isLt2M = file.size / 1024 / 1024 < 2
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!')
+      handleUploadSuccess(response, file, fileList) {
+        if (response.code === '201') {
+          this.form.imgUrl = []
+          this.form.imgUrl.push({
+            name: file.name,
+            url: IMG_SERVER_PATH + response.data
+          })
+        } else {
+          this.$message.error(response.message)
         }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
-        }
-        return isJPG && isLt2M
       },
-
+      handleUploadRemove(file, fileList) {
+        this.form.imgUrl = []
+      },
+      handleUploadPreview(file) {
+        this.imgDetail = file.url
+        this.imageView = true
+      },
+      closeImage() {
+        this.imageView = false
+      },
       handleView(row) {
         this.titMsg = '查看'
         this.lookOrEdit = true
+        this.noEdit = true
         const param = {
           id: row.id
         }
         lookMain(param, row.id).then(responce => {
+          responce.data.imgUrl = JSON.parse(responce.data.imgUrl)
           this.form = Object.assign({}, responce.data)
         })
         this.visibleView = true
       },
       handleEdit(row) {
+        this.noEdit = true
         this.lookOrEdit = false
         this.titMsg = '编辑'
         const param = {
           id: row.id
         }
         lookMain(param, row.id).then(responce => {
-          this.form = responce.data
+          responce.data.imgUrl = JSON.parse(responce.data.imgUrl)
+          this.form = Object.assign({}, responce.data)
         })
         this.visibleView = true
       },
       handleAdd() {
         this.titMsg = '添加'
         this.resetTempModel()
+        this.noEdit = false
         this.lookOrEdit = false
         this.visibleView = true
       },
@@ -503,20 +529,18 @@
         if (this.form.id !== '') {
           this._editSubmit()
         }
-        this.submitLoading = false
-        // 关闭dialog
-        this.visibleView = false
-        this._getList()
       },
       _addSubmit() {
-        addMain(this.form).then(response => {
+        const tempForm = Object.assign({}, this.form)
+        tempForm.imgUrl = JSON.stringify(tempForm.imgUrl)
+        addMain(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
               type: 'success',
               message: '操作成功!'
             })
-            // 重新请求数据(带着原先的查询参数)
+            this.visibleView = false
             this._getList()
           } else {
             this.$message({
@@ -524,17 +548,20 @@
               message: response.message
             })
           }
+          this.submitLoading = false
         })
       },
       _editSubmit() {
-        editMain(this.form).then(response => {
+        const tempForm = Object.assign({}, this.form)
+        tempForm.imgUrl = JSON.stringify(tempForm.imgUrl)
+        editMain(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
               type: 'success',
               message: '操作成功!'
             })
-            // 重新请求数据(带着原先的查询参数)
+            this.visibleView = false
             this._getList()
           } else {
             this.$message({
@@ -542,6 +569,7 @@
               message: response.message
             })
           }
+          this.submitLoading = false
         })
       },
       handleBeforeClose(done) {

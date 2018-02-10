@@ -16,20 +16,20 @@
         clearable
       >
       </el-date-picker>
-      <el-select @keyup.enter.native="handleFilter" v-model="listQuery.city_id" style="width:120px;" clearable
+      <el-select @keyup.enter.native="handleSearch" v-model="listQuery.city_id" style="width:120px;" clearable
                  placeholder="选择城市">
         <el-option v-for="item in listCity" :key="item.id" :label="item.name"
                    :value="item.id"></el-option>
       </el-select>
-      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.name" style="width:200px;"
+      <el-input @keyup.enter.native="handleSearch" v-model="listQuery.name" style="width:200px;"
                 class="filter-item"
                 placeholder="供应商名称">
       </el-input>
-      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.link_name" style="width: 200px;"
+      <el-input @keyup.enter.native="handleSearch" v-model="listQuery.link_name" style="width: 200px;"
                 class="filter-item"
                 placeholder="联系人名称">
       </el-input>
-      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.own_name" style="width: 200px;"
+      <el-input @keyup.enter.native="handleSearch" v-model="listQuery.own_name" style="width: 200px;"
                 class="filter-item"
                 placeholder="公司法人名称">
       </el-input>
@@ -102,18 +102,26 @@
       >
       </el-pagination>
     </div>
-
+    <div class="others-container">
+      <el-dialog :visible.sync="imageView" title="查看图片">
+        <img :src="imgDetail" @click="closeImage" width="100%">
+      </el-dialog>
+    </div>
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" :title="titMsg">
         <el-form ref="form" :model="form" label-width="120px">
 
           <el-form-item label="名称">
             <el-col :span="10">
-              <el-input v-model="form.name" style="width:80%;" :disabled="lookOrEdit"></el-input>
+              <el-form-item>
+                <el-input v-model="form.name" style="width:80%;" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="4"> 企业代码</el-col>
             <el-col :span="8">
-              <el-input v-model="form.e_code" :disabled="lookOrEdit"></el-input>
+              <el-form-item>
+                <el-input v-model="form.e_code" :disabled="noEdit"></el-input>
+              </el-form-item>
             </el-col>
           </el-form-item>
 
@@ -156,16 +164,17 @@
               :on-preview="handleUploadPreview"
               :on-remove="handleUploadRemove"
               accept="image/*"
+              :disabled="lookOrEdit"
               :file-list="form.img_url"
               :on-success="handleUploadSuccess"
               :before-upload="handleBeforeUpload"
-              :on-progress="handleUploadProgress"
               :on-exceed="handleUploadExceed"
               name="img"
               list-type="picture">
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">文件不超过1024kb</div>
             </el-upload>
+
           </el-form-item>
 
           <el-form-item label="联系人姓名">
@@ -217,7 +226,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="handleSubmit" :loading="submitLoading" :disabled="lookOrEdit">保存
+            <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading" v-if="!lookOrEdit">保存
             </el-button>
             <el-button @click="visibleView = false">关闭</el-button>
           </el-form-item>
@@ -230,20 +239,21 @@
 <script type="text/ecmascript-6">
   import {getSuppList, addSupp, editSupp, lookSupp, deleSupp} from '@/api/supplier'
   import {getCitys} from '@/api/city'
-  import {IMG_SERVER_PATH} from '@/api/config'
   import {getToken} from '@/utils/auth'
+  import {IMG_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
       return {
         // 列表相关
         tableData: [],
+        imgDetail: '',
         total: 0,
         dateArea: '',
+        imageView: false,
         loadingExport: false,
         tableLoading: false,
-        imageUrl: '',
-        imgUp: {name: '', url: ''},
+        noEdit: false,
         // 表单相关
         form: {
           id: '',
@@ -275,7 +285,7 @@
         },
         listCity: [],
         submitLoading: false,
-        visible: false,
+        imgView: false,
         visibleView: false,
         lookOrEdit: true,
         titMsg: '编辑&添加',
@@ -291,8 +301,7 @@
           page: 1
         },
         // 上传相关
-        uploadUrl: 'v1/unit/img?token=' + getToken(),
-        uploadBody: undefined
+        uploadUrl: 'v1/unit/img?token=' + getToken()
       }
     },
     watch: {
@@ -373,10 +382,14 @@
         this.$message.error('只能上传一个文件')
       },
       handleUploadRemove(file, fileList) {
-        console.log(file, fileList)
+        this.form.imgUrl = []
       },
       handleUploadPreview(file) {
-        console.log(file)
+        this.imgDetail = file.url
+        this.imageView = true
+      },
+      closeImage() {
+        this.imageView = false
       },
       handleUploadProgress(event, file, fileList) {
         console.log(file)
@@ -409,6 +422,7 @@
       handleView(row) {
         this.titMsg = '查看'
         this.lookOrEdit = true
+        this.noEdit = true
         const param = {
           id: row.id
         }
@@ -416,11 +430,11 @@
           responce.data.img_url = JSON.parse(responce.data.img_url)
           this.form = Object.assign({}, responce.data)
         })
-
         this.visibleView = true
       },
       handleEdit(row) {
         this.lookOrEdit = false
+        this.noEdit = true
         this.titMsg = '编辑'
         const param = {
           id: row.id
@@ -434,6 +448,7 @@
       handleAdd() {
         this.titMsg = '添加'
         this.resetTempModel()
+        this.noEdit = false
         this.lookOrEdit = false
         this.visibleView = true
         console.log(this.form.id)
@@ -521,24 +536,18 @@
         this.offset = val
         this._getList()
       },
-      handleSubmit() {
-        this.submitLoading = true
-        this.lookOrEditBtn = false
-        // 提交数据
+      handleSubmit(formName) {
         if (this.form.id === '') {
           this._addSubmit()
         }
         if (this.form.id !== '') {
           this._editSubmit()
         }
-        this.submitLoading = false
-        // 关闭dialog
-        this.visibleView = false
-        this._getList()
       },
       _addSubmit() {
         const tempForm = Object.assign({}, this.form)
         tempForm.img_url = JSON.stringify(tempForm.img_url)
+        console.log(this.form)
         addSupp(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
@@ -546,7 +555,7 @@
               type: 'success',
               message: '操作成功!'
             })
-            // 重新请求数据(带着原先的查询参数)
+            this.visibleView = false
             this._getList()
           } else {
             this.$message({
@@ -554,6 +563,7 @@
               message: response.message
             })
           }
+          this.submitLoading = false
         })
       },
       _editSubmit() {
@@ -566,7 +576,7 @@
               type: 'success',
               message: '操作成功!'
             })
-            // 重新请求数据(带着原先的查询参数)
+            this.visibleView = false
             this._getList()
           } else {
             this.$message({
@@ -574,6 +584,7 @@
               message: response.message
             })
           }
+          this.submitLoading = false
         })
       },
       handleBeforeClose(done) {
@@ -596,6 +607,10 @@
   }
 </script>
 
-<style scoped>
-
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
+  }
 </style>

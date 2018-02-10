@@ -55,7 +55,7 @@
             formatter: '{a} <br/>{c} {b}'
           },
           toolbox: {
-            show: true,
+            show: false,
             feature: {
               mark: {show: true},
               restore: {show: true},
@@ -67,9 +67,9 @@
               name: '速度',
               type: 'gauge',
               min: 0,
-              max: 220,
-              splitNumber: 11,
-              radius: '50%',
+              max: 500,
+              splitNumber: 5,
+              radius: '95%',
               axisLine: {
                 lineStyle: {
                   color: [[0.09, 'lime'], [0.82, '#1e90ff'], [1, '#ff4500']],
@@ -83,7 +83,8 @@
                   fontWeight: 'bolder',
                   color: '#fff',
                   shadowColor: '#fff',
-                  shadowBlur: 10
+                  shadowBlur: 0,
+                  distance: 0
                 }
               },
               axisTick: {
@@ -118,7 +119,6 @@
                 }
               },
               detail: {
-                backgroundColor: 'rgba(30,144,255,0.8)',
                 borderWidth: 1,
                 borderColor: '#fff',
                 shadowColor: '#fff', // 默认透明
