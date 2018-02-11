@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"></div>
+  <div :class="className" :style="{height:height,width:width}" :resize="resize"></div>
 </template>
 
 <script>
@@ -21,6 +21,19 @@
       height: {
         type: String,
         default: '200px'
+      },
+      resize: {
+        type: Boolean
+      }
+    },
+    watch: {
+      'resize': {
+        handler: function (val, oldVal) {
+          if (val) {
+            this.chart.resize()
+          }
+        },
+        deep: true
       }
     },
     data() {

@@ -3,9 +3,6 @@
     <div id="mapDiv" class="map">
     </div>
     <div class="map-tool">
-      <div class="logo">
-        <img :src="logo"/>
-      </div>
       <el-card class="box-card" :body-style="{padding:'5px'}">
         <el-tooltip content="全屏" placement="bottom">
           <div class="map-icon-wrapper" @click="screenfull">
@@ -105,23 +102,163 @@
     </div>
     <div class="menu">
       <el-card :body-style="{padding:'10px'}">
-        <div>
-          <el-tooltip content="后台管理" placement="bottom">
-            <div class="map-icon-wrapper" @click="goToDashboard">
-              <div class="icon-wrapper icon-quanping">
-                <svg-icon icon-class="shezhi"/>
-              </div>
-            </div>
-          </el-tooltip>
-        </div>
+        <img :src="logo"/>
+        <el-dropdown>
+						      <span class="el-dropdown-link">
+						       <i class="el-icon-edit-outline"></i> DPF信息管理<i class="el-icon-arrow-down el-icon--right"></i>
+						      </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>供应商管理</el-dropdown-item>
+            <el-dropdown-item>登记信息管理</el-dropdown-item>
+            <el-dropdown-item>设备信息管理</el-dropdown-item>
+            <el-dropdown-item>维修厂管理</el-dropdown-item>
+            <el-dropdown-item>维修管理</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown @command="handleCommand">
+						      <span class="el-dropdown-link">
+							      	<i class="el-icon-printer"></i>
+							        统计分析
+							        <i class="el-icon-arrow-down el-icon--right"></i>
+						      </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>在线率统计</el-dropdown-item>
+            <el-dropdown-item>里程统计</el-dropdown-item>
+            <el-dropdown-item>车辆信息统计</el-dropdown-item>
+            <el-dropdown-item>车辆不在线统计</el-dropdown-item>
+            <el-dropdown-item>汽车指标统计</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown @command="handleCommand">
+						      	<span class="el-dropdown-link">
+							      	<i class="el-icon-message"></i>
+							        日志管理<i class="el-icon-arrow-down el-icon--right"></i>
+						      	</span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>平台日志管理</el-dropdown-item>
+            <el-dropdown-item>审核日志查询</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-dropdown @command="handleCommand">
+						      	<span class="el-dropdown-link">
+						      		<i class="el-icon-setting"></i>
+						        系统管理<i class="el-icon-arrow-down el-icon--right"></i>
+						      	</span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>机构管理</el-dropdown-item>
+            <el-dropdown-item>角色管理</el-dropdown-item>
+            <el-dropdown-item>用户管理</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <el-button type="text" icon="el-icon-info" style="font-weight: bold;color:#606266;">系统帮助</el-button>
       </el-card>
     </div>
-
-    <div class="car-info">
+    <div class="search">
+      <el-card :body-style="{padding:'5px'}">
+        <div class="map-icon-wrapper" @click="showCarPanel=!showCarPanel">
+          <div class="icon-wrapper icon-quanping">
+            <svg-icon icon-class="caidan"/>
+          </div>
+        </div>
+        <el-input placeholder="请输入车牌号" size="small">
+          <el-button slot="append" icon="el-icon-search"></el-button>
+        </el-input>
+      </el-card>
+    </div>
+    <div class="car-panel-collapse" @click="showCarPanel=true">
       <el-card>
+        <i class="el-icon-d-arrow-right"></i>
+      </el-card>
+    </div>
+    <div class="car-panel" v-show="showCarPanel">
+      <el-card>
+        <el-row>
+          <el-col :span="13">
+            <h4>&nbsp;&nbsp;车辆列表</h4>
+            <template>
+              <el-table
+                :data="tableData"
+                max-height="320"
+              >
+                <el-table-column
+                  prop="car"
+                  label="车牌"
+                  width="100"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  label="操作"
+                  width="60"
+                >
+                  <template slot-scope="scope">
+                    <el-tooltip content="监控" placement="top">
+                      <el-button type="primary" size="mini" icon="el-icon-d-arrow-right"></el-button>
+                    </el-tooltip>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination
+                small
+                layout="prev, pager, next"
+                :total="1000">
+              </el-pagination>
+
+            </template>
+          </el-col>
+          <el-col :span="2">
+            <div class="fenge">
+              <i class="el-icon-sort"></i>
+            </div>
+          </el-col>
+          <el-col :span="9">
+            <h4>&nbsp;&nbsp;监控列表 <span class="tip">(最多同时监控20辆)</span></h4>
+            <template>
+              <el-table
+                :data="tableData"
+                max-height="320"
+              >
+                <el-table-column
+                  prop="car"
+                  label="车牌"
+                  width="100"
+                >
+                </el-table-column>
+                <el-table-column
+                  label="操作"
+                  width="60"
+                >
+                  <template slot-scope="scope">
+                    <el-tooltip content="移除" placement="top">
+                      <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
+                    </el-tooltip>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </template>
+          </el-col>
+        </el-row>
+      </el-card>
+    </div>
+    <div class="car-info" v-show="showCarInfoPanel">
+      <el-card>
+        <div class="map-icon-wrapper chahao" @click="showCarInfoPanel=false">
+          <div class="icon-wrapper icon-quanping">
+            <svg-icon icon-class="chahao"/>
+          </div>
+        </div>
         <h4 class="header">车辆实时信息</h4>
         <div class="chart">
-          <pie-chart></pie-chart>
+          <pie-chart :resize="chartResize"></pie-chart>
         </div>
         <div class="info">
           <p>
@@ -155,13 +292,12 @@
         </div>
       </el-card>
     </div>
-
     <div class="control">
       <el-card>
-        <el-collapse accordion>
-          <el-collapse-item>
+        <el-collapse v-model="controlPanelActiveName" accordion>
+          <el-collapse-item name="1">
             <template slot="title">
-              车辆实时信息&nbsp;<i class="header-icon el-icon-info"></i>
+              <span style="color:#409EFF">车辆实时信息&nbsp;<i class="header-icon el-icon-info"></i></span>
             </template>
             <el-table
               :data="tableData"
@@ -228,124 +364,42 @@
               >
               </el-table-column>
               <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
                 label="操作"
-                width="60"
+                width="120"
               >
                 <template slot-scope="scope">
-                  <el-tooltip content="历史轨迹" placement="top">
-                    <el-button type="success" size="mini" icon="el-icon-view"></el-button>
-                  </el-tooltip>
+                  <el-button type="primary" size="mini" icon="el-icon-view" @click="showCarInfoPanel=true">实时监控
+                  </el-button>
                 </template>
               </el-table-column>
             </el-table>
           </el-collapse-item>
-          <el-collapse-item>
+          <el-collapse-item name="2">
             <template slot="title">
-              车辆历史记录&nbsp;<i class="header-icon el-icon-info"></i>
+              <span style="color:#67C23A">车辆历史记录&nbsp;<i class="header-icon el-icon-info"></i></span>
             </template>
-            <el-table
-              :data="tableData"
-              max-height="320"
-            >
-              <el-table-column
-                prop="car"
-                label="车牌"
-                width="100"
+            <div>
+              <el-input style="width: 100px;"
+                        class="filter-item"
+                        placeholder="车牌号">
+              </el-input>
+              <el-date-picker
+                type="daterange"
+                align="right"
+                unlink-panels
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions"
               >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="status"
-                label="状态"
-                width="60"
-              >
-              </el-table-column>
-              <el-table-column
-                label="操作"
-                width="60"
-              >
-                <template slot-scope="scope">
-                  <el-tooltip content="历史轨迹" placement="top">
-                    <el-button type="success" size="mini" icon="el-icon-view"></el-button>
-                  </el-tooltip>
-                </template>
-              </el-table-column>
-            </el-table>
+              </el-date-picker>
+              <el-button type="primary" size="small" icon="el-icon-search" @click="mapCarTrack">开始</el-button>
+              <el-button type="warning" size="small" icon="el-icon-download" @click="carTrackPause">暂停</el-button>
+              <el-button type="danger" size="small" icon="el-icon-download" @click="carTrackStop">结束</el-button>
+            </div>
           </el-collapse-item>
-          <el-collapse-item>
+          <el-collapse-item name="3">
             <template slot="title">
-              终端实时报警&nbsp;<i class="header-icon el-icon-info"></i>
+              <span style="color:#F56C6C">终端实时报警&nbsp;<i class="header-icon el-icon-info"></i></span>
             </template>
             <el-table
               :data="tableData"
@@ -438,101 +492,25 @@
         </el-collapse>
       </el-card>
     </div>
-
-    <div class="search">
-      <el-card :body-style="{padding:'5px'}">
-        <div class="map-icon-wrapper" @click="showCarPanel=!showCarPanel">
-          <div class="icon-wrapper icon-quanping">
-            <svg-icon icon-class="caidan"/>
-          </div>
+    <div class="alarm" v-show="showAlarm">
+      <img :src="alarm" alt="">
+      <audio controls loop ref="alarmAudio">
+        <source :src="alarmAudio" type="audio/mpeg">
+      </audio>
+      <div class="map-icon-wrapper" @click="alarmMuted">
+        <div class="icon-wrapper icon-quanping">
+          <svg-icon icon-class="jingyin"/>
         </div>
-        <el-input placeholder="请输入车牌号" size="small">
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
-      </el-card>
+      </div>
+    </div>
+    <div class="test">
+      <el-button type="danger" @click="alarmOn">警报测试按钮</el-button>
     </div>
 
-    <div class="car-panel-collapse" @click="showCarPanel=true">
-      <el-card>
-        <i class="el-icon-d-arrow-right"></i>
-      </el-card>
-    </div>
-
-    <div class="car-panel" v-show="showCarPanel">
-      <el-card>
-        <el-row>
-          <el-col :span="13">
-            <h4>&nbsp;&nbsp;车辆列表</h4>
-            <template>
-              <el-table
-                :data="tableData"
-                max-height="320"
-              >
-                <el-table-column
-                  prop="car"
-                  label="车牌"
-                  width="100"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
-                >
-                </el-table-column>
-                <el-table-column
-                  label="操作"
-                  width="60"
-                >
-                  <template slot-scope="scope">
-                    <el-tooltip content="监控" placement="top">
-                      <el-button type="primary" size="mini" icon="el-icon-d-arrow-right"></el-button>
-                    </el-tooltip>
-                  </template>
-                </el-table-column>
-              </el-table>
-              <el-pagination
-                small
-                layout="prev, pager, next"
-                :total="1000">
-              </el-pagination>
-
-            </template>
-          </el-col>
-          <el-col :span="2">
-            <div class="fenge">
-              <i class="el-icon-sort"></i>
-            </div>
-          </el-col>
-          <el-col :span="9">
-            <h4>&nbsp;&nbsp;监控列表 <span class="tip">(最多同时监控20辆)</span></h4>
-            <template>
-              <el-table
-                :data="tableData"
-                max-height="320"
-              >
-                <el-table-column
-                  prop="car"
-                  label="车牌"
-                  width="100"
-                >
-                </el-table-column>
-                <el-table-column
-                  label="操作"
-                  width="60"
-                >
-                  <template slot-scope="scope">
-                    <el-tooltip content="移除" placement="top">
-                      <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
-                    </el-tooltip>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </template>
-          </el-col>
-        </el-row>
-      </el-card>
-    </div>
+    <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
+    <remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/D3SvgOverlay.js"></remote-js>
+    <remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/CarTrack.js"></remote-js>
+    <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
   </div>
 </template>
 
@@ -540,10 +518,9 @@
   import T from 'T'
   import Control from './components/control'
   import logo from '@/assets/home_images/logo.png'
-  import collapse from '@/assets/home_images/collapse.png'
-  import collapse1 from '@/assets/home_images/collapse1.png'
+  import alarm from '@/assets/home_images/alarm.gif'
+  import alarmAudio from '@/assets/home_images/alarm_audio.mp3'
   import screenfull from 'screenfull'
-  import {debounce} from '@/utils'
   import {getToken} from '@/utils/auth'
   import {getListHistory} from '@/api/history'
   import PieChart from './components/PieChart'
@@ -565,14 +542,8 @@
       return {
         // 图片
         logo,
-        collapse,
-        collapse1,
-        backgroundDiv1: {
-          backgroundImage: 'url(' + collapse + ')'
-        },
-        backgroundDiv2: {
-          backgroundImage: 'url(' + collapse1 + ')'
-        },
+        alarm,
+        alarmAudio,
         // tree相关
         treeLoading: false,
         treeData: [],
@@ -596,7 +567,7 @@
         listMarker: [],
         componentLoadingSubmit: false,
         componentDialogFormVisible: false,
-        // 车辆监控面板
+        // 车辆面板
         tableData: [
           {car: '鲁G809CP', status: '在线'},
           {car: '鲁G809CP', status: '在线'},
@@ -609,41 +580,64 @@
           {car: '鲁G809CP', status: '离线'},
           {car: '鲁G809CP', status: '在线'}
         ],
-        showCarPanel: true
+        showCarPanel: false,
+        // 警报相关
+        showAlarm: false,
+        // 实时监控面板相关
+        showCarInfoPanel: false,
+        controlPanelActiveName: '',
+        chartResize: false,
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        }
+      }
+    },
+    watch: {
+      'showCarInfoPanel': {
+        handler: function (val, oldVal) {
+          if (val) {
+            this.chartResize = true
+          }
+        },
+        deep: true
       }
     },
     mounted() {
       this.getTreeData()
       this.drawMap()
-      // 监听resize事件
-      this.__resizeHanlder = debounce(() => {
-        // 重新设置布局
-        this.setLayout()
-      }, 100)
-      window.addEventListener('resize', this.__resizeHanlder)
     },
     methods: {
-      setLayout() {
-        this.$refs.map.style.height = (window.innerHeight - 236) + 'px'
-        this.$refs.treeContainer.style.height = (window.innerHeight - 228) + 'px'
+      alarmOn() {
+        this.controlPanelActiveName = '3'
+        this.showAlarm = true
+        this.$refs.alarmAudio.play()
       },
-      collapseClose() {
-        this.$refs.leftContent.style.display = 'none'
-        this.$refs.collapseClose.style.display = 'none'
-        this.$refs.collapseOpen.style.display = 'block'
-        this.$refs.collapseOpen.style.left = '0'
-        this.$refs.right.$el.style.width = '100%'
-        // 通知地图容器大小已经改变
-        window.map.checkResize()
-      },
-      collapseOpen() {
-        this.$refs.leftContent.style.display = 'block'
-        this.$refs.collapseClose.style.display = 'block'
-        this.$refs.collapseOpen.style.display = 'none'
-        this.$refs.left.$el.style.width = '16.6667%'
-        this.$refs.right.$el.style.width = '83.3333%'
-        // 通知地图容器大小已经改变
-        window.map.checkResize()
+      alarmMuted() {
+        this.$refs.alarmAudio.muted = true
       },
       screenfull() {
         if (!screenfull.enabled) {
@@ -778,8 +772,8 @@
         window.map.panTo(new T.LngLat(116.26802, 39.90623))
         window.map.setZoom(12)
         const datas = {
-          'type': 'FeatureCollection',
-          'features': [
+          type: 'FeatureCollection',
+          features: [
             {
               'type': 'Feature',
               'properties': {
@@ -1027,21 +1021,25 @@
           speed: 10,
           dynamicLine: false,
           polylinestyle: {color: '#2C64A7', weight: 5, opacity: 0.9},
-          Datas:
-            datas.features.map(
-              (obj, i) => {
-                var coordinates = obj.geometry.coordinates
-                var lnlat = new T.LngLat(coordinates[0], coordinates[1])
-                return lnlat
-              }
-            )
+          Datas: datas.features.map(
+            (obj, i) => {
+              var coordinates = obj.geometry.coordinates
+              var lnlat = new T.LngLat(coordinates[0], coordinates[1])
+              return lnlat
+            }
+          )
         })
+        this.carTrackStart()
       },
       carTrackStart() {
         this.carTrack.start()
       },
       carTrackPause() {
         this.carTrack.pause()
+      },
+      carTrackStop() {
+        this.carTrack.stop()
+        this.carTrack.clear()
       },
       mapPrint() {
         // 解析路由
@@ -1246,7 +1244,6 @@
         ]
       },
       webSocket() {
-        const self = this
         // 创建标注
         const marker = new T.Marker(new T.LngLat(119.097980, 36.695950))
         window.map.addOverLay(marker)
@@ -1357,14 +1354,8 @@
     right: 20px;
     top: 20px;
     z-index: 2;
-    display: flex;
     .box-card {
       height: 43px;
-    }
-    .logo {
-      img {
-        padding: 5px;
-      }
     }
   }
 
@@ -1463,9 +1454,20 @@
 
   .menu {
     position: fixed;
-    right: 20px;
-    top: 100px;
+    left: 20px;
+    top: 20px;
     z-index: 2;
+    img {
+      vertical-align: middle;
+      padding-right: 20px;
+    }
+    .el-dropdown-link {
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .el-icon-arrow-down {
+      font-size: 12px;
+    }
   }
 
   .control {
@@ -1480,6 +1482,11 @@
     left: 20px;
     bottom: 20px;
     z-index: 2;
+    .chahao {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+    }
     .header {
       margin: 0;
       text-align: center;
@@ -1500,7 +1507,7 @@
   .search {
     position: fixed;
     left: 20px;
-    top: 20px;
+    top: 100px;
     z-index: 2;
     .svg-icon {
       vertical-align: middle;
@@ -1513,7 +1520,7 @@
   .car-panel-collapse {
     position: fixed;
     left: 20px;
-    top: 70px;
+    top: 150px;
     z-index: 2;
     cursor: pointer;
   }
@@ -1521,7 +1528,7 @@
   .car-panel {
     position: fixed;
     left: 20px;
-    top: 70px;
+    top: 150px;
     z-index: 2;
     width: 550px;
     h4 {
@@ -1536,4 +1543,26 @@
       font-size: 12px;
     }
   }
+
+  .alarm {
+    position: fixed;
+    right: 20px;
+    top: 300px;
+    z-index: 2;
+    audio {
+      display: block;
+    }
+    img {
+      width: 150px;
+      cursor: pointer;
+    }
+  }
+
+  .test {
+    position: fixed;
+    right: 400px;
+    top: 300px;
+    z-index: 2;
+  }
+
 </style>
