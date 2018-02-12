@@ -43,8 +43,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListRole} from '@/api/part'
+  import {getListRole, postModelRole} from '@/api/part'
   import {asyncRouterMap} from '@/router'
+  import {getToken} from '@/utils/auth'
 
   export default {
     data() {
@@ -67,7 +68,7 @@
         treeData: [],
         defaultProps: {
           children: 'children',
-          label: 'label'
+          label: 'name'
         },
         newLabel: '',
         curId: '',
@@ -91,12 +92,12 @@
             const menuGroup = {}
             menuGroup.isGroup = true
             menuGroup.id = item.id
-            menuGroup.label = item.name
+            menuGroup.name = item.name
             menuGroup.children = []
             item.children.forEach(child => {
               menuGroup.children.push({
                 id: child.id,
-                label: child.name
+                name: child.name
               })
             })
             this.treeDataMenu.push(menuGroup)
@@ -111,15 +112,11 @@
         }
         this.treeLoading = true
         this.treeLoadingText = '保存中'
-        setTimeout(() => {
-          this.$message({
-            type: 'success',
-            message: '添加、编辑成功!'
-          })
-          // 获取数据
-          this._getTreeData()
-          this.treeLoading = false
-        }, 1000)
+        if (!this.curLabel) {
+          this._postModelRole()
+        } else {
+          this._postModelRole()
+        }
       },
       handleDelete() {
         if (!this.curId) {
@@ -150,12 +147,7 @@
       handleSubmit() {
         this.submitLoading = true
         // 提交数据
-        setTimeout(() => {
-          // 取消加载中
-          this.submitLoading = false
-          // 关闭dialog
-          this.visible = false
-        }, 2000)
+        this._postModelRole()
       },
       handleBeforeClose(done) {
         if (!this.submitLoading) {
@@ -165,22 +157,64 @@
       handleNodeClick(data) {
         console.log(data)
         this.curId = data.id
-        this.curLabel = data.label
+        this.curLabel = data.name
       },
       handleSubmitMenu() {
-        //  s
+        // s
       },
       handleResetMenu() {
         // s
         this.$refs.treeMenu.setCheckedKeys([])
       },
       _getListRole() {
-
+        this.treeData = []
+        this.treeLoading = true
+        // 请求表格数据
+        const params = {
+          token: getToken(),
+          limit: 1000,
+          offset: 0
+        }
+        getListRole(params).then(response => {
+          if (response.code === '200') {
+            this.treeData = response.data
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          this.treeLoading = false
+        })
       },
-      _postForm() {
-        setTimeout(() => {
-          console.log('提交中')
-        }, 2000)
+      _postModelRole() {
+        const tempModel = {
+          token: getToken(),
+          rolename: this.newLabel,
+          menus: 'test',
+          remark: 'test'
+        }
+        postModelRole(tempModel).then(response => {
+          if (response.code === '201') {
+            // 弹出提醒信息
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            })
+            // 重新请求数据(带着原先的查询参数)
+            this.treeData = []
+            this._getListRole()
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 取消加载中
+          this.loadingSubmit = false
+          // 关闭dialog
+          this.dialogFormVisible = false
+        })
       }
     }
   }

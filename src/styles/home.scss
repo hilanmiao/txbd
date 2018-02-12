@@ -42,8 +42,8 @@
 .el-tabs--border-card>.el-tabs__header .el-tabs__item:hover{color: #fff;background: #0075c4;}
 .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {color: #fff;background-color: #0075c4;border:0;border-right: 1px solid #fff;}
 .el-tabs--border-card>.el-tabs__header .el-tabs__item{margin: 0;border: 0;border-right: 1px solid #fff;background: #409EFF;}
-.el-tabs__nav{width: 99%;}
-.left .el-tabs__item{width: 33.7%;text-align: center;padding: 0;}
+.el-tabs__nav{width: 100%;}
+.left .el-tabs__item{width: 50%;text-align: center;padding: 0;}
 .left .el-tabs__content .el-tab-pane{width: 100% !important;}
 .left .el-tabs--top.el-tabs--border-card .el-tabs__item:nth-child(2){padding: 0;}
 .left .el-tabs--top.el-tabs--border-card .el-tabs__item:last-child{padding: 0;border: 0;}
@@ -52,7 +52,7 @@
 .left .collapse {    cursor: pointer;}
 .left .collapse1 {    cursor: pointer;}
 
-.right{position: relative;padding-bottom: 171px;}
+.right{position: relative;padding-bottom: 241px;}
 .right .el-tabs__item{height: 30px;line-height: 30px;}
 .el-table td, .el-table th{padding: 2px 0;}
 .right .el-button{padding: 0 10px 0;margin: 3px 0;}

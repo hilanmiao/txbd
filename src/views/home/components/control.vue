@@ -7,7 +7,7 @@
           <el-table
             ref="table1"
             :data="list1"
-            height="88"
+            height="158"
             border
             style="width: 100%"
           >
@@ -44,6 +44,22 @@
                 {{scope.row.car_longitude + ',' + scope.row.car_latitude}}
               </template>
             </el-table-column>
+            <el-table-column
+              prop="car_direction"
+              label="DPF状态">
+            </el-table-column>
+            <el-table-column
+              prop="car_direction"
+              label="DOC原温度">
+            </el-table-column>
+            <el-table-column
+              prop="car_direction"
+              label="DPF前端温度">
+            </el-table-column>
+            <el-table-column
+              prop="car_direction"
+              label="DPF后端温度">
+            </el-table-column>
           </el-table>
         </template>
       </el-tab-pane>
@@ -53,7 +69,7 @@
           <el-table
             ref="table2"
             :data="list2"
-            height="88"
+            height="158"
             border
             style="width: 100%"
           >
@@ -115,7 +131,7 @@
           <el-table
             ref="table3"
             :data="list3"
-            height="88"
+            height="158"
             border
             style="width: 100%"
           >

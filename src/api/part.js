@@ -3,18 +3,18 @@ import request from '@/utils/request'
 // 获取列表数据
 export function getListRole(params) {
   return request({
-    url: 'v1/user/role',
+    url: 'v1/user/roles',
     method: 'get',
     params
   })
 }
 
 // 创建
-export function postModelRole(data) {
+export function postModelRole(params) {
   return request({
     url: 'v1/user/role',
     method: 'post',
-    data
+    params
   })
 }
 

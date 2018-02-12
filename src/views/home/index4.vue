@@ -1,83 +1,62 @@
 <template>
-  <div class="home-container">
+  <div class="">
     <div class="nav">
-      <el-row class="fl">
-        <el-col>
-          <img :src="logo" style="vertical-align: middle;"/>
-        </el-col>
-        <el-col>
-          <el-dropdown @command="handleCommand">
+      <div class="menu">
+        <img :src="logo"/>
+        <el-dropdown>
 						      <span class="el-dropdown-link">
 						       <i class="el-icon-edit-outline"></i> DPF信息管理<i class="el-icon-arrow-down el-icon--right"></i>
 						      </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>供应商管理</el-dropdown-item>
-              <el-dropdown-item>登记信息管理</el-dropdown-item>
-              <el-dropdown-item>设备信息管理</el-dropdown-item>
-              <el-dropdown-item>维修厂管理</el-dropdown-item>
-              <el-dropdown-item>维修管理</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-col>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>供应商管理</el-dropdown-item>
+            <el-dropdown-item>登记信息管理</el-dropdown-item>
+            <el-dropdown-item>设备信息管理</el-dropdown-item>
+            <el-dropdown-item>维修厂管理</el-dropdown-item>
+            <el-dropdown-item>维修管理</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
 
-        <el-col>
-          <el-dropdown @command="handleCommand">
+        <el-dropdown @command="handleCommand">
 						      <span class="el-dropdown-link">
 							      	<i class="el-icon-printer"></i>
 							        统计分析
 							        <i class="el-icon-arrow-down el-icon--right"></i>
 						      </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>在线率统计</el-dropdown-item>
-              <el-dropdown-item>里程统计</el-dropdown-item>
-              <el-dropdown-item>车辆信息统计</el-dropdown-item>
-              <el-dropdown-item>车辆不在线统计</el-dropdown-item>
-              <el-dropdown-item>汽车指标统计</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-col>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>在线率统计</el-dropdown-item>
+            <el-dropdown-item>里程统计</el-dropdown-item>
+            <el-dropdown-item>车辆信息统计</el-dropdown-item>
+            <el-dropdown-item>车辆不在线统计</el-dropdown-item>
+            <el-dropdown-item>汽车指标统计</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
 
-        <el-col>
-          <el-dropdown @command="handleCommand">
+        <el-dropdown @command="handleCommand">
 						      	<span class="el-dropdown-link">
 							      	<i class="el-icon-message"></i>
 							        日志管理<i class="el-icon-arrow-down el-icon--right"></i>
 						      	</span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>平台日志管理</el-dropdown-item>
-              <el-dropdown-item>审核日志查询</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-col>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>平台日志管理</el-dropdown-item>
+            <el-dropdown-item>审核日志查询</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
 
-        <el-col>
-          <el-dropdown @command="handleCommand">
+        <el-dropdown @command="handleCommand">
 						      	<span class="el-dropdown-link">
 						      		<i class="el-icon-setting"></i>
 						        系统管理<i class="el-icon-arrow-down el-icon--right"></i>
 						      	</span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>机构管理</el-dropdown-item>
-              <el-dropdown-item>角色管理</el-dropdown-item>
-              <el-dropdown-item>用户管理</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-col>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>机构管理</el-dropdown-item>
+            <el-dropdown-item>角色管理</el-dropdown-item>
+            <el-dropdown-item>用户管理</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
 
-        <el-col>
-          <el-button style="color:#ffffff" type="text" icon="el-icon-bell">公告管理</el-button>
-        </el-col>
-
-        <el-col>
-          <el-button style="color:#ffffff" type="text" icon="el-icon-info">系统帮助</el-button>
-        </el-col>
-
-        <el-button type="success" icon="el-icon-search" @click="webSocket">开启websocket</el-button>
-        <el-button type="warning" icon="el-icon-search" @click="webSocketClose">关闭websocket</el-button>
-
-      </el-row>
-
-      <el-row class="fr">
+        <el-button type="text" icon="el-icon-info">系统帮助</el-button>
+      </div>
+      <div class="map-tool">
         <el-tooltip content="全屏" placement="bottom">
           <div class="map-icon-wrapper" @click="screenfull">
             <div class="icon-wrapper icon-quanping">
@@ -148,14 +127,7 @@
             </div>
           </div>
         </el-tooltip>
-        <el-tooltip content="汽车轨迹" placement="bottom">
-          <div class="map-icon-wrapper" @click="mapCarTrack">
-            <div class="icon-wrapper ">
-              <svg-icon icon-class="qiche"/>
-            </div>
-          </div>
-        </el-tooltip>
-        <el-select size="mini" value="" placeholder="地域">
+        <el-select size="mini" value="" placeholder="城市" style="width:120px;">
           <el-option label="济南" value="济南"></el-option>
           <el-option label="潍坊" value="潍坊"></el-option>
           <el-option label="青岛" value="青岛"></el-option>
@@ -179,69 +151,11 @@
             </div>
           </div>
         </el-tooltip>
-      </el-row>
-
-    </div>
-
-    <div>
-      <el-row>
-        <el-col :span="4" class="left" ref="left">
-          <div class="content" ref="leftContent">
-            <div class="filter-container">
-              <span class="fl">监控面板</span>
-              <!--<span class="fr"><i class="el-icon-d-arrow-right"></i></span>-->
-            </div>
-
-            <el-collapse style="padding-top: 10px;background: #f2f2f2;">
-              <div>
-                <el-input class="fl custom-input" placeholder="请输入内容"></el-input>
-                <el-button class="fr" type="primary">查询</el-button>
-              </div>
-
-              <div class="clearfix" style="padding-top: 10px;">
-                <el-tabs :type="border-card" type="border-card" style="width: 100%;">
-                  <el-tab-pane label="车辆列表">
-
-                  </el-tab-pane>
-                  <el-tab-pane label="监控列表">监控列表</el-tab-pane>
-                </el-tabs>
-              </div>
-
-            </el-collapse>
-          </div>
-
-          <div ref="collapseClose" @click="collapseClose" class="collapse"
-               style="width: 10px;height: 52px;position: absolute; left:16.7%; top: 50%; transform: translate(-50%,-50%);z-index: 999;"
-               :style="backgroundDiv1"></div>
-          <div ref="collapseOpen" @click="collapseOpen" class="collapse1"
-               style="display: none;width: 10px;height: 52px;position: absolute; left:5px; top: 50%; transform: translate(-50%,-50%);z-index: 999;"
-               :style="backgroundDiv2"></div>
-        </el-col>
-
-        <el-col :span="20" class="right" ref="right">
-          <div class="map-container">
-            <div ref="map" id="mapDiv" class="map" style="height: 600px;">
-            </div>
-          </div>
-          <div class="control">
-            <control :list-car="listCar" :loading-submit="componentLoadingSubmit"
-                     :dialog-form-visible="componentDialogFormVisible"
-                     @componentHandleSetHistory="componentHandleSetHistory"
-            ></control>
-          </div>
-        </el-col>
-      </el-row>
-
-      <div class="others-container">
-        <el-dialog width="20%" :modal="false" :visible.sync="dialogFormVisibleCar" title="历史轨迹" v-loading="loadingTrack">
-          <el-form ref="form" label-width="80px">
-            <el-form-item>
-              <el-button type="primary" @click="carTrackStart" >开始</el-button>
-              <el-button @click="carTrackPause">暂停</el-button>
-            </el-form-item>
-          </el-form>
-        </el-dialog>
       </div>
+    </div>
+    <div class="container">
+      <div class="left"></div>
+      <div class="right"></div>
     </div>
 
     <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
@@ -255,12 +169,12 @@
   import T from 'T'
   import Control from './components/control'
   import logo from '@/assets/home_images/logo.png'
-  import collapse from '@/assets/home_images/collapse.png'
-  import collapse1 from '@/assets/home_images/collapse1.png'
+  import alarm from '@/assets/home_images/alarm.gif'
+  import alarmAudio from '@/assets/home_images/alarm_audio.mp3'
   import screenfull from 'screenfull'
-  import {debounce} from '@/utils'
   import {getToken} from '@/utils/auth'
   import {getListHistory} from '@/api/history'
+  import PieChart from './components/PieChart'
 
   export default {
     components: {
@@ -272,20 +186,15 @@
           src: {type: String, required: true}
         }
       },
-      Control
+      Control,
+      PieChart
     },
     data() {
       return {
         // 图片
         logo,
-        collapse,
-        collapse1,
-        backgroundDiv1: {
-          backgroundImage: 'url(' + collapse + ')'
-        },
-        backgroundDiv2: {
-          backgroundImage: 'url(' + collapse1 + ')'
-        },
+        alarm,
+        alarmAudio,
         // tree相关
         treeLoading: false,
         treeData: [],
@@ -308,43 +217,78 @@
         ws: undefined,
         listMarker: [],
         componentLoadingSubmit: false,
-        componentDialogFormVisible: false
+        componentDialogFormVisible: false,
+        // 车辆面板
+        tableData: [
+          {car: '鲁G809CP', status: '在线'},
+          {car: '鲁G809CP', status: '在线'},
+          {car: '鲁G809CP', status: '在线'},
+          {car: '鲁G809CP', status: '离线'},
+          {car: '鲁G809CP', status: '在线'},
+          {car: '鲁G809CP', status: '在线'},
+          {car: '鲁G809CP', status: '在线'},
+          {car: '鲁G809CP', status: '在线'},
+          {car: '鲁G809CP', status: '离线'},
+          {car: '鲁G809CP', status: '在线'}
+        ],
+        showCarPanel: false,
+        // 警报相关
+        showAlarm: false,
+        // 实时监控面板相关
+        showCarInfoPanel: false,
+        controlPanelActiveName: '',
+        chartResize: false,
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        }
+      }
+    },
+    watch: {
+      'showCarInfoPanel': {
+        handler: function (val, oldVal) {
+          if (val) {
+            this.chartResize = true
+          }
+        },
+        deep: true
       }
     },
     mounted() {
-      this.setLayout()
       this.getTreeData()
       this.drawMap()
-      // 监听resize事件
-      this.__resizeHanlder = debounce(() => {
-        // 重新设置布局
-        this.setLayout()
-      }, 100)
-      window.addEventListener('resize', this.__resizeHanlder)
     },
     methods: {
-      setLayout() {
-        this.$refs.map.style.height = (window.innerHeight - 306) + 'px'
-        this.$refs.treeContainer.style.height = (window.innerHeight - 228) + 'px'
-        this.$refs.carTab.style.height = (window.innerHeight - 228) + 'px'
+      alarmOn() {
+        this.controlPanelActiveName = '3'
+        this.showAlarm = true
+        this.$refs.alarmAudio.play()
       },
-      collapseClose() {
-        this.$refs.leftContent.style.display = 'none'
-        this.$refs.collapseClose.style.display = 'none'
-        this.$refs.collapseOpen.style.display = 'block'
-        this.$refs.collapseOpen.style.left = '0'
-        this.$refs.right.$el.style.width = '100%'
-        // 通知地图容器大小已经改变
-        window.map.checkResize()
-      },
-      collapseOpen() {
-        this.$refs.leftContent.style.display = 'block'
-        this.$refs.collapseClose.style.display = 'block'
-        this.$refs.collapseOpen.style.display = 'none'
-        this.$refs.left.$el.style.width = '16.6667%'
-        this.$refs.right.$el.style.width = '83.3333%'
-        // 通知地图容器大小已经改变
-        window.map.checkResize()
+      alarmMuted() {
+        this.$refs.alarmAudio.muted = true
       },
       screenfull() {
         if (!screenfull.enabled) {
@@ -381,6 +325,7 @@
 
         // 添加缩放控件
         var zoom = new T.Control.Zoom()
+        zoom.setPosition(window.T_ANCHOR_BOTTOM_RIGHT)
         window.map.addControl(zoom)
 
         // 创建标注工具对象
@@ -478,8 +423,8 @@
         window.map.panTo(new T.LngLat(116.26802, 39.90623))
         window.map.setZoom(12)
         const datas = {
-          'type': 'FeatureCollection',
-          'features': [
+          type: 'FeatureCollection',
+          features: [
             {
               'type': 'Feature',
               'properties': {
@@ -727,21 +672,25 @@
           speed: 10,
           dynamicLine: false,
           polylinestyle: {color: '#2C64A7', weight: 5, opacity: 0.9},
-          Datas:
-            datas.features.map(
-              (obj, i) => {
-                var coordinates = obj.geometry.coordinates
-                var lnlat = new T.LngLat(coordinates[0], coordinates[1])
-                return lnlat
-              }
-            )
+          Datas: datas.features.map(
+            (obj, i) => {
+              var coordinates = obj.geometry.coordinates
+              var lnlat = new T.LngLat(coordinates[0], coordinates[1])
+              return lnlat
+            }
+          )
         })
+        this.carTrackStart()
       },
       carTrackStart() {
         this.carTrack.start()
       },
       carTrackPause() {
         this.carTrack.pause()
+      },
+      carTrackStop() {
+        this.carTrack.stop()
+        this.carTrack.clear()
       },
       mapPrint() {
         // 解析路由
@@ -946,7 +895,6 @@
         ]
       },
       webSocket() {
-        const self = this
         // 创建标注
         const marker = new T.Marker(new T.LngLat(119.097980, 36.695950))
         window.map.addOverLay(marker)
@@ -1045,100 +993,131 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .map-icon-wrapper {
-    cursor: pointer;
-    display: inline-block;
-    &:hover {
-      .icon-wrapper {
-        color: #fff;
-      }
-      .icon-jiedao {
-        background: #303F9F
-      }
-      .icon-luwang {
-        background: #388E3C
-      }
-      .icon-weixing {
-        background: #FF9800
-      }
-      .icon-diqiu {
-        background: #FF5252
-      }
-      .icon-fangda {
-        background: #795548
-      }
-      .icon-suoxiao {
-        background: #607D8B
-      }
-      .icon-biaochi {
-        background: #7B1FA2
-      }
-      .icon-shanchu {
-        background: #7C4DFF
-      }
-      .icon-dayin {
-        background: #03A9F4
-      }
-      .icon-guanbi {
-        background: #FF5252
-      }
-      .icon-quanping {
-        background: #ffffff;
-        color: #333;
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    background: #409EFF;
+    height: 50px;
+    padding-left: 10px;
+    padding-right: 20px;
+
+    .el-dropdown-link {
+      cursor: pointer;
+      color: #fff;
+    }
+    .el-icon-arrow-down {
+      font-size: 12px;
+    }
+
+    .el-button {
+      color: #fff;
+    }
+
+    .menu {
+      line-height: 50px;
+      img {
+        vertical-align: middle;
+        padding-right: 20px;
       }
     }
 
-    .icon-wrapper {
-      border-radius: 4px;
-      padding: 0 10px;
-      /*margin: 4px 0 0 4px;*/
-      font-size: 22px;
+    .map-tool {
+      display: flex;
+      align-items: center;
+
+      .map-icon-wrapper {
+        cursor: pointer;
+        display: inline-block;
+        margin: 0 2px;
+        &:hover {
+          .icon-wrapper {
+            color: #fff;
+          }
+          .icon-jiedao {
+            background: #303F9F
+          }
+          .icon-luwang {
+            background: #388E3C
+          }
+          .icon-weixing {
+            background: #FF9800
+          }
+          .icon-diqiu {
+            background: #FF5252
+          }
+          .icon-fangda {
+            background: #795548
+          }
+          .icon-suoxiao {
+            background: #607D8B
+          }
+          .icon-biaochi {
+            background: #7B1FA2
+          }
+          .icon-shanchu {
+            background: #212121
+          }
+          .icon-dayin {
+            background: #03A9F4
+          }
+          .icon-guanbi {
+            background: #FF5252
+          }
+          .icon-quanping {
+            background: #212121;
+          }
+        }
+
+        .icon-wrapper {
+          border-radius: 4px;
+          padding: 4px;
+          font-size: 20px;
+        }
+
+        .icon-jiedao {
+          color: #303F9F
+        }
+
+        .icon-luwang {
+          color: #388E3C
+        }
+
+        .icon-weixing {
+          color: #FF9800
+        }
+
+        .icon-diqiu {
+          color: #FF5252
+        }
+
+        .icon-fangda {
+          color: #795548
+        }
+
+        .icon-suoxiao {
+          color: #607D8B
+        }
+
+        .icon-biaochi {
+          color: #7B1FA2
+        }
+
+        .icon-shanchu {
+          color: #212121
+        }
+
+        .icon-dayin {
+          color: #03A9F4
+        }
+
+        .icon-guanbi {
+          color: #FF5252
+        }
+
+        .icon-quanping {
+          color: #212121
+        }
+      }
     }
   }
-
-  .icon-jiedao {
-    color: #303F9F
-  }
-
-  .icon-luwang {
-    color: #388E3C
-  }
-
-  .icon-weixing {
-    color: #FF9800
-  }
-
-  .icon-diqiu {
-    color: #FF5252
-  }
-
-  .icon-fangda {
-    color: #795548
-  }
-
-  .icon-suoxiao {
-    color: #607D8B
-  }
-
-  .icon-biaochi {
-    color: #7B1FA2
-  }
-
-  .icon-shanchu {
-    color: #7C4DFF
-  }
-
-  .icon-dayin {
-    color: #FF9800
-  }
-
-  .icon-guanbi {
-    color: #FF5252
-  }
-
-  .icon-quanping {
-    color: #fff
-  }
-
-
 </style>
