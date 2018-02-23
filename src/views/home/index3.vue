@@ -212,7 +212,6 @@
                 layout="prev, pager, next"
                 :total="1000">
               </el-pagination>
-
             </template>
           </el-col>
           <el-col :span="2">

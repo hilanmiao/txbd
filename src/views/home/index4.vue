@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="home-wrapper">
     <div class="nav">
       <div class="menu">
         <img :src="logo"/>
@@ -154,14 +154,297 @@
       </div>
     </div>
     <div class="container">
-      <div class="left"></div>
-      <div class="right"></div>
+      <div class="left" ref="left">
+        <el-card ref="leftCard" :body-style="{padding:'0px',borderRadius:'0'}">
+          <div class="label">监控面板</div>
+          <div class="search">
+            <el-input placeholder="请输入车牌号"></el-input>
+            <el-button>查询</el-button>
+          </div>
+          <div class="tabs">
+            <el-tabs type="card">
+              <el-tab-pane label="车辆列表">
+                <template>
+                  <el-table
+                    :data="listCar"
+                    :max-height="leftTableHeight"
+                    v-loading="loadingList" element-loading-text="加载中..."
+                  >
+                    <el-table-column
+                      prop="carCode"
+                      label="车牌号"
+                      width="80"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      prop="deviceno"
+                      label="设备编号"
+                      width="80"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      label="操作"
+                      width="60"
+                    >
+                      <template slot-scope="scope">
+                        <el-tooltip content="监控" placement="top">
+                          <el-button type="primary" size="mini" icon="el-icon-d-arrow-right"
+                                     @click="handleWatch(scope.row)"></el-button>
+                        </el-tooltip>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                  <el-pagination
+                    small
+                    layout="prev, pager, next"
+                    :page-size="listQuery.limit"
+                    :current-page.sync="listQuery.page"
+                    :total="total"
+                    @current-change="handleCurrentChange"
+                  >
+                  </el-pagination>
+                </template>
+              </el-tab-pane>
+              <el-tab-pane label="监控列表 ">
+                <template>
+                  <el-table
+                    :data="listCarWatch"
+                    :max-height="leftTableHeight"
+                  >
+                    <el-table-column
+                      prop="carCode"
+                      label="车牌"
+                      width="80"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      prop="deviceno"
+                      label="设备编号"
+                      width="80"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      label="操作"
+                      width="60"
+                    >
+                      <template slot-scope="scope">
+                        <el-tooltip content="移除" placement="top">
+                          <el-button type="danger" size="mini" icon="el-icon-delete"
+                                     @click="handleWatchRemove(scope.row)"></el-button>
+                        </el-tooltip>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                  <h4 style="margin: 10px;text-align: center"><i class="el-icon-info"></i>最多同时监控20辆</h4>
+                </template>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+        </el-card>
+      </div>
+      <div class="right">
+        <el-card :body-style="{padding:'0px',borderRadius:'0'}">
+          <div ref="map" id="mapDiv" class="map">
+          </div>
+          <el-tabs type="border-card">
+            <el-tab-pane>
+              <span slot="label"><i class="el-icon-date"></i>车辆信息</span>
+              <el-table
+                :data="listCarWatchReal"
+                height="200"
+              >
+                <el-table-column
+                  prop="car"
+                  label="车牌"
+                  width="100"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
+            <el-tab-pane>
+              <span slot="label"><i class="el-icon-date"></i>车辆历史记录</span>
+              <div style="height: 200px;">
+                <div>
+                  <el-input style="width: 200px;"
+                            class="filter-item"
+                            placeholder="车牌号"
+                            v-model="carCodeHistory"
+                  >
+                  </el-input>
+                  <el-date-picker
+                    v-model="dateRangeHistory"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    value-format="yyyy-MM-dd"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :picker-options="pickerOptions"
+                  >
+                  </el-date-picker>
+                  <el-button type="primary" icon="el-icon-search" @click="_getCarHistory"
+                             :loading="loadingSearchHistory">确认
+                  </el-button>
+                </div>
+                <div style="padding-top: 10px" v-show="showPanelHistory">
+                  <el-button type="primary" icon="el-icon-search" @click="carTrackStart">开始</el-button>
+                  <el-button type="warning" icon="el-icon-download" @click="carTrackPause">暂停</el-button>
+                  <el-button type="danger" icon="el-icon-download" @click="carTrackStop">结束</el-button>
+                </div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane>
+              <span slot="label"><i class="el-icon-date"></i>终端上报警情（预处警）</span>
+              <el-table
+                :data="listCar"
+                height="200"
+              >
+                <el-table-column
+                  prop="car"
+                  label="车牌"
+                  width="100"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                  label="操作"
+                  width="60"
+                >
+                  <template slot-scope="scope">
+                    <el-tooltip content="历史轨迹" placement="top">
+                      <el-button type="success" size="mini" icon="el-icon-view"></el-button>
+                    </el-tooltip>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
+          </el-tabs>
+        </el-card>
+      </div>
     </div>
 
     <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
     <remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/D3SvgOverlay.js"></remote-js>
     <remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/CarTrack.js"></remote-js>
-    <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
   </div>
 </template>
 
@@ -173,8 +456,9 @@
   import alarmAudio from '@/assets/home_images/alarm_audio.mp3'
   import screenfull from 'screenfull'
   import {getToken} from '@/utils/auth'
-  import {getListHistory} from '@/api/history'
+  import {getCars, getCarHistory} from '@/api/gis'
   import PieChart from './components/PieChart'
+  import {debounce} from '@/utils'
 
   export default {
     components: {
@@ -195,49 +479,43 @@
         logo,
         alarm,
         alarmAudio,
-        // tree相关
-        treeLoading: false,
-        treeData: [],
-        defaultProps: {
-          children: 'children',
-          label: 'label'
-        },
         // map相关
         lineTool: null,
         zoom: 12,
         lineToolIsClose: true,
         tileLayerImg: null,
         tileLayerCia: null,
-        carTrack: undefined,
         dialogFormVisibleCar: false,
-        loadingTrack: false,
-        // 子组件相关
-        listCar: [],
         // websocket
         ws: undefined,
         listMarker: [],
         componentLoadingSubmit: false,
         componentDialogFormVisible: false,
         // 车辆面板
-        tableData: [
-          {car: '鲁G809CP', status: '在线'},
-          {car: '鲁G809CP', status: '在线'},
-          {car: '鲁G809CP', status: '在线'},
-          {car: '鲁G809CP', status: '离线'},
-          {car: '鲁G809CP', status: '在线'},
-          {car: '鲁G809CP', status: '在线'},
-          {car: '鲁G809CP', status: '在线'},
-          {car: '鲁G809CP', status: '在线'},
-          {car: '鲁G809CP', status: '离线'},
-          {car: '鲁G809CP', status: '在线'}
-        ],
+        leftTableHeight: '0',
+        listCar: [],
+        loadingList: false,
+        total: 0,
+        listQuery: {
+          page: 1,
+          limit: 20,
+          offset: 0,
+          carCode: '',
+          sort: '+id'
+        },
         showCarPanel: false,
+        listCarWatch: [],
         // 警报相关
         showAlarm: false,
-        // 实时监控面板相关
-        showCarInfoPanel: false,
         controlPanelActiveName: '',
-        chartResize: false,
+        // 实时信息面板相关
+        listCarWatchReal: [],
+        // 历史轨迹面板相关
+        carTrack: undefined,
+        carCodeHistory: '鲁G12345',
+        loadingSearchHistory: false,
+        showPanelHistory: false,
+        dateRangeHistory: '',
         pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -268,20 +546,54 @@
       }
     },
     watch: {
-      'showCarInfoPanel': {
+      'listQuery.page': {
         handler: function (val, oldVal) {
-          if (val) {
-            this.chartResize = true
+          // 拼装查询用的offset
+          if (val > 1) {
+            this.listQuery.offset = (val - 1) * this.listQuery.limit
+          } else {
+            this.listQuery.offset = 0
           }
         },
         deep: true
       }
     },
     mounted() {
-      this.getTreeData()
+      this.setLayout()
       this.drawMap()
+      // 监听resize事件
+      this.__resizeHanlder = debounce(() => {
+        // 重新设置布局
+        this.setLayout()
+      }, 100)
+      window.addEventListener('resize', this.__resizeHanlder)
+      this._getCars()
     },
     methods: {
+      setLayout() {
+        // this.$refs.leftCard.style.height = 1000 + 'px'
+        this.leftTableHeight = (window.innerHeight - 270)
+        this.$refs.map.style.height = (window.innerHeight - 344) + 'px'
+        this.$refs.left.style.height = (window.innerHeight - 72) + 'px'
+        // this.$refs.treeContainer.style.height = (window.innerHeight - 228) + 'px'
+        // this.$refs.carTab.style.height = (window.innerHeight - 228) + 'px'
+      },
+      handleCommand(command) {
+        this.goToDashboard()
+      },
+      goToDashboard() {
+        // 解析路由
+        const {href} = this.$router.resolve({
+          name: 'dashboard'
+        })
+        window.open(href, '_blank')
+      },
+      logOut() {
+        this.$store.dispatch('FedLogOut').then(() => {
+          // 为了重新实例化vue-router对象 避免bug
+          location.reload()
+        })
+      },
       alarmOn() {
         this.controlPanelActiveName = '3'
         this.showAlarm = true
@@ -418,255 +730,35 @@
           console.log(type, target, lnglat, containerPoint)
         })
       },
-      mapCarTrack() {
+      mapCarTrack(history) {
+        // 显示控制按钮
+        this.showPanelHistory = true
         // 或者使用更简单的“添加线”
-        window.map.panTo(new T.LngLat(116.26802, 39.90623))
+        // 移动到第一个点
+        window.map.panTo(new T.LngLat(history[0].car_longitude, history[1].car_latitude))
         window.map.setZoom(12)
         const datas = {
           type: 'FeatureCollection',
-          features: [
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 1,
-                'id': 'route1',
-                'name': '五棵松'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.26802,
-                  39.90623
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 2,
-                'id': 'route1',
-                'name': '万寿路'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.28896,
-                  39.90622
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 3,
-                'id': 'route1',
-                'name': '公主坟'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.30421,
-                  39.90625
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 4,
-                'id': 'route1',
-                'name': '军事博物馆'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.3155,
-                  39.90618
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 5,
-                'id': 'route1',
-                'name': '木樨地'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.3313,
-                  39.90611
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 6,
-                'id': 'route1',
-                'name': '南礼士路'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.34643,
-                  39.90583
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 10,
-                'id': 'route1',
-                'name': '复兴门'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.35033,
-                  39.90582
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 11,
-                'id': 'route1',
-                'name': '西单'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.36784,
-                  39.90579
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 12,
-                'id': 'route1',
-                'name': '灵境胡同'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.36755,
-                  39.91449
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 13,
-                'id': 'route1',
-                'name': '西四'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.36755,
-                  39.91449
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 14,
-                'id': 'route1',
-                'name': '平安里'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.36673,
-                  39.93235
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 15,
-                'id': 'route1',
-                'name': '平安里中转'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.36651,
-                  39.93924
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 16,
-                'id': 'route1',
-                'name': '新街口'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.36172,
-                  39.93923
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 17,
-                'id': 'route1',
-                'name': '西直门'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.34936,
-                  39.93913
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 18,
-                'id': 'route1',
-                'name': '动物园'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.33292,
-                  39.93697
-                ]
-              }
-            },
-            {
-              'type': 'Feature',
-              'properties': {
-                'time': 18,
-                'id': 'route1',
-                'name': '白石桥南'
-              },
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [
-                  116.319550,
-                  39.931000
-                ]
-              }
-            }
-          ]
+          features: []
         }
+
+        datas.features = history.map((item, index) => {
+          return {
+            type: 'Feature',
+            properties: {
+              time: index,
+              id: 'route1',
+              name: index
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                item.car_longitude,
+                item.car_latitude
+              ]
+            }
+          }
+        })
         this.carTrack = new T.CarTrack(window.map, {
           interval: 5,
           speed: 10,
@@ -689,8 +781,19 @@
         this.carTrack.pause()
       },
       carTrackStop() {
-        this.carTrack.stop()
-        this.carTrack.clear()
+        this.showPanelHistory = false
+        this.carTrackPause()
+        // this.carTrack.stop()
+        // this.carTrack.clear()
+        // 呵呵，太难受了,总是这么多莫名其妙的问题，这还得用d3,气屎了
+        window.d3.select('.d3-overlay').remove()
+        const imgs = document.getElementsByTagName('img')
+        Array.prototype.forEach.call(imgs, function (d) {
+          if (d.src === 'http://lbs.tianditu.com/api-new/html5/APIExample/openlibrary/data/car.png') {
+            d.parentNode.removeChild(d)
+          }
+        })
+        this.carTrack = null
       },
       mapPrint() {
         // 解析路由
@@ -707,22 +810,23 @@
       mapClearOverLays() {
         window.map.clearOverLays()
       },
-      treeCheckChange(data, nodeChecked, childrenChecked) {
-        if (!nodeChecked) {
-          // 从监控列表移除
-          const index = this.listCar.findIndex(item => item === data.id)
-          this.listCar.splice(index, 1)
-        } else {
-          this.carData.some(item => {
-            if (item.id === data.id) {
-              // 添加到监控列表
-              this.listCar.push(item.id)
-              // 创建标注点
-              this.mapMarker(item)
-              window.map.panTo(new T.LngLat(item.car_longitude, item.car_latitude))
-            }
+      handleWatch(row) {
+        // 查询是否已经在在监控中
+        const index = this.listCarWatch.findIndex(item => item.carCode === row.carCode)
+        if (index > -1) {
+          this.$message({
+            type: 'warning',
+            message: '车俩已经在监控中'
           })
+          return
         }
+        // 添加到监控列表
+        this.listCarWatch.push(row)
+      },
+      handleWatchRemove(row) {
+        // 查询是否已经在在监控中
+        const index = this.listCarWatch.findIndex(item => item.carCode === row.carCode)
+        this.listCarWatch.splice(index, 1)
       },
       treeNodeClick(data, node, component) {
         console.log(data, node, component)
@@ -734,165 +838,6 @@
             }
           })
         }
-      },
-      handleCommand(command) {
-        this.goToDashboard()
-      },
-      goToDashboard() {
-        // 解析路由
-        const {href} = this.$router.resolve({
-          name: 'dashboard'
-        })
-        window.open(href, '_blank')
-      },
-      logOut() {
-        this.$store.dispatch('FedLogOut').then(() => {
-          // 为了重新实例化vue-router对象 避免bug
-          location.reload()
-        })
-      },
-      getTreeData() {
-        this.treeLoading = true
-        setTimeout(() => {
-          this.treeData = [
-            {
-              id: '0',
-              label: '所有车辆',
-              children: [
-                {
-                  id: '1',
-                  label: '济南',
-                  children: [
-                    {
-                      id: '11',
-                      label: '鲁G809CP'
-                    },
-                    {
-                      id: '12',
-                      label: '鲁G6666'
-                    },
-                    {
-                      id: '13',
-                      label: '鲁G3726'
-                    }
-                  ]
-                },
-                {
-                  id: '2',
-                  label: '潍坊',
-                  children: [
-                    {
-                      id: '21',
-                      label: '鲁G1586CP'
-                    },
-                    {
-                      id: '22',
-                      label: '鲁G8986CP'
-                    },
-                    {
-                      id: '23',
-                      label: '鲁G1876CP'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-          this.treeLoading = false
-        }, 1000)
-
-        this.carData = [
-          {
-            id: '11',
-            car_number: '鲁G809CP',
-            car_model: '普通货车',
-            createtime: '2018-1-30 12:30:33',
-            car_status: '运营中',
-            car_speed: 89,
-            car_longitude: '116.988770',
-            car_latitude: '36.661600',
-            car_direction: '东偏北',
-            dpf_status: '正常',
-            t1: '120℃',
-            t2: '200℃',
-            t3: '80℃'
-          },
-          {
-            id: '12',
-            car_number: '鲁G6666',
-            car_model: '普通货车',
-            createtime: '2018-1-14 18:40:43',
-            car_status: '运营中',
-            car_speed: 99,
-            car_longitude: '116.975770',
-            car_latitude: '36.656540',
-            car_direction: '东偏北',
-            dpf_status: '正常',
-            t1: '120℃',
-            t2: '200℃',
-            t3: '80℃'
-          },
-          {
-            id: '13',
-            car_number: '鲁G3726',
-            car_model: '普通货车',
-            createtime: '2018-1-28 07:16:55',
-            car_status: '运营中',
-            car_speed: 40,
-            car_longitude: '117.007870',
-            car_latitude: '36.670590',
-            car_direction: '东偏北',
-            dpf_status: '正常',
-            t1: '120℃',
-            t2: '200℃',
-            t3: '80℃'
-          },
-          {
-            id: '21',
-            car_number: '鲁G1586CP',
-            car_model: '普通货车',
-            createtime: '2018-1-25 05:45:44',
-            car_status: '运营中',
-            car_speed: 60,
-            car_longitude: '119.129220',
-            car_latitude: '36.707650',
-            car_direction: '东偏北',
-            dpf_status: '正常',
-            t1: '120℃',
-            t2: '200℃',
-            t3: '80℃'
-          },
-          {
-            id: '22',
-            car_number: '鲁G8986CP',
-            car_model: '普通货车',
-            createtime: '2018-1-29 01:55:29',
-            car_status: '运营中',
-            car_speed: 80,
-            car_longitude: '119.198740',
-            car_latitude: '36.726640',
-            car_direction: '东偏北',
-            dpf_status: '正常',
-            t1: '120℃',
-            t2: '200℃',
-            t3: '80℃'
-          },
-          {
-            id: '23',
-            car_number: '鲁G1876CP',
-            car_model: '普通货车',
-            createtime: '2018-1-27 09:47:16',
-            car_status: '运营中',
-            car_speed: 120,
-            car_longitude: '119.189470',
-            car_latitude: '36.772030',
-            car_direction: '东偏北',
-            dpf_status: '正常',
-            t1: '120℃',
-            t2: '200℃',
-            t3: '80℃'
-          }
-        ]
       },
       webSocket() {
         // 创建标注
@@ -958,165 +903,259 @@
         window.map.removeOverLay(this.listMarker[0].label)
         window.map.removeOverLay(this.listMarker[0].infoWin)
       },
-      componentHandleSetHistory(listQuery) {
-        // 弹出控制面板
-        this.dialogFormVisibleCar = true
-        this.loadingTrack = true
-
-        const params = {
-          token: getToken(),
-          starttime: listQuery.dateRange[0],
-          endtime: listQuery.dateRange[1],
-          carCode: listQuery.carCode
-        }
-        getListHistory(params).then(response => {
+      handleCurrentChange(val) {
+        // 页码改变处理
+        this.listQuery.page = val
+        this._getCars()
+      },
+      _getCars() {
+        // 设置表格loading效果
+        this.loadingList = true
+        // 请求表格数据
+        getCars(this.listQuery).then(response => {
           if (response.code === '200') {
-            // 弹出提醒信息
-            this.$message({
-              type: 'success',
-              message: '操作成功!'
-            })
-            // 设置轨迹
-            this.mapCarTrack(response.data)
-            // 取消轨迹loading
-            this.loadingTrack = false
+            // 设置表格数据
+            // this.list = response.data.dataList
+            this.listCar = response.data
+            // 设置分页插件数据总数
+            // this.total = response.data.count
+            this.total = 100000
           } else {
             this.$message({
               type: 'error',
               message: response.message
             })
           }
+          // 取消表格loading效果
+          this.loadingList = false
+        })
+      },
+      _getCarHistory() {
+        // 清楚以前的轨迹
+        if (this.carTrack) {
+          this.carTrackStop()
+        }
+
+        if (!this.carCodeHistory || !this.dateRangeHistory.length) {
+          this.$message({
+            type: 'info',
+            message: '请输入车牌号和日期范围'
+          })
+          return
+        }
+        // 隐藏控制按钮
+        this.showPanelHistory = false
+        // 显示loading效果
+        this.loadingSearchHistory = true
+        // 请求表格数据
+        const params = {
+          starttime: this.dateRangeHistory[0],
+          endtime: this.dateRangeHistory[1],
+          carCode: this.carCodeHistory
+        }
+        getCarHistory(params).then(response => {
+          if (response.code === '200') {
+            this.mapCarTrack(response.data)
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 取消表格loading效果
+          this.loadingSearchHistory = false
         })
       }
     }
   }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    background: #409EFF;
-    height: 50px;
-    padding-left: 10px;
-    padding-right: 20px;
+<style rel="stylesheet/scss" lang="scss">
+  .home-wrapper {
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      background: #409EFF;
+      height: 50px;
+      padding-left: 10px;
+      padding-right: 20px;
 
-    .el-dropdown-link {
-      cursor: pointer;
-      color: #fff;
-    }
-    .el-icon-arrow-down {
-      font-size: 12px;
-    }
+      .el-dropdown-link {
+        cursor: pointer;
+        color: #fff;
+      }
+      .el-icon-arrow-down {
+        font-size: 12px;
+      }
 
-    .el-button {
-      color: #fff;
-    }
+      .el-button {
+        color: #fff;
+      }
 
-    .menu {
-      line-height: 50px;
-      img {
-        vertical-align: middle;
-        padding-right: 20px;
+      .menu {
+        line-height: 50px;
+        img {
+          vertical-align: middle;
+          padding-right: 20px;
+        }
+      }
+
+      .map-tool {
+        display: flex;
+        align-items: center;
+
+        .map-icon-wrapper {
+          cursor: pointer;
+          display: inline-block;
+          margin: 0 2px;
+          &:hover {
+            .icon-wrapper {
+              color: #fff;
+            }
+            .icon-jiedao {
+              background: #303F9F
+            }
+            .icon-luwang {
+              background: #388E3C
+            }
+            .icon-weixing {
+              background: #FF9800
+            }
+            .icon-diqiu {
+              background: #FF5252
+            }
+            .icon-fangda {
+              background: #795548
+            }
+            .icon-suoxiao {
+              background: #607D8B
+            }
+            .icon-biaochi {
+              background: #7B1FA2
+            }
+            .icon-shanchu {
+              background: #212121
+            }
+            .icon-dayin {
+              background: #FF9800
+            }
+            .icon-guanbi {
+              background: #FF5252
+            }
+            .icon-quanping {
+              background: #212121;
+            }
+          }
+
+          .icon-wrapper {
+            border-radius: 4px;
+            padding: 4px;
+            font-size: 20px;
+          }
+
+          .icon-jiedao {
+            color: #303F9F
+          }
+
+          .icon-luwang {
+            color: #388E3C
+          }
+
+          .icon-weixing {
+            color: #FF9800
+          }
+
+          .icon-diqiu {
+            color: #FF5252
+          }
+
+          .icon-fangda {
+            color: #795548
+          }
+
+          .icon-suoxiao {
+            color: #607D8B
+          }
+
+          .icon-biaochi {
+            color: #7B1FA2
+          }
+
+          .icon-shanchu {
+            color: #212121
+          }
+
+          .icon-dayin {
+            color: #FF9800
+          }
+
+          .icon-guanbi {
+            color: #FF5252
+          }
+
+          .icon-quanping {
+            color: #212121
+          }
+        }
       }
     }
 
-    .map-tool {
+    .container {
+      padding: 10px;
       display: flex;
-      align-items: center;
+    }
 
-      .map-icon-wrapper {
-        cursor: pointer;
-        display: inline-block;
-        margin: 0 2px;
-        &:hover {
-          .icon-wrapper {
-            color: #fff;
-          }
-          .icon-jiedao {
-            background: #303F9F
-          }
-          .icon-luwang {
-            background: #388E3C
-          }
-          .icon-weixing {
-            background: #FF9800
-          }
-          .icon-diqiu {
-            background: #FF5252
-          }
-          .icon-fangda {
-            background: #795548
-          }
-          .icon-suoxiao {
-            background: #607D8B
-          }
-          .icon-biaochi {
-            background: #7B1FA2
-          }
-          .icon-shanchu {
-            background: #212121
-          }
-          .icon-dayin {
-            background: #03A9F4
-          }
-          .icon-guanbi {
-            background: #FF5252
-          }
-          .icon-quanping {
-            background: #212121;
+    .left {
+      width: 250px;
+
+      .el-card {
+        border-radius: 0;
+        height: 100%;
+      }
+
+      .label {
+        background: #409EFF;
+        padding: 10px;
+        color: #fff;
+      }
+
+      .search {
+        display: flex;
+        padding: 10px;
+        .el-button {
+          background: #409EFF;
+          color: #fff;
+        }
+      }
+
+      .tabs {
+        .el-tabs__nav {
+          width: 100%;
+          text-align: center;
+          border-left: 0;
+          border-right: 0;
+          .el-tabs__item {
+            width: 50%;
           }
         }
 
-        .icon-wrapper {
-          border-radius: 4px;
-          padding: 4px;
-          font-size: 20px;
+        .el-table td {
+          font-size: 12px;
+          padding: 4px 0;
         }
+      }
+    }
 
-        .icon-jiedao {
-          color: #303F9F
-        }
-
-        .icon-luwang {
-          color: #388E3C
-        }
-
-        .icon-weixing {
-          color: #FF9800
-        }
-
-        .icon-diqiu {
-          color: #FF5252
-        }
-
-        .icon-fangda {
-          color: #795548
-        }
-
-        .icon-suoxiao {
-          color: #607D8B
-        }
-
-        .icon-biaochi {
-          color: #7B1FA2
-        }
-
-        .icon-shanchu {
-          color: #212121
-        }
-
-        .icon-dayin {
-          color: #03A9F4
-        }
-
-        .icon-guanbi {
-          color: #FF5252
-        }
-
-        .icon-quanping {
-          color: #212121
-        }
+    .right {
+      flex: 1;
+      padding: 0 10px;
+      .map {
+        height: 600px;
+        width: 100%;
+      }
+      .el-tabs--border-card {
+        border-left: 0;
+        border-right: 0;
       }
     }
   }
