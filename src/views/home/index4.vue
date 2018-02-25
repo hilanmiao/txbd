@@ -256,6 +256,9 @@
         </el-card>
       </div>
       <div class="right">
+        <div class="info-wrapper">
+
+        </div>
         <el-card :body-style="{padding:'0px',borderRadius:'0'}">
           <div ref="map" id="mapDiv" class="map">
           </div>
