@@ -127,23 +127,6 @@
             </div>
           </div>
         </el-tooltip>
-        <el-select size="mini" value="" placeholder="城市" style="width:120px;">
-          <el-option label="济南" value="济南"></el-option>
-          <el-option label="潍坊" value="潍坊"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-          <el-option label="青岛" value="青岛"></el-option>
-        </el-select>
         <el-tooltip content="退出" placement="bottom">
           <div class="map-icon-wrapper" @click="logOut">
             <div class="icon-wrapper icon-guanbi">
@@ -158,8 +141,28 @@
         <el-card ref="leftCard" :body-style="{padding:'0px',borderRadius:'0'}">
           <div class="label">监控面板</div>
           <div class="search">
-            <el-input placeholder="请输入车牌号"></el-input>
-            <el-button>查询</el-button>
+            <el-input placeholder="请输入设备编号" v-model="listQuery.carCode"></el-input>
+            <el-button @click="_getCars">查询</el-button>
+          </div>
+          <div class="citySelect">
+            <el-select v-model="listQuery.city" placeholder="">
+              <el-option label="选择城市" value=""></el-option>
+              <el-option label="济南" value="济南"></el-option>
+              <el-option label="潍坊" value="潍坊"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+              <el-option label="青岛" value="青岛"></el-option>
+            </el-select>
           </div>
           <div class="tabs">
             <el-tabs type="card">
@@ -187,10 +190,20 @@
                       width="60"
                     >
                       <template slot-scope="scope">
-                        <el-tooltip content="监控" placement="top">
-                          <el-button type="primary" size="mini" icon="el-icon-d-arrow-right"
-                                     @click="handleWatch(scope.row)"></el-button>
-                        </el-tooltip>
+                        <template>
+                          <div v-show="scope.row.checked">
+                            <el-tooltip content="监控" placement="right-start">
+                              <el-button type="success" size="mini" icon="el-icon-check"
+                                         @click="handleWatch(scope.row)"></el-button>
+                            </el-tooltip>
+                          </div>
+                          <div v-show="!scope.row.checked">
+                            <el-tooltip content="监控" placement="right-start">
+                              <el-button type="primary" size="mini" icon="el-icon-d-arrow-right"
+                                         @click="handleWatch(scope.row)"></el-button>
+                            </el-tooltip>
+                          </div>
+                        </template>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -228,7 +241,7 @@
                       width="60"
                     >
                       <template slot-scope="scope">
-                        <el-tooltip content="移除" placement="top">
+                        <el-tooltip content="移除" placement="right-start">
                           <el-button type="danger" size="mini" icon="el-icon-delete"
                                      @click="handleWatchRemove(scope.row)"></el-button>
                         </el-tooltip>
@@ -254,63 +267,72 @@
                 height="200"
               >
                 <el-table-column
-                  prop="car"
-                  label="车牌"
+                  prop="platenumber"
+                  label="车牌号"
+                  width="100"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="deviceno"
+                  label="设备编号"
                   width="100"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="status"
-                  label="状态"
-                  width="60"
+                  label="车辆状态"
+                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="status"
-                  label="状态"
-                  width="60"
+                  label="经纬度"
+                  width="100"
+                >
+                  <template slot-scope="scope">
+                    {{scope.row.longitude + ',' + scope.row.latitude}}
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  prop="direction"
+                  label="方向"
+                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="gpstime"
+                  label="GPS定位时间"
+                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="t1"
+                  label="DOC原温度"
+                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="t2"
+                  label="DPF前端温度"
+                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="t3"
+                  label="DPF前端温度"
+                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="p1"
+                  label="DOC前端压力"
+                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="p2"
+                  label="DOC后端压力"
+                  width="120"
                 >
                 </el-table-column>
               </el-table>
@@ -350,7 +372,7 @@
             <el-tab-pane>
               <span slot="label"><i class="el-icon-date"></i>终端上报警情（预处警）</span>
               <el-table
-                :data="listCar"
+                :data="listCarAlarm"
                 height="200"
               >
                 <el-table-column
@@ -440,6 +462,62 @@
           </el-tabs>
         </el-card>
       </div>
+      <div class="alarm" v-show="showAlarm">
+        <el-card>
+          <div class="alarm-info">
+            <h4 class="header">车辆异常报警</h4>
+            <div class="info">
+              <p>
+                车牌:
+                <el-tag type="info">鲁G809CP</el-tag>
+                &nbsp;
+                车系:
+                <el-tag type="info">宝马X5</el-tag>
+              </p>
+              <p>
+                前温:
+                <el-tag type="danger">180℃</el-tag>
+                &nbsp;
+                前压:
+                <el-tag>1KPA</el-tag>
+              </p>
+              <p>
+                中温:
+                <el-tag>180℃</el-tag>
+                &nbsp;
+                中压:
+                <el-tag type="danger">1KPA</el-tag>
+              </p>
+              <p>
+                后温:
+                <el-tag>180℃</el-tag>
+                &nbsp;
+                后压:
+                <el-tag type="warning">1KPA</el-tag>
+              </p>
+              <p>
+                <el-button type="success" size="mini" icon="el-icon-location">开启实时定位</el-button>
+                <el-button type="danger" size="mini" icon="el-icon-location">关闭实时定位</el-button>
+              </p>
+              <p>
+                其他数据其他数据其他数据其他数据其他数据
+              </p>
+            </div>
+          </div>
+        </el-card>
+        <img :src="alarm" alt="">
+        <audio controls loop ref="alarmAudio">
+          <source :src="alarmAudio" type="audio/mpeg">
+        </audio>
+        <div class="map-icon-wrapper" @click="alarmMuted">
+          <div class="icon-wrapper icon-guanbi">
+            <svg-icon icon-class="jingyin"/>
+          </div>
+        </div>
+      </div>
+      <div class="test">
+        <el-button type="danger" @click="alarmOn">警报测试按钮</el-button>
+      </div>
     </div>
 
     <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
@@ -501,6 +579,7 @@
           limit: 20,
           offset: 0,
           carCode: '',
+          city: '',
           sort: '+id'
         },
         showCarPanel: false,
@@ -508,8 +587,10 @@
         // 警报相关
         showAlarm: false,
         controlPanelActiveName: '',
+        listCarAlarm: [],
         // 实时信息面板相关
         listCarWatchReal: [],
+        maxWatchCount: 20,
         // 历史轨迹面板相关
         carTrack: undefined,
         carCodeHistory: '鲁G12345',
@@ -698,36 +779,93 @@
         this.lineTool.clear()
         this.lineTool.close()
       },
-      mapMarker(car) {
-        // 创建标注
-        const marker = new T.Marker(new T.LngLat(car.car_longitude, car.car_latitude))
-        window.map.addOverLay(marker)
-        // 创建标注的文字标签
-        const label = new T.Label({
-          text: `<b>${car.car_number}<b>`,
-          position: marker.getLngLat(),
-          offset: new T.Point(3, -30)
-        })
-        window.map.addOverLay(label)
-        // 创建信息窗口
-        const infoWin = new T.InfoWindow()
-        const content = `
-          <div>
-            <b>车辆状态：${car.car_status}</b><br>
-            <b>行驶速度：${car.car_speed}</b><br>
-            <b>经度：${car.car_longitude}</b><br>
-            <b>纬度：${car.car_latitude}</b><br>
-            <b>方向：${car.car_direction}</b><br>
-            <b>DPF状态：${car.dpf_status}</b><br>
-            <b>DOC原温度：${car.t1}</b><br>
-            <b>DPF前端温度：${car.t2}</b><br>
-            <b>DPF后端温度：${car.t3}</b><br>
-          </div>
-        `
-        infoWin.setContent(content)
-        marker.addEventListener('click', function (type, target, lnglat, containerPoint) {
-          marker.openInfoWindow(infoWin)
-          console.log(type, target, lnglat, containerPoint)
+      mapMarker(cars) {
+        // 填充数据
+        this.listCarWatchReal = cars
+        // 循环标记
+        cars.forEach((car, index) => {
+          // 中心点移动到第一个点
+          if (index === 0) {
+            window.map.panTo(new T.LngLat(car.longitude, car.latitude))
+          }
+          // 查看是否已经标注
+          let tempMarker = {}
+          this.listMarker.some(item => {
+            if (item.data.deviceno === car.deviceno) {
+              tempMarker = item
+              return true
+            }
+          })
+          if (!tempMarker.data) {
+            // 创建标注
+            const marker = new T.Marker(new T.LngLat(car.longitude, car.latitude))
+            window.map.addOverLay(marker)
+            // 创建标注的文字标签
+            const label = new T.Label({
+              text: `<b>${car.platenumber}<b>`,
+              position: marker.getLngLat(),
+              offset: new T.Point(3, -30)
+            })
+            window.map.addOverLay(label)
+            // 创建信息窗口
+            const infoWin = new T.InfoWindow()
+            const content = `
+              <div>
+                <b>设备编号：${car.deviceno}</b><br>
+                <b>车辆状态：${car.status}</b><br>
+                <b>行驶速度：${car.speed}</b><br>
+                <b>经度：${car.longitude}</b><br>
+                <b>纬度：${car.latitude}</b><br>
+                <b>方向：${car.direction}</b><br>
+                <b>GPS定位时间：${car.gpstime}</b><br>
+                <b>DOC原温度：${car.t1}</b><br>
+                <b>DPF前端温度：${car.t2}</b><br>
+                <b>DPF后端温度：${car.t3}</b><br>
+                <b>DOC前端压力：${car.p1}</b><br>
+                <b>DOC后端压力：${car.p2}</b><br>
+              </div>
+            `
+            infoWin.setContent(content)
+            marker.addEventListener('click', function (type, target, lnglat, containerPoint) {
+              marker.openInfoWindow(infoWin)
+              console.log(type, target, lnglat, containerPoint)
+            })
+
+            // 保存
+            this.listMarker.push(
+              {
+                data: car,
+                marker: marker,
+                label: label,
+                infoWin: infoWin
+              }
+            )
+          } else {
+            // 更新位置
+            tempMarker.marker.setLngLat(new T.LngLat(car.longitude, car.latitude))
+            tempMarker.label.setLngLat(new T.LngLat(car.longitude, car.latitude))
+            // 先关闭信息窗口
+            tempMarker.infoWin.closeInfoWindow()
+            tempMarker.infoWin.setLngLat(new T.LngLat(car.longitude, car.latitude))
+            tempMarker.content = `
+              <div>
+                <b>设备编号：${car.deviceno}</b><br>
+                <b>车辆状态：${car.status}</b><br>
+                <b>行驶速度：${car.speed}</b><br>
+                <b>经度：${car.longitude}</b><br>
+                <b>纬度：${car.latitude}</b><br>
+                <b>方向：${car.direction}</b><br>
+                <b>GPS定位时间：${car.gpstime}</b><br>
+                <b>DOC原温度：${car.t1}</b><br>
+                <b>DPF前端温度：${car.t2}</b><br>
+                <b>DPF后端温度：${car.t3}</b><br>
+                <b>DOC前端压力：${car.p1}</b><br>
+                <b>DOC后端压力：${car.p2}</b><br>
+              </div>
+            `
+            tempMarker.infoWin.setContent(tempMarker.content)
+            tempMarker.infoWin.update()
+          }
         })
       },
       mapCarTrack(history) {
@@ -811,97 +949,78 @@
         window.map.clearOverLays()
       },
       handleWatch(row) {
+        // 验证是否超过20辆
+        if (this.listCarWatch.length >= this.maxWatchCount) {
+          this.$message({
+            type: 'error',
+            message: '最多监控20辆车'
+          })
+          return
+        }
+
         // 查询是否已经在在监控中
-        const index = this.listCarWatch.findIndex(item => item.carCode === row.carCode)
+        const index = this.listCarWatch.findIndex(item => item === row)
         if (index > -1) {
           this.$message({
             type: 'warning',
-            message: '车俩已经在监控中'
+            message: '车辆已经在监控中'
           })
           return
         }
         // 添加到监控列表
         this.listCarWatch.push(row)
+        // 改变状态
+        const oriIndex = this.listCar.findIndex(item => item === row)
+        this.listCar[oriIndex].checked = true
+        // 断开连接
+        this.webSocketClose()
+        // 建立连接
+        this.webSocketOpen()
       },
       handleWatchRemove(row) {
         // 查询是否已经在在监控中
-        const index = this.listCarWatch.findIndex(item => item.carCode === row.carCode)
+        const index = this.listCarWatch.findIndex(item => item === row)
+        // 从监控列表中删除
         this.listCarWatch.splice(index, 1)
+        // 改变状态
+        const oriIndex = this.listCar.findIndex(item => item === row)
+        this.listCar[oriIndex].checked = false
+        // 关闭并重新连接
+        this.webSocketClose()
+        this.webSocketOpen()
       },
-      treeNodeClick(data, node, component) {
-        console.log(data, node, component)
-        if (node.checked) {
-          // 将地图的中心点变换到指定的地理坐标
-          this.carData.some(item => {
-            if (item.id === data.id) {
-              window.map.panTo(new T.LngLat(item.car_longitude, item.car_latitude))
-            }
-          })
+      webSocketOpen() {
+        const self = this
+        if (!this.listCarWatch.length) {
+          return
         }
-      },
-      webSocket() {
-        // 创建标注
-        const marker = new T.Marker(new T.LngLat(119.097980, 36.695950))
-        window.map.addOverLay(marker)
-        // 创建标注的文字标签
-        const label = new T.Label({
-          text: `<b style="color:red">测试websocket<b>`,
-          position: marker.getLngLat(),
-          offset: new T.Point(3, -30)
-        })
-        window.map.addOverLay(label)
-        // 创建信息窗口
-        const infoWin = new T.InfoWindow()
-        let content = `
-          <div>
-            <b>车辆状态：aaasd</b><br>
-          </div>
-        `
-        infoWin.setContent(content)
-        marker.addEventListener('click', function (type, target, lnglat, containerPoint) {
-          marker.openInfoWindow(infoWin)
-          console.log(type, target, lnglat, containerPoint)
-        })
-        // window.map.panTo(marker.getLngLat())
-        this.listMarker.push(
-          {
-            car: '鲁G12345',
-            marker: marker,
-            label: label,
-            infoWin: infoWin
-          }
-        )
-
         const token = getToken()
-        const car = '鲁g12345'
-        this.ws = new WebSocket(`ws://192.168.1.198:8087/socketServer/${token}/${car}`)
+        // 使用设备编号连接
+        const cars = this.listCarWatch.map(item => {
+          return item.deviceno
+        }).join(',')
+        this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
         this.ws.onopen = function (evt) {
           console.log('Connection open ...')
           // ws.send('Hello WebSockets!')
         }
         this.ws.onmessage = function (evt) {
-          const data = JSON.parse(evt.data)
           console.log('Received Message: ' + evt.data)
-          marker.setLngLat(new T.LngLat(data.lt, data.la))
-          label.setLngLat(marker.getLngLat())
-          infoWin.setLngLat(marker.getLngLat())
-          content = `
-          <div>
-            <b>车辆状态：${data.upTime}</b><br>
-          </div>
-          `
-          infoWin.setContent(content)
-          infoWin.update()
+          self.mapMarker(JSON.parse(evt.data))
         }
         this.ws.onclose = function (evt) {
           console.log('Connection closed.')
         }
       },
       webSocketClose() {
-        this.ws.close()
-        window.map.removeOverLay(this.listMarker[0].marker)
-        window.map.removeOverLay(this.listMarker[0].label)
-        window.map.removeOverLay(this.listMarker[0].infoWin)
+        if (this.ws) {
+          this.ws.close()
+          // 删除标记列表
+          this.listMarker = []
+        }
+
+        // 移除覆盖物
+        window.map.clearOverLays()
       },
       handleCurrentChange(val) {
         // 页码改变处理
@@ -917,10 +1036,21 @@
             // 设置表格数据
             // this.list = response.data.dataList
             this.listCar = response.data
+            // 重新拼装
+            this.listCar = this.listCar.map(item => {
+              const tempObj = {checked: false}
+              // 翻页后需要重新检查
+              const watchIndex = this.listCarWatch.findIndex(itemWatch => itemWatch === item)
+              if (watchIndex > -1) {
+                tempObj.checked = true
+              }
+              return Object.assign(tempObj, item)
+            })
             // 设置分页插件数据总数
             // this.total = response.data.count
             this.total = 100000
           } else {
+            this.listCar = []
             this.$message({
               type: 'error',
               message: response.message
@@ -931,6 +1061,8 @@
         })
       },
       _getCarHistory() {
+        // 关闭实时监控
+        this.webSocketClose()
         // 清楚以前的轨迹
         if (this.carTrack) {
           this.carTrackStop()
@@ -1128,6 +1260,13 @@
         }
       }
 
+      .citySelect {
+        padding: 0 10px 10px 10px;
+        .el-select {
+          width: 100%;
+        }
+      }
+
       .tabs {
         .el-tabs__nav {
           width: 100%;
@@ -1157,6 +1296,66 @@
         border-left: 0;
         border-right: 0;
       }
+    }
+
+    .alarm {
+      position: fixed;
+      right: 20px;
+      top: 300px;
+      z-index: 9999;
+      .alarm-info {
+        .header {
+          margin: 0;
+          text-align: center;
+        }
+        .info {
+          font-size: 13px;
+          p {
+            margin: 4px;
+            .el-tag {
+              width: 85px;
+              height: 22px;
+              line-height: 20px;
+            }
+          }
+        }
+      }
+      audio {
+        display: none;
+      }
+      img {
+        width: 100px;
+        cursor: pointer;
+      }
+      .map-icon-wrapper {
+        cursor: pointer;
+        display: inline-block;
+        margin: 0 2px;
+        &:hover {
+          .icon-wrapper {
+            color: #fff;
+          }
+          .icon-guanbi {
+            background: #FF5252
+          }
+        }
+        .icon-wrapper {
+          border-radius: 4px;
+          padding: 4px;
+          font-size: 20px;
+        }
+        .icon-guanbi {
+          color: #ffffff;
+          background: #FF5252
+        }
+      }
+    }
+
+    .test {
+      position: fixed;
+      right: 400px;
+      top: 300px;
+      z-index: 9999;
     }
   }
 </style>

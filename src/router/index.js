@@ -23,9 +23,9 @@ import Layout from '../views/layout/Layout'
  **/
 export const constantRouterMap = [
   {path: '/login', component: _import('login/index2'), hidden: true},
-  {path: '/home', component: _import('home/index3'), hidden: true},
+  {path: '/home', component: _import('home/index4'), hidden: true},
   {path: '/home2', component: _import('home/index2'), hidden: true},
-  {path: '/home4', component: _import('home/index4'), hidden: true},
+  {path: '/home3', component: _import('home/index3'), hidden: true},
   {path: '/404', component: _import('errorPage/404'), hidden: true},
   {path: '/401', component: _import('errorPage/401'), hidden: true},
   {path: '/map_print', name: 'map_print', component: _import('home/map_print'), hidden: true},
