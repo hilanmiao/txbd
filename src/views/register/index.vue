@@ -2,20 +2,26 @@
   <div class="app-container">
 
     <div class="filter-container" style="padding-bottom: 10px;">
-      <el-input style="width: 200px;" class="filter-item" placeholder="名称">
+      <el-date-picker
+        v-model="dateArea"
+        type="daterange"
+        align="right"
+        unlink-panels
+        value-format="yyyy-MM-dd"
+        range-separator="-"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        @change="selectDate"
+        style="width:300px;"
+        clearable
+      >
+      </el-date-picker>
+      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.car_number" style="width:200px;"
+                class="filter-item"
+                placeholder="车牌号">
       </el-input>
-      <el-select value="" placeholder="地区">
-        <el-option
-          label="济南"
-          value="济南">
-        </el-option>
-        <el-option
-          label="潍坊"
-          value="潍坊">
-        </el-option>
-      </el-select>
       <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" icon="el-icon-edit" @click="handleEdit({})">添加</el-button>
+      <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
     </div>
 
     <div class="table-container">
@@ -24,108 +30,44 @@
         :data="tableData"
         border
         stripe
-        height="700"
+        fit
+        highlight-current-row
         style="width: 100%">
         <el-table-column
-          prop="name"
-          label="省">
+          prop="cityName"
+          label="城市"
+          width="150">
         </el-table-column>
         <el-table-column
-          prop="city"
-          label="城市">
+          prop="car_number"
+          label="车牌号"
+          width="150">
         </el-table-column>
         <el-table-column
-          prop="linkman1"
-          label="供应商">
+          prop="car_user_name"
+          label="车主姓名"
+          width="250">
         </el-table-column>
         <el-table-column
-          prop="phone1"
-          label="DPF型号">
+          prop="install_place_msg"
+          label="安装地点">
         </el-table-column>
         <el-table-column
-          prop="code"
-          label="DPFID">
+          prop="install_user_name"
+          label="安装人姓名"
+          width="120">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="车牌">
-        </el-table-column>
-        <el-table-column
-          prop="business"
-          label="车身颜色">
-        </el-table-column>
-        <el-table-column
-          prop="linkman2"
-          label="车型编号">
-        </el-table-column>
-        <el-table-column
-          prop="phone2"
-          label="车主姓名">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="车主身份证号">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="车主电话">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="发动机编号">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="安装地点信息">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="安装人姓名">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="安装人电话">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="45度照片信息">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="安装前照片">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="安装后照片">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="唯一标识">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="出场日期">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="上传人">
-        </el-table-column>
-        <el-table-column
-          prop="phone1"
-          label="上传时间">
-        </el-table-column>
-        <el-table-column
-          prop="remark"
-          label="备注">
+          prop="createTime"
+          label="安装时间"
+          width="170">
         </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
-          width="190">
+          width="230">
           <template slot-scope="scope">
             <el-button type="success" size="mini" icon="el-icon-search" @click="handleView(scope.row)"></el-button>
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
-            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -133,10 +75,11 @@
 
     <div class="pagination-container" style="margin-top: 20px">
       <el-pagination
-        :page-sizes="[20, 40, 70, 100]"
-        :page-size="listQuery.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
+        :page-sizes="[10, 40, 80, 100, 1000]"
+        :page-size="listQuery.limit"
+        :current-page.sync="listQuery.page"
         :total="total"
+        layout="total, sizes, prev, pager, next, jumper"
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -145,48 +88,102 @@
     </div>
 
     <div class="others-container">
-      <el-dialog :visible.sync="visibleEdit" title="添加&编辑" :before-close="handleBeforeClose">
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="下级平台名称">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
-          <el-form-item label="下级平台类型">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
-          <el-form-item label="名称">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
-          <el-form-item label="联系人">
-            <el-input v-model="form.linkman"></el-input>
-          </el-form-item>
-          <el-form-item label="电话">
-            <el-input v-model="form.phone"></el-input>
-          </el-form-item>
-          <el-form-item label="备注">
-            <el-input type="textarea" v-model="form.remark"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="handleSubmit" :loading="submitLoading">保存</el-button>
-            <el-button @click="visibleEdit = false">取消</el-button>
-          </el-form-item>
-        </el-form>
+      <el-dialog :visible.sync="imageView" title="查看图片">
+        <img :src="imgDetail" @click="closeImage" width="100%">
       </el-dialog>
+    </div>
 
-      <el-dialog :visible.sync="visibleView" title="查看">
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="机构名称">
-            <el-input v-model="form.name" :disabled="true"></el-input>
+    <div class="others-container">
+      <el-dialog :visible.sync="visibleView" :title="titMsg">
+        <el-form ref="form" :model="form" label-width="120px">
+
+          <el-form-item label="城市名">
+            <el-col :span="10">
+              <el-input v-model="form.cityName" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">供应商</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.supplierName" :disabled="lookOrEdit"></el-input>
+            </el-col>
           </el-form-item>
-          <el-form-item label="联系人">
-            <el-input v-model="form.linkman" :disabled="true"></el-input>
+          <el-form-item label="dpf型号">
+            <el-col :span="10">
+              <el-input v-model="form.dpf_model" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">车辆编号</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.car_number" :disabled="lookOrEdit"></el-input>
+            </el-col>
           </el-form-item>
-          <el-form-item label="电话">
-            <el-input v-model="form.phone" :disabled="true"></el-input>
+          <el-form-item label="颜色">
+            <el-col :span="10">
+              <el-input v-model="form.car_color" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">型号</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.car_type_code" :disabled="lookOrEdit"></el-input>
+            </el-col>
           </el-form-item>
-          <el-form-item label="备注">
-            <el-input type="textarea" v-model="form.remark" :disabled="true"></el-input>
+          <el-form-item label="车主姓名">
+            <el-col :span="10">
+              <el-input v-model="form.car_user_name" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">车主身份证号</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.car_user_identity_code" :disabled="lookOrEdit"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="车主电话">
+            <el-col :span="10">
+              <el-input v-model="form.car_user_phone" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">发动机编号</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.car_engine_number" :disabled="lookOrEdit"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="安装地点信息">
+            <el-col :span="10">
+              <el-input v-model="form.install_place_msg" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">安装人信息</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.install_user_name" :disabled="lookOrEdit"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="安装人电话">
+            <el-col :span="10">
+              <el-input v-model="form.install_user_phone" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">创建时间</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.createTime" :disabled="lookOrEdit"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="唯一标识">
+            <el-col :span="10">
+              <el-input v-model="form.qr_code" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+            <el-col :span="4">车辆出厂日期</el-col>
+            <el-col :span="8">
+              <el-input v-model="form.car_manufacture_time" :disabled="lookOrEdit"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="车辆状态">
+            <el-col :span="10">
+              <el-input v-model="form.car_status" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="车辆状态">
+            <el-col :span="24">
+              <a href="javascript:;" @click="openImageView(form.img_url_45)">45°照片</a>&nbsp;&nbsp;&nbsp;
+              <a @click="openImageView(form.before_install_img_url)">安装前照片</a>&nbsp;&nbsp;&nbsp;
+              <a @click="openImageView(form.after_install_img_url)">安装后照片</a>&nbsp;&nbsp;&nbsp;
+            </el-col>
           </el-form-item>
           <el-form-item>
+            <el-button type="primary" @click="handleSubmit" :loading="submitLoading" v-if="!lookOrEdit">保存
+            </el-button>
             <el-button @click="visibleView = false">关闭</el-button>
           </el-form-item>
         </el-form>
@@ -196,267 +193,250 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import {_getList,_postForm} from '@/api/supplier'
+  import {getMainList, lookMain} from '@/api/register'
+  import {getCitys} from '@/api/city'
+  import {getToken} from '@/utils/auth'
+  import {IMG_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
       return {
         // 列表相关
         tableData: [],
+        total: 0,
+        dateArea: '',
+        loadingExport: false,
         tableLoading: false,
-        listQuery: {
-          // 其他搜索条件
-          name: '',
-          // 分页相关
-          start: 0,
-          pageSize: 20
-        },
-        total: 400,
+        noEdit: false,
+        imageView: false,
+        imgDetail: '',
+        upImg: process.env.BASE_API + '/v1/unit/img?token=' + getToken(),
         // 表单相关
         form: {},
+        listCity: [],
         submitLoading: false,
-        visibleEdit: false,
-        visibleView: false
+        visible: false,
+        visibleView: false,
+        lookOrEdit: true,
+        titMsg: '编辑&添加',
+        listQuery: {
+          startTime: '',
+          city_id: '',
+          endTime: '',
+          car_number: '',
+          limit: 10,
+          offset: 0,
+          page: 1
+        }
+      }
+    },
+    watch: {
+      'listQuery.page': {
+        handler: function (val, oldVal) {
+          // 拼装查询用的offset
+          if (val > 1) {
+            this.listQuery.offset = (val - 1) * this.listQuery.limit
+          } else {
+            this.listQuery.offset = 0
+          }
+        },
+        deep: true
       }
     },
     created() {
-      this.getList()
+      this._getList()
+      this._getCityList()
     },
     methods: {
+      resetTempModel() {
+        // 重置表单
+        this.form = {
+          accessSecret: '',
+          accesskey: '',
+          area: '',
+          assets: '',
+          business: '',
+          city_id: '',
+          createTime: '',
+          createUserType: '',
+          employees: '',
+          financeName: '',
+          financePhone: '',
+          id: '',
+          imgUrl: [],
+          invoiceMsg: '',
+          isDelete: '',
+          latitude: '',
+          location: '',
+          longitude: '',
+          name: '',
+          ownName: '',
+          ownPhone: '',
+          province_id: '37',
+          provinceName: '山东省',
+          registeredAddress: '',
+          registeredCapital: '',
+          remark: '',
+          repireCarType: '',
+          shopId: '',
+          type: ''
+        }
+      },
+      _getList() {
+        // 清空表格数据
+        this.tableData = []
+        // 设置表格loading效果
+        this.tableLoading = true
+        getMainList(this.listQuery).then(response => {
+          if (response.code === '200') {
+            // 设置表格数据
+            this.tableData = response.data.dataList
+            // 设置分页插件数据总数
+            this.total = response.data.count
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
+        // 取消表格loading效果
+        this.tableLoading = false
+      },
+      handleUploadSuccess(response, file, fileList) {
+        if (response.code === '201') {
+          this.form.imgUrl = []
+          this.form.imgUrl.push({
+            name: file.name,
+            url: IMG_SERVER_PATH + response.data
+          })
+        } else {
+          this.$message.error(response.message)
+        }
+      },
+      handleUploadRemove(file, fileList) {
+        this.form.imgUrl = []
+      },
+      handleUploadPreview(file) {
+        this.imgDetail = file.url
+        this.imageView = true
+      },
+      openImageView(src) {
+        this.imgDetail = src
+        this.imageView = true
+      },
+      closeImage() {
+        this.imageView = false
+      },
       handleView(row) {
-        this.form = row
+        this.titMsg = '查看'
+        this.lookOrEdit = true
+        this.noEdit = true
+        const param = {
+          id: row.id
+        }
+        lookMain(param, row.id).then(responce => {
+          responce.data.imgUrl = JSON.parse(responce.data.imgUrl)
+          this.form = Object.assign({}, responce.data)
+        })
         this.visibleView = true
       },
       handleEdit(row) {
-        this.form = row
-        this.visibleEdit = true
-      },
-      handleDelete(row) {
-        this.form = row
-        this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
+        this.noEdit = true
+        this.lookOrEdit = false
+        this.titMsg = '编辑'
+        const param = {
+          id: row.id
+        }
+        lookMain(param, row.id).then(responce => {
+          responce.data.imgUrl = JSON.parse(responce.data.imgUrl)
+          this.form = Object.assign({}, responce.data)
         })
+        this.visibleView = true
+      },
+      handleAdd() {
+        this.titMsg = '添加'
+        this.resetTempModel()
+        this.noEdit = false
+        this.lookOrEdit = false
+        this.visibleView = true
+      },
+      handleExport() {
+        // 导出处理（简单做，后期可能会改用插件）
+        // 显示loading
+        this.loadingExport = true
+
+        const rows = [['城市', '供应商', '联系人', '联系人手机']]
+        this.tableData.forEach(item => {
+          rows.push([
+            item.city_name,
+            item.name,
+            item.link_name,
+            item.link_phone
+          ])
+        })
+        let csvContent = 'data:text/csv;charset=utf-8,'
+        rows.forEach(rowArray => {
+          const row = rowArray.join(',')
+          csvContent += row + '\r\n'
+        })
+
+        // window.open(encodedUri)
+        const encodedUri = encodeURI(csvContent)
+        const link = document.createElement('a')
+        link.setAttribute('href', encodedUri)
+        link.setAttribute('download', 'download.csv')
+        document.body.appendChild(link) // Required for FF
+        link.click() // This will download the data file named "my_data.csv".
+
+        // 隐藏loading
+        this.loadingExport = false
+      },
+      selectDate() {
+        if (this.dateArea != null) {
+          this.listQuery.startTime = this.dateArea[0]
+          this.listQuery.endTime = this.dateArea[1]
+        } else {
+          this.listQuery.startTime = ''
+          this.listQuery.endTime = ''
+        }
       },
       handleSearch() {
-        this.fetchData()
+        this._getList()
       },
       handleSizeChange(val) {
-        this.fetchData()
+        this.listQuery.limit = val
+        this._getList()
       },
       handleCurrentChange(val) {
-        this.fetchData()
+        this.offset = val
+        this._getList()
       },
       handleSubmit() {
         this.submitLoading = true
         // 提交数据
-        setTimeout(() => {
-          // 取消加载中
-          this.submitLoading = false
-          // 关闭dialog
-          this.visibleEdit = false
-        }, 2000)
-        // _postForm(this.name,this.phone).then(response => {
-        // console.log('')
-        // })
+        if (this.form.id === '') {
+          this._addSubmit()
+        }
+        if (this.form.id !== '') {
+          this._editSubmit()
+        }
       },
       handleBeforeClose(done) {
         if (!this.submitLoading) {
           done()
         }
       },
-      getList() {
-        // 加载中动画
-        this.tableLoading = true
-        // _getList(this.listQuery).then(response => {
-        //   this.tableData = response.data.items
-        //   this.listLoading = false
-        // })
+      _getCityList() {
+        getCitys().then(response => {
+          this.listCity = response.data
+        })
+        this.listCity = getCitys()
+      },
+      _postForm() {
         setTimeout(() => {
-          this.tableData = [
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-            {
-              id: '0',
-              name: 'DPF供应商',
-              city: '济南',
-              linkman1: '王晓红',
-              phone1: '18353674766',
-              address: '济南市高新区创业大厦A座109',
-              linkman2: '王晓红',
-              phone2: '18353674766',
-              code: '92360108MA37PPAE11',
-              business: 'DPF设备',
-              remark: 'dpf供应商'
-            },
-          ]
-          this.tableLoading = false
-        }, 1000)
+          console.log('提交中')
+        }, 2000)
       }
     }
   }

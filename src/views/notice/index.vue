@@ -20,26 +20,27 @@
         highlight-current-row
         style="width: 100%">
         <el-table-column
-          prop="name"
+          prop="title"
           label="标题">
         </el-table-column>
         <el-table-column
-          width="120"
+          width="200"
           prop="createTime"
           label="创建时间">
         </el-table-column>
         <el-table-column
           width="120"
-          label="状态">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.status | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>
-          </template>
+          prop="createUserName"
+          label="创建人">
         </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
           width="200">
           <template slot-scope="scope">
+            <el-tooltip content="查看" placement="top">
+              <el-button type="success" size="mini" icon="el-icon-search" @click="handleView(scope.row)"></el-button>
+            </el-tooltip>
             <el-tooltip content="编辑" placement="top">
               <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
             </el-tooltip>
@@ -66,17 +67,16 @@
     </div>
 
     <div class="others-container">
-      <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
+      <el-dialog :visible.sync="dialogFormVisible" title="查看" :before-close="handleBeforeClose">
         <el-form ref="form" :model="tempModel" label-width="80px">
           <el-form-item label="标题">
-            <el-input v-model="tempModel.title"></el-input>
+            {{tempModel.title}}
           </el-form-item>
           <el-form-item label="内容">
-
+            <div v-html="decodeURIComponent(tempModel.content)"></div>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleSubmit" :loading="loadingSubmit">保存</el-button>
-            <el-button @click="dialogFormVisible = false">取消</el-button>
+            <el-button @click="dialogFormVisible = false">关闭</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -85,7 +85,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform} from '@/api/lower_platform'
+  import {getModelPlatform, getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform} from '@/api/notice'
 
   export default {
     data() {
@@ -104,7 +104,7 @@
         // 表单相关
         tempModel: {
           id: '',
-          name: '',
+          content: '',
           title: ''
         },
         loadingSubmit: false,
@@ -153,10 +153,7 @@
         // 重置表单
         this.tempModel = {
           id: '',
-          name: '',
-          link_name: '',
-          link_phone: '',
-          type: '0'
+          name: ''
         }
       },
       handleCreate() {
@@ -164,11 +161,26 @@
           name: '公告添加编辑'
         })
       },
-      handleEdit(row) {
-        // 使用对象拷贝赋值
-        this.tempModel = Object.assign({}, row)
-        // 编辑处理
+      handleView(row) {
         this.dialogFormVisible = true
+        getModelPlatform({id: row.id}).then(response => {
+          if (response.code === '200') {
+            this.tempModel = response.data
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
+      },
+      handleEdit(row) {
+        this.$router.push({
+          name: '公告添加编辑',
+          params: {
+            id: row.id
+          }
+        })
       },
       handleDelete(row) {
         // 使用对象拷贝赋值

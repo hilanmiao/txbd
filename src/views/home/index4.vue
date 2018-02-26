@@ -255,42 +255,40 @@
           </div>
         </el-card>
       </div>
-      <div class="right">
-        <div class="info-wrapper">
-
-        </div>
+      <div class="right" ref="right">
         <el-card :body-style="{padding:'0px',borderRadius:'0'}">
           <div ref="map" id="mapDiv" class="map">
+          </div>
+        </el-card>
+        <div class="control" ref="control" id="control">
+          <div class="expand" id="expand">
+            <i class="el-icon-arrow-up"></i>
           </div>
           <el-tabs type="border-card">
             <el-tab-pane>
               <span slot="label"><i class="el-icon-date"></i>车辆信息</span>
               <el-table
                 :data="listCarWatchReal"
-                height="200"
+                :height="expandHeight"
               >
                 <el-table-column
                   prop="platenumber"
                   label="车牌号"
-                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="deviceno"
                   label="设备编号"
-                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="status"
                   label="车辆状态"
-                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="status"
                   label="经纬度"
-                  width="100"
                 >
                   <template slot-scope="scope">
                     {{scope.row.longitude + ',' + scope.row.latitude}}
@@ -299,50 +297,43 @@
                 <el-table-column
                   prop="direction"
                   label="方向"
-                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="gpstime"
                   label="GPS定位时间"
-                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="t1"
                   label="DOC原温度"
-                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="t2"
                   label="DPF前端温度"
-                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="t3"
                   label="DPF前端温度"
-                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="p1"
                   label="DOC前端压力"
-                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="p2"
                   label="DOC后端压力"
-                  width="120"
                 >
                 </el-table-column>
               </el-table>
             </el-tab-pane>
             <el-tab-pane>
               <span slot="label"><i class="el-icon-date"></i>车辆历史记录</span>
-              <div style="height: 200px;">
+              <div :style="{height: expandHeight + 'px'}">
                 <div>
                   <el-input style="width: 200px;"
                             class="filter-item"
@@ -376,7 +367,7 @@
               <span slot="label"><i class="el-icon-date"></i>终端上报警情（预处警）</span>
               <el-table
                 :data="listCarAlarm"
-                height="200"
+                :height="expandHeight"
               >
                 <el-table-column
                   prop="car"
@@ -463,51 +454,216 @@
               </el-table>
             </el-tab-pane>
           </el-tabs>
-        </el-card>
+        </div>
       </div>
       <div class="alarm" v-show="showAlarm">
-        <el-card>
-          <div class="alarm-info">
-            <h4 class="header">车辆异常报警</h4>
-            <div class="info">
-              <p>
-                车牌:
-                <el-tag type="info">鲁G809CP</el-tag>
-                &nbsp;
-                车系:
-                <el-tag type="info">宝马X5</el-tag>
-              </p>
-              <p>
-                前温:
-                <el-tag type="danger">180℃</el-tag>
-                &nbsp;
-                前压:
-                <el-tag>1KPA</el-tag>
-              </p>
-              <p>
-                中温:
-                <el-tag>180℃</el-tag>
-                &nbsp;
-                中压:
-                <el-tag type="danger">1KPA</el-tag>
-              </p>
-              <p>
-                后温:
-                <el-tag>180℃</el-tag>
-                &nbsp;
-                后压:
-                <el-tag type="warning">1KPA</el-tag>
-              </p>
-              <p>
-                <el-button type="success" size="mini" icon="el-icon-location">开启实时定位</el-button>
-                <el-button type="danger" size="mini" icon="el-icon-location">关闭实时定位</el-button>
-              </p>
-              <p>
-                其他数据其他数据其他数据其他数据其他数据
-              </p>
+        <div class="info-wrapper">
+          <el-card>
+            <div class="alarm-info">
+              <h4 class="header">车辆异常报警</h4>
+              <div class="info">
+                <p>
+                  车牌:
+                  <el-tag type="info">鲁G809CP</el-tag>
+                  &nbsp;
+                  车系:
+                  <el-tag type="info">宝马X5</el-tag>
+                </p>
+                <p>
+                  前温:
+                  <el-tag type="danger">180℃</el-tag>
+                  &nbsp;
+                  前压:
+                  <el-tag>1KPA</el-tag>
+                </p>
+                <p>
+                  中温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  中压:
+                  <el-tag type="danger">1KPA</el-tag>
+                </p>
+                <p>
+                  后温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  后压:
+                  <el-tag type="warning">1KPA</el-tag>
+                </p>
+                <p>
+                  报警内容：dfp未启用
+                </p>
+                <p>
+                  <el-button type="primary" size="mini" icon="el-icon-location">定位</el-button>
+                </p>
+              </div>
             </div>
-          </div>
-        </el-card>
+          </el-card>
+          <el-card>
+            <div class="alarm-info">
+              <h4 class="header">车辆异常报警</h4>
+              <div class="info">
+                <p>
+                  车牌:
+                  <el-tag type="info">鲁G809CP</el-tag>
+                  &nbsp;
+                  车系:
+                  <el-tag type="info">宝马X5</el-tag>
+                </p>
+                <p>
+                  前温:
+                  <el-tag type="danger">180℃</el-tag>
+                  &nbsp;
+                  前压:
+                  <el-tag>1KPA</el-tag>
+                </p>
+                <p>
+                  中温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  中压:
+                  <el-tag type="danger">1KPA</el-tag>
+                </p>
+                <p>
+                  后温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  后压:
+                  <el-tag type="warning">1KPA</el-tag>
+                </p>
+                <p>
+                  报警内容：dfp未启用
+                </p>
+                <p>
+                  <el-button type="primary" size="mini" icon="el-icon-location">定位</el-button>
+                </p>
+              </div>
+            </div>
+          </el-card>
+          <el-card>
+            <div class="alarm-info">
+              <h4 class="header">车辆异常报警</h4>
+              <div class="info">
+                <p>
+                  车牌:
+                  <el-tag type="info">鲁G809CP</el-tag>
+                  &nbsp;
+                  车系:
+                  <el-tag type="info">宝马X5</el-tag>
+                </p>
+                <p>
+                  前温:
+                  <el-tag type="danger">180℃</el-tag>
+                  &nbsp;
+                  前压:
+                  <el-tag>1KPA</el-tag>
+                </p>
+                <p>
+                  中温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  中压:
+                  <el-tag type="danger">1KPA</el-tag>
+                </p>
+                <p>
+                  后温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  后压:
+                  <el-tag type="warning">1KPA</el-tag>
+                </p>
+                <p>
+                  报警内容：dfp未启用
+                </p>
+                <p>
+                  <el-button type="primary" size="mini" icon="el-icon-location">定位</el-button>
+                </p>
+              </div>
+            </div>
+          </el-card>
+          <el-card>
+            <div class="alarm-info">
+              <h4 class="header">车辆异常报警</h4>
+              <div class="info">
+                <p>
+                  车牌:
+                  <el-tag type="info">鲁G809CP</el-tag>
+                  &nbsp;
+                  车系:
+                  <el-tag type="info">宝马X5</el-tag>
+                </p>
+                <p>
+                  前温:
+                  <el-tag type="danger">180℃</el-tag>
+                  &nbsp;
+                  前压:
+                  <el-tag>1KPA</el-tag>
+                </p>
+                <p>
+                  中温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  中压:
+                  <el-tag type="danger">1KPA</el-tag>
+                </p>
+                <p>
+                  后温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  后压:
+                  <el-tag type="warning">1KPA</el-tag>
+                </p>
+                <p>
+                  报警内容：dfp未启用
+                </p>
+                <p>
+                  <el-button type="primary" size="mini" icon="el-icon-location">定位</el-button>
+                </p>
+              </div>
+            </div>
+          </el-card>
+          <el-card>
+            <div class="alarm-info">
+              <h4 class="header">车辆异常报警</h4>
+              <div class="info">
+                <p>
+                  车牌:
+                  <el-tag type="info">鲁G809CP</el-tag>
+                  &nbsp;
+                  车系:
+                  <el-tag type="info">宝马X5</el-tag>
+                </p>
+                <p>
+                  前温:
+                  <el-tag type="danger">180℃</el-tag>
+                  &nbsp;
+                  前压:
+                  <el-tag>1KPA</el-tag>
+                </p>
+                <p>
+                  中温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  中压:
+                  <el-tag type="danger">1KPA</el-tag>
+                </p>
+                <p>
+                  后温:
+                  <el-tag>180℃</el-tag>
+                  &nbsp;
+                  后压:
+                  <el-tag type="warning">1KPA</el-tag>
+                </p>
+                <p>
+                  报警内容：dfp未启用
+                </p>
+                <p>
+                  <el-button type="primary" size="mini" icon="el-icon-location">定位</el-button>
+                </p>
+              </div>
+            </div>
+          </el-card>
+        </div>
         <img :src="alarm" alt="">
         <audio controls loop ref="alarmAudio">
           <source :src="alarmAudio" type="audio/mpeg">
@@ -626,7 +782,10 @@
               picker.$emit('pick', [start, end])
             }
           }]
-        }
+        },
+        // 下方信息面板拉动方向
+        expandHeight: 200,
+        pullDirection: ''
       }
     },
     watch: {
@@ -652,13 +811,47 @@
       }, 100)
       window.addEventListener('resize', this.__resizeHanlder)
       this._getCars()
+      // 注册下方信息面板拉动事件
+      this.registerPullEvent()
     },
     methods: {
+      registerPullEvent() {
+        const self = this
+        const expandDom = document.getElementById('expand')
+        const controlDom = document.getElementById('control')
+        expandDom.onmousedown = function (e) {
+          const oEvent = e || event
+          self.y = oEvent.clientY
+          self.controlH = controlDom.offsetHeight
+
+          if (self.y < (controlDom.offsetTop + 5)) {
+            self.pullDirection = 'top'
+          } else if (self.y > (controlDom.offsetTop + self.controlH - 5)) {
+            self.pullDirection = 'bottom'
+          }
+
+          document.onmousemove = function (e) {
+            const oEvent = e || event
+            self.yy = oEvent.clientY
+            if (self.pullDirection === 'top') {
+              self.expandHeight = self.controlH + (self.y - self.yy) - 71
+            } else if (this.pullDirection === 'bottom') {
+              self.expandHeight = self.controlH + (self.yy - self.y) - 71
+            }
+          }
+
+          document.onmouseup = function () {
+            document.onmousedown = null
+            document.onmousemove = null
+          }
+        }
+      },
       setLayout() {
         // this.$refs.leftCard.style.height = 1000 + 'px'
         this.leftTableHeight = (window.innerHeight - 270)
         this.$refs.map.style.height = (window.innerHeight - 344) + 'px'
         this.$refs.left.style.height = (window.innerHeight - 72) + 'px'
+        this.$refs.control.style.width = this.$refs.right.offsetWidth - 20 + 'px'
         // this.$refs.treeContainer.style.height = (window.innerHeight - 228) + 'px'
         // this.$refs.carTab.style.height = (window.innerHeight - 228) + 'px'
       },
@@ -1037,8 +1230,9 @@
         getCars(this.listQuery).then(response => {
           if (response.code === '200') {
             // 设置表格数据
-            // this.list = response.data.dataList
             this.listCar = response.data
+            // 设置分页插件数据总数
+            this.total = parseInt(response.message)
             // 重新拼装
             this.listCar = this.listCar.map(item => {
               const tempObj = {checked: false}
@@ -1049,9 +1243,6 @@
               }
               return Object.assign(tempObj, item)
             })
-            // 设置分页插件数据总数
-            // this.total = response.data.count
-            this.total = 100000
           } else {
             this.listCar = []
             this.$message({
@@ -1299,26 +1490,48 @@
         border-left: 0;
         border-right: 0;
       }
+      .control {
+        position: fixed;
+        bottom: 12px;
+        right: 20px;
+        z-index: 9999;
+        .expand {
+          background: #fff;
+          padding: 4px;
+          height: 26px;
+          color: #ccc;
+          left: 49%;
+          position: absolute;
+          top: -25px;
+          cursor: n-resize;
+          border-radius: 2px;
+          border: 1px solid #ebeef5;
+        }
+      }
     }
 
     .alarm {
       position: fixed;
       right: 20px;
-      top: 300px;
+      top: 200px;
       z-index: 9999;
-      .alarm-info {
-        .header {
-          margin: 0;
-          text-align: center;
-        }
-        .info {
-          font-size: 13px;
-          p {
-            margin: 4px;
-            .el-tag {
-              width: 85px;
-              height: 22px;
-              line-height: 20px;
+      .info-wrapper {
+        max-height: 500px;
+        overflow: auto;
+        .alarm-info {
+          .header {
+            margin: 0;
+            text-align: center;
+          }
+          .info {
+            font-size: 13px;
+            p {
+              margin: 4px;
+              .el-tag {
+                width: 85px;
+                height: 22px;
+                line-height: 20px;
+              }
             }
           }
         }
