@@ -16,13 +16,17 @@
       },
       width: {
         type: String,
-        default: '100%'
+        default: '700px'
       },
       height: {
         type: String,
-        default: '300px'
+        default: '350px'
       },
-      dataD: {
+      autoResize: {
+        type: Boolean,
+        default: true
+      },
+      dataArr: {
         type: Object
       }
     },
@@ -49,7 +53,7 @@
       this.chart = null
     },
     watch: {
-      dataD: {
+      dataArr: {
         deep: true,
         handler(val) {
           this.setOptions(val)
@@ -57,37 +61,61 @@
       }
     },
     methods: {
-      setOptions({onLine,outLine} = {}) {
+      setOptions({t1,t2,t3,cars} = {}) {
         this.chart.setOption({
-          tooltip: {
-            trigger: 'item',
-              formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          legend: {
-            left: 'center',
-              bottom: '10',
-              data: ['上线数', '未上线数']
+          color:['#67E0E3', '#FFDB5C', '#FF9F7F',],
+          xAxis: {
+            data: cars,
+            axisTick: {
+              show: false
+            }
           },
           calculable: true,
-            series: [
-            {
-              name: '上线统计',
-              type: 'pie',
-              radius : '55%',
-              center: ['50%', '38%'],
-              data: [
-                {value:onLine, name: '上线数'},
-                {value:outLine, name: '未上线数'}
-              ],
-              animationEasing: 'cubicInOut',
-              animationDuration: 2600
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            },
+            padding: [5, 10]
+          },
+          yAxis: {
+            name:'温度分析\n 单位/摄氏度',
+            axisTick: {
+              show: false
             }
+          },
+          legend: {
+            data: ['原温度', '前温度','后温度']
+          },
+          series: [
+            {
+              name: '原温度',
+              type: 'bar',
+              barGap: 0,
+              data: t1,
+            },
+            {
+              name: '前温度',
+              type: 'bar',
+              data: t2,
+            },
+            {
+              name: '后温度',
+              type: 'bar',
+              data: t3,
+            },
           ]
         })
       },
       initChart() {
         this.chart = echarts.init(this.$el, 'macarons')
-        this.setOptions(this.dataD)
+        this.setOptions(this.dataArr)
       }
     }
   }

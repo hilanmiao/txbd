@@ -16,13 +16,17 @@
       },
       width: {
         type: String,
-        default: '100%'
+        default: '700px'
       },
       height: {
         type: String,
-        default: '300px'
+        default: '350px'
       },
-      dataD: {
+      autoResize: {
+        type: Boolean,
+        default: true
+      },
+      dataArr: {
         type: Object
       }
     },
@@ -49,7 +53,7 @@
       this.chart = null
     },
     watch: {
-      dataD: {
+      dataArr: {
         deep: true,
         handler(val) {
           this.setOptions(val)
@@ -57,37 +61,56 @@
       }
     },
     methods: {
-      setOptions({onLine,outLine} = {}) {
+      setOptions({p1,p2,cars} = {}) {
         this.chart.setOption({
-          tooltip: {
-            trigger: 'item',
-              formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          legend: {
-            left: 'center',
-              bottom: '10',
-              data: ['上线数', '未上线数']
+          color: ['#003366', '#006699'],
+          xAxis: {
+            data: cars,
+            axisTick: {
+              show: false
+            }
           },
           calculable: true,
-            series: [
-            {
-              name: '上线统计',
-              type: 'pie',
-              radius : '55%',
-              center: ['50%', '38%'],
-              data: [
-                {value:onLine, name: '上线数'},
-                {value:outLine, name: '未上线数'}
-              ],
-              animationEasing: 'cubicInOut',
-              animationDuration: 2600
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            },
+            padding: [5, 10]
+          },
+          yAxis: {
+            name:'压力分析\n 单位/kPa',
+            axisTick: {
+              show: false
             }
+          },
+          legend: {
+            data: ['前压', '后压']
+          },
+          series: [
+            {
+              name: '前压',
+              type: 'bar',
+              barGap: 0,
+              data: p1,
+            },
+            {
+              name: '后压',
+              type: 'bar',
+              data: p2,
+              }
           ]
         })
       },
       initChart() {
         this.chart = echarts.init(this.$el, 'macarons')
-        this.setOptions(this.dataD)
+        this.setOptions(this.dataArr)
       }
     }
   }
