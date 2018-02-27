@@ -109,53 +109,43 @@
     </div>
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" :title="titMsg">
-        <el-form ref="form" :model="form" label-width="120px">
+        <el-form ref="form" :model="form" :rules="rules" label-width="100px" :inline="true">
 
-          <el-form-item label="名称">
-            <el-col :span="10">
-              <el-form-item>
-                <el-input v-model="form.name" style="width:80%;" :disabled="lookOrEdit"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4"> 企业代码</el-col>
-            <el-col :span="8">
-              <el-form-item>
-                <el-input v-model="form.e_code" :disabled="noEdit"></el-input>
-              </el-form-item>
-            </el-col>
+          <el-form-item label="名称" prop="name">
+            <el-input v-model="form.name" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="经营范围">
+          <el-form-item label="企业代码" prop="e_code">
+            <el-input v-model="form.e_code" :disabled="noEdit"></el-input>
+          </el-form-item>
+
+          <el-form-item label="经营范围" prop="business">
             <el-input v-model="form.business" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="省份">
-            <el-col :span="10">
-              <el-input v-model="form.provinceName" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">城市</el-col>
-            <el-col :span="8">
-              <el-select v-model="form.city_id" :disabled="lookOrEdit" placeholder="请选择供应商">
-                <el-option v-for="item in listCity" :key="item.id" :label="item.name"
-                           :value="item.id"></el-option>
-              </el-select>
-            </el-col>
-          </el-form-item>
-
-          <el-form-item label="企业地址">
+          <el-form-item label="企业地址" prop="address">
             <el-input v-model="form.address" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="财务姓名">
-            <el-col :span="10">
-              <el-input v-model="form.finance_name" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">财务电话</el-col>
-            <el-col :span="8">
-              <el-input v-model="form.finance_phone" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <el-form-item label="省份" prop="provinceName">
+            <el-input v-model="form.provinceName" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
+          <el-form-item label="城市" prop="city_id">
+            <el-select v-model="form.city_id" :disabled="lookOrEdit" style="width: 93%">
+              <el-option v-for="item in listCity" :key="item.id" :label="item.name"
+                         :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="财务姓名" prop="finance_name">
+            <el-input v-model="form.finance_name" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+
+          <el-form-item label="财务电话" prop="finance_phone">
+            <el-input v-model="form.finance_phone" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <br>
           <el-form-item label="营业执照">
             <el-upload
               class="upload-demo"
@@ -176,59 +166,55 @@
             </el-upload>
 
           </el-form-item>
-
-          <el-form-item label="联系人姓名">
-            <el-col :span="10">
-              <el-input v-model="form.link_name" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">联系人手机</el-col>
-            <el-col :span="8">
-              <el-input v-model="form.link_phone" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <br>
+          <el-form-item label="联系人姓名" prop="link_name">
+            <el-input v-model="form.link_name" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="联系人电话">
-            <el-col :span="10">
-              <el-input v-model="form.link_tel" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">联系人传真</el-col>
-            <el-col :span="8">
-              <el-input v-model="form.link_fax" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <el-form-item label="联系人手机" prop="link_phone">
+            <el-input v-model="form.link_phone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="企业法人姓名">
+          <el-form-item label="联系人电话" prop="link_tel">
+            <el-input v-model="form.link_tel" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+
+          <el-form-item label="联系人传真" prop="link_fax">
+            <el-input v-model="form.link_fax" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+
+          <el-form-item label="法人姓名" prop="own_name">
             <el-input v-model="form.own_name" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="生产许可编码">
+          <el-form-item label="生产编码" prop="production_licence_code">
             <el-input v-model="form.production_licence_code" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="企业注册资金">
+          <el-form-item label="注册资金" prop="registered_capital">
             <el-input v-model="form.registered_capital" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="供应商ID">
+          <el-form-item label="供应商ID" prop="supplier_id">
             <el-input v-model="form.supplier_id" :disabled="lookOrEdit"></el-input>
           </el-form-item>
 
-          <el-form-item label="开票信息">
+          <el-form-item label="开票信息" prop="invoice_msg">
             <el-input v-model="form.invoice_msg" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-
-          <el-form-item label="主要产品描述">
-            <el-input type="textarea" v-model="form.main_product" :disabled="lookOrEdit"></el-input>
+          <br>
+          <el-form-item label="产品描述" prop="main_product">
+            <el-input type="textarea" class="allLine" v-model="form.main_product" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-
-          <el-form-item label="备注信息">
-            <el-input type="textarea" v-model="form.remark" :disabled="lookOrEdit"></el-input>
+          <br>
+          <el-form-item label="备注信息" prop="remark">
+            <el-input type="textarea" class="allLine" v-model="form.remark" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-
-          <el-form-item>
+          <br>
+          <el-form-item style="margin-left: 20px;">
             <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading" v-if="!lookOrEdit">保存
             </el-button>
-            <el-button @click="visibleView = false">关闭</el-button>
+            <el-button @click="qxSubmit('form')">关闭</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -240,7 +226,7 @@
   import {getSuppList, addSupp, editSupp, lookSupp, deleSupp} from '@/api/supplier'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH} from '@/api/config'
+  import {IMG_SERVER_PATH, UPIMG_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -283,6 +269,53 @@
           registered_capital: '',
           supplier_id: ''
         },
+        rules: {
+          name: [
+            {required: true, message: '请输入名称', trigger: 'blur'}
+          ],
+          e_code: [
+            {required: true, message: '请输入编号', trigger: 'blur'}
+          ],
+          city_id: [
+            {required: true, message: '请选择城市', trigger: 'change'}
+          ],
+          business: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          address: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          finance_name: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          finance_phone: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          link_tel: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          link_fax: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          invoice_msg: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          own_name: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          link_name: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          link_phone: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          main_product: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ],
+          registered_capital: [
+            {required: true, message: '请填写内容', trigger: 'blur'}
+          ]
+        },
         listCity: [],
         submitLoading: false,
         imgView: false,
@@ -301,7 +334,7 @@
           page: 1
         },
         // 上传相关
-        uploadUrl: process.env.BASE_API + '/v1/unit/img?token=' + getToken()
+        uploadUrl: UPIMG_SERVER_PATH + 'unit/img?token=' + getToken()
       }
     },
     watch: {
@@ -451,7 +484,6 @@
         this.noEdit = false
         this.lookOrEdit = false
         this.visibleView = true
-        console.log(this.form.id)
       },
       handleDelete(row) {
         this.form = row
@@ -486,8 +518,6 @@
         })
       },
       handleExport() {
-        // 导出处理（简单做，后期可能会改用插件）
-        // 显示loading
         this.loadingExport = true
 
         const rows = [['城市', '供应商', '联系人', '联系人手机']]
@@ -505,15 +535,11 @@
           csvContent += row + '\r\n'
         })
 
-        // window.open(encodedUri)
         const encodedUri = encodeURI(csvContent)
         const link = document.createElement('a')
         link.setAttribute('href', encodedUri)
         link.setAttribute('download', 'download.csv')
         document.body.appendChild(link) // Required for FF
-        link.click() // This will download the data file named "my_data.csv".
-
-        // 隐藏loading
         this.loadingExport = false
       },
       selectDate() {
@@ -537,17 +563,28 @@
         this._getList()
       },
       handleSubmit(formName) {
-        if (this.form.id === '') {
-          this._addSubmit()
-        }
-        if (this.form.id !== '') {
-          this._editSubmit()
-        }
+        this.$refs[formName].validate((valid) => {
+          // 验证规则
+          if (valid) {
+            if (this.form.id === '') {
+              this._addSubmit()
+            }
+            if (this.form.id !== '') {
+              this._editSubmit()
+            }
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      },
+      qxSubmit(formName) {
+        this.visibleView = false
+        this.$refs[formName].resetFields()
       },
       _addSubmit() {
         const tempForm = Object.assign({}, this.form)
         tempForm.img_url = JSON.stringify(tempForm.img_url)
-        console.log(this.form)
         addSupp(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
@@ -566,6 +603,7 @@
           this.submitLoading = false
         })
       },
+
       _editSubmit() {
         const tempForm = Object.assign({}, this.form)
         tempForm.img_url = JSON.stringify(tempForm.img_url)
@@ -610,7 +648,11 @@
 <style rel="stylesheet/scss" lang="scss" scoped>
   .chart-wrapper {
     background: #fff;
-    padding: 16px 16px 0;
+    padding: 16px 0px 0;
     margin-bottom: 32px;
+  }
+
+  .allLine {
+    width: 700px;
   }
 </style>

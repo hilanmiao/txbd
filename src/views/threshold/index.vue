@@ -102,38 +102,38 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" title="添加&修改">
-        <el-form ref="form" :model="form"  :rules="rules" label-width="120px"  :inline="true">
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px" :inline="true">
 
           <el-form-item label="dpf型号" prop="dpf_model">
-               <el-input v-model="form.dpf_model" style="width:80%;" :readonly="lookOrEdit"></el-input>
-           </el-form-item>
+            <el-input v-model="form.dpf_model" style="width:80%;" :readonly="lookOrEdit"></el-input>
+          </el-form-item>
 
           <el-form-item label="供应商" prop="supplier_id">
-             <el-select v-model="form.supplier_id"  placeholder="请选择供应商" :disabled="lookOrEdit">
-                <el-option v-for="item in listSupp" :key="item.SUPPLIER_ID" :label="item.NAME"
-                           :value="item.SUPPLIER_ID"></el-option>
-              </el-select>
+            <el-select v-model="form.supplier_id" placeholder="请选择供应商" :disabled="lookOrEdit">
+              <el-option v-for="item in listSupp" :key="item.SUPPLIER_ID" :label="item.NAME"
+                         :value="item.SUPPLIER_ID"></el-option>
+            </el-select>
           </el-form-item>
 
           <el-form-item label="T1最小值" prop="minT1">
-              <el-input v-model.number="form.minT1" placeholder="T1最小值" style="width:80%;"></el-input>
-            </el-form-item>
+            <el-input v-model.number="form.minT1" placeholder="T1最小值" style="width:80%;"></el-input>
+          </el-form-item>
 
-            <el-form-item label="T1最大值" prop="maxT1">
-              <el-input v-model.number="form.maxT1" placeholder="T1最大值"></el-input>
-            </el-form-item>
+          <el-form-item label="T1最大值" prop="maxT1">
+            <el-input v-model.number="form.maxT1" placeholder="T1最大值"></el-input>
+          </el-form-item>
 
 
-          <el-form-item label="T2最小值"  prop="minT2">
+          <el-form-item label="T2最小值" prop="minT2">
             <el-input v-model.number="form.minT2" style="width:80%;"></el-input>
           </el-form-item>
 
-            <el-form-item label="T2最大值"  prop="maxT2">
-              <el-input v-model.number="form.maxT2"></el-input>
-           </el-form-item>
+          <el-form-item label="T2最大值" prop="maxT2">
+            <el-input v-model.number="form.maxT2"></el-input>
+          </el-form-item>
 
           <el-form-item label="T3最小值" prop="minT3">
-              <el-input v-model.number="form.minT3" style="width:80%;"></el-input>
+            <el-input v-model.number="form.minT3" style="width:80%;"></el-input>
           </el-form-item>
 
           <el-form-item label="T3最大值" prop="maxT3">
@@ -146,7 +146,7 @@
 
           <el-form-item label="P1最大值" prop="maxP1">
             <el-input v-model.number="form.maxP1"></el-input>
-           </el-form-item>
+          </el-form-item>
 
           <el-form-item label="P2最小值" prop="minP2">
             <el-input v-model.number="form.minP2" style="width:80%;"></el-input>
@@ -157,7 +157,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading" >保存
+            <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading">保存
             </el-button>
             <el-button @click="qxSubmit('form')">关闭</el-button>
           </el-form-item>
@@ -169,8 +169,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getList,addThre,editThre,deleThre} from '@/api/threshold'
+  import {getList, addThre, editThre, deleThre} from '@/api/threshold'
   import {allSupp} from '@/api/supplier'
+
   export default {
     data() {
       return {
@@ -178,64 +179,64 @@
         total: 0,
         loadingExport: false,
         tableLoading: false,
-        lookOrEdit:false,
-        T2:'',
-        listSupp:[],
-        tableData:[],
+        lookOrEdit: false,
+        T2: '',
+        listSupp: [],
+        tableData: [],
         // 表单相关
         form: {
-         dpf_model: "",
-         id:"",
-         maxP1:"",
-         maxP2:"",
-         maxT1:"",
-         maxT2:"",
-         maxT3:"",
-         minP1:"",
-         minP2:"",
-         minT1:"",
-         minT2:"",
-         minT3:"",
-         supplierName:"",
-         supplier_id: ""
-       },
+          dpf_model: '',
+          id: '',
+          maxP1: '',
+          maxP2: '',
+          maxT1: '',
+          maxT2: '',
+          maxT3: '',
+          minP1: '',
+          minP2: '',
+          minT1: '',
+          minT2: '',
+          minT3: '',
+          supplierName: '',
+          supplier_id: ''
+        },
         rules: {
           dpf_model: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-           ],
-         supplier_id: [
-            { required: true, message: '请选择供应商', trigger: 'change'},
+            {required: true, message: '请输入活动名称', trigger: 'blur'}
+          ],
+          supplier_id: [
+            {required: true, message: '请选择供应商', trigger: 'change'}
           ],
           maxP1: [
-            { type: 'number',required: true, message: '请填写正确数值',trigger: 'blur' },
-         ],
-         maxP2: [
-            { type: 'number',required: true, message: '请填写正确数值', trigger: 'blur' },
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
+          ],
+          maxP2: [
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
           ],
           maxT1: [
-            { type: 'number',required: true, message: '请填写正确数值', trigger: 'blur' },
-           ],
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
+          ],
           maxT2: [
-            { type: 'number',required: true, message: '请填写正确数值', trigger: 'blur' },
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
           ],
           maxT3: [
-            { type: 'number',required: true, message: '请填写正确数值', trigger: 'blur' },
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
           ],
           minP1: [
-            { type: 'number',required: true, message: '请填写正确数值', trigger: 'blur' },
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
           ],
           minP2: [
-            { type: 'number',required: true, message: '请填写正确数值', trigger: 'blur' },
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
           ],
           minT1: [
-            { type: 'number',required: true, message: '请填写正确数值', trigger: 'blur' },
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
           ],
           minT2: [
-            { type: 'number',required: true, message: '请填写正确数值', trigger: 'blur' },
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
           ],
           minT3: [
-            { type: 'number',required: true, message: '请填写正确数值', trigger: 'blur' },
-          ],
+            {type: 'number', required: true, message: '请填写正确数值', trigger: 'blur'}
+          ]
         },
         submitLoading: false,
         visibleView: false,
@@ -246,8 +247,8 @@
           limit: 10,
           offset: 0,
           page: 1
-        },
-       }
+        }
+      }
     },
     watch: {
       'listQuery.page': {
@@ -268,27 +269,26 @@
     },
     methods: {
       resetTempModel() {
-
         // 重置表单
         this.form = {
-            dpf_model: "",
-            id:"",
-            maxP1:"",
-            maxP2:"",
-            maxT1:"",
-            maxT2:"",
-            maxT3:"",
-            minP1:"",
-            minP2:"",
-            minT1:"",
-            minT2:"",
-            minT3:"",
-            supplierName:"",
-            supplier_id: ""
-          }
+          dpf_model: '',
+          id: '',
+          maxP1: '',
+          maxP2: '',
+          maxT1: '',
+          maxT2: '',
+          maxT3: '',
+          minP1: '',
+          minP2: '',
+          minT1: '',
+          minT2: '',
+          minT3: '',
+          supplierName: '',
+          supplier_id: ''
+        }
       },
-      getAllSupp(){
-        allSupp().then(response=>{
+      getAllSupp() {
+        allSupp().then(response => {
           if (response.code === '200') {
             this.listSupp = response.data
           } else {
@@ -300,8 +300,8 @@
         })
       },
       _getList() {
-        //this.tableData = []
-        //this.tableLoading = true
+        // this.tableData = []
+        // this.tableLoading = true
         getList(this.listQuery).then(response => {
           if (response.code === '200') {
             this.tableData = response.data.dataList
@@ -315,16 +315,16 @@
         })
         this.tableLoading = false
       },
-       handleAdd() {
+      handleAdd() {
         this.resetTempModel()
         this.visibleView = true
-        this.lookOrEdit=false
+        this.lookOrEdit = false
       },
-      handleEdit(row){
+      handleEdit(row) {
         this.resetTempModel()
         this.visibleView = true
-        this.lookOrEdit=true
-        this.form=row
+        this.lookOrEdit = true
+        this.form = row
       },
       handleDelete(row) {
         this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
@@ -333,7 +333,6 @@
           type: 'warning'
         }).then(() => {
           this.deleteThre(row.id)
-
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -341,19 +340,19 @@
           })
         })
       },
-      deleteThre(id){
-        deleThre(id).then(response=>{
-          if(response.code=='204'){
+      deleteThre(id) {
+        deleThre(id).then(response => {
+          if (response.code === '204') {
             this.$message({
-              type:'success',
-              message:response.message
+              type: 'success',
+              message: response.message
             })
             this._getList()
-          }else{
+          } else {
             this.$message({
-              type:'error',
-              message:response.message
-              })
+              type: 'error',
+              message: response.message
+            })
           }
         })
       },
@@ -362,7 +361,7 @@
         // 显示loading
         this.loadingExport = true
 
-        const rows = [['DPF型号', '供应商', 'T1最小值', 'T2最小值', 'T3最小值', 'T1最大值', 'T2最大值', 'T3最大值','P1最小值','P2最小值','P1最大值','P2最大值']]
+        const rows = [['DPF型号', '供应商', 'T1最小值', 'T2最小值', 'T3最小值', 'T1最大值', 'T2最大值', 'T3最大值', 'P1最小值', 'P2最小值', 'P1最大值', 'P2最大值']]
         this.tableData.forEach(item => {
           rows.push([
             item.dpf_model,
@@ -376,7 +375,7 @@
             item.minP1,
             item.minP2,
             item.maxP1,
-            item.maxP2,
+            item.maxP2
           ])
         })
         let csvContent = 'data:text/csv;charset=utf-8,'
@@ -410,24 +409,26 @@
       },
 
       handleSubmit(formName) {
-        this.$refs[formName].validate((valid) => {//验证规则
-        if (valid) {
-         if (this.form.id ==null||this.form.id == '') {
-           this._addSubmit()
-         }else if (this.form.id !== '') {
-           this._editSubmit()
-         }
-        }else {
-         console.log('error submit!!');
-         return false;
-       }});
+        this.$refs[formName].validate((valid) => {
+          // 验证规则
+          if (valid) {
+            if (this.form.id == null || this.form.id === '') {
+              this._addSubmit()
+            } else if (this.form.id !== '') {
+              this._editSubmit()
+            }
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       },
-      qxSubmit(formName){
+      qxSubmit(formName) {
         this.$refs[formName].resetFields()
-        this.visibleView=false
+        this.visibleView = false
       },
       _addSubmit() {
-        this.form.id=null
+        this.form.id = null
         const tempForm = Object.assign({}, this.form)
         addThre(tempForm).then(response => {
           if (response.code === '201') {

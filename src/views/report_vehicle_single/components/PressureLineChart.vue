@@ -61,7 +61,7 @@
       }
     },
     methods: {
-      setOptions({p1,p2,dcreatetime} = {}) {
+      setOptions({p1, p2, dcreatetime} = {}) {
         this.chart.setOption({
           xAxis: {
             data: dcreatetime,
@@ -84,7 +84,7 @@
             padding: [5, 10]
           },
           yAxis: {
-            name:'压力分析\n 单位/kPa',
+            name: '压力分析\n 单位/kPa',
             axisTick: {
               show: false
             }

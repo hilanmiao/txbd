@@ -61,7 +61,7 @@
       }
     },
     methods: {
-      setOptions({t1,t2,t3,dcreatetime} = {}) {
+      setOptions({t1, t2, t3, dcreatetime} = {}) {
         this.chart.setOption({
           xAxis: {
             data: dcreatetime,
@@ -84,13 +84,13 @@
             padding: [5, 10]
           },
           yAxis: {
-            name:'温度分析\n 单位/°C  ',
+            name: '温度分析\n 单位/°C  ',
             axisTick: {
               show: false
             }
           },
           legend: {
-            data: ['原温度', '前温度','后温度']
+            data: ['原温度', '前温度', '后温度']
           },
           series: [
             {

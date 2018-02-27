@@ -61,9 +61,9 @@
       }
     },
     methods: {
-      setOptions({t1,t2,t3,cars} = {}) {
+      setOptions({t1, t2, t3, cars} = {}) {
         this.chart.setOption({
-          color:['#67E0E3', '#FFDB5C', '#FF9F7F',],
+          color: ['#67E0E3', '#FFDB5C', '#FF9F7F'],
           xAxis: {
             data: cars,
             axisTick: {
@@ -85,31 +85,31 @@
             padding: [5, 10]
           },
           yAxis: {
-            name:'温度分析\n 单位/摄氏度',
+            name: '温度分析\n 单位/摄氏度',
             axisTick: {
               show: false
             }
           },
           legend: {
-            data: ['原温度', '前温度','后温度']
+            data: ['原温度', '前温度', '后温度']
           },
           series: [
             {
               name: '原温度',
               type: 'bar',
               barGap: 0,
-              data: t1,
+              data: t1
             },
             {
               name: '前温度',
               type: 'bar',
-              data: t2,
+              data: t2
             },
             {
               name: '后温度',
               type: 'bar',
-              data: t3,
-            },
+              data: t3
+            }
           ]
         })
       },

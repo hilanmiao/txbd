@@ -26,7 +26,7 @@ export function editThre(data) {
 
 export function deleThre(id) {
   return request({
-    url: 'v1/threshold/'+id,
-    method: 'delete',
+    url: 'v1/threshold/' + id,
+    method: 'delete'
   })
 }

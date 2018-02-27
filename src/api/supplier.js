@@ -38,3 +38,10 @@ export function deleSupp(id) {
     method: 'delete'
   })
 }
+
+export function allSupp() {
+  return request({
+    url: 'v1/web_supplier/allSupplier',
+    method: 'get'
+  })
+}

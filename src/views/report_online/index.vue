@@ -1,23 +1,25 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input style="width: 100px;"
-                class="filter-item"
-                placeholder="车牌号">
-      </el-input>
+      <el-select @keyup.enter.native="handleFilter" v-model="listQuery.city_id" style="width:120px;" clearable
+                 placeholder="选择城市">
+        <el-option v-for="item in listCity" :key="item.id" :label="item.name"
+                   :value="item.id"></el-option>
+      </el-select>
       <el-date-picker
         v-model="listQuery.dateRange"
         type="daterange"
         align="right"
         unlink-panels
+        value-format="yyyy-MM-dd"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         :picker-options="pickerOptions"
-        :change="pickerChange"
+        @change="pickerChange"
       >
       </el-date-picker>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
-      <el-button type="primary" icon="el-icon-download">导出</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="searchData">搜索</el-button>
+      <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
     </div>
 
     <el-row :gutter="32">
@@ -35,7 +37,7 @@
 
       <el-col :xs="24" :sm="24" :lg="16">
         <div class="chart-wrapper">
-          <pie-chart></pie-chart>
+          <pie-chart :dataD="dataDetail"></pie-chart>
         </div>
       </el-col>
     </el-row>
@@ -44,6 +46,8 @@
 
 <script>
   import PieChart from './components/PieChart'
+  import {getCitys} from '@/api/city'
+  import {getData} from '@/api/report_online'
 
   export default {
     name: 'dashboard-admin',
@@ -53,13 +57,22 @@
     data() {
       return {
         listQuery: {
-          dateRange: ''
+          dateRange: '',
+          startTime: '',
+          endTime: '',
+          city_id: ''
+        },
+        listCity: [],
+        dataDetail: {
+          outLine: 0,
+          onLine: 0
         },
         reportData: {
-          total: 10000,
+          total: 0,
           online: 8888,
           percent: '88.88%'
         },
+        loadingExport: false,
         pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -90,14 +103,69 @@
       }
     },
     created() {
-      this._getList()
+      this._getCityList()
+      this.searchData()
     },
     methods: {
       pickerChange() {
-        console.log(this.listQuery.dateRange)
+        if (this.listQuery.dateRange != null) {
+          this.listQuery.startTime = this.listQuery.dateRange[0]
+          this.listQuery.endTime = this.listQuery.dateRange[1]
+        } else {
+          this.listQuery.startTime = null
+          this.listQuery.endTime = null
+        }
       },
-      _getList() {
-        this.list = []
+      searchData() {
+        if (this.listQuery.city_id === '') {
+          this.listQuery.city_id = null
+        }
+        this.pickerChange()
+        this._getData()
+      },
+      _getData() {
+        const params = this.listQuery
+        getData(params).then(response => {
+          this.reportData.online = response.data.onLine
+          this.reportData.percent = response.data.rate
+          this.reportData.total = response.data.total
+          this.dataDetail.onLine = response.data.onLine
+          this.dataDetail.outLine = response.data.total - response.data.onLine
+        })
+      },
+      _getCityList() {
+        getCitys().then(response => {
+          this.listCity = response.data
+        })
+        this.listCity = getCitys()
+      },
+      handleExport() {
+        // 导出处理（简单做，后期可能会改用插件）
+        // 显示loading
+        this.loadingExport = true
+
+        const rows = [['总数', '上线数', '上线率']]
+        rows.push([
+          this.reportData.total,
+          this.reportData.online,
+          this.reportData.percent
+        ])
+        let csvContent = 'data:text/csv;charset=utf-8,'
+        rows.forEach(rowArray => {
+          const row = rowArray.join(',')
+          csvContent += row + '\r\n'
+        })
+
+        // window.open(encodedUri)
+        const encodedUri = encodeURI(csvContent)
+        const link = document.createElement('a')
+        link.setAttribute('href', encodedUri)
+        link.setAttribute('download', 'download.csv')
+        document.body.appendChild(link) // Required for FF
+        link.click() // This will download the data file named "my_data.csv".
+
+        // 隐藏loading
+        this.loadingExport = false
       }
     }
   }

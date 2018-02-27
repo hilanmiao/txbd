@@ -193,37 +193,37 @@
         },
         temperature: [],
         form: {
-          id: "",
-          city_id: "",
-          cityName: "",
-          province_id: "",
-          provinceName: "",
-          supplier_id: "",
-          supplierName: "",
-          dpf_model: "",
-          dpf_id: "",
-          car_number: "",
-          car_color: "",
-          car_type_code: "",
-          car_user_name: "",
-          car_user_identity_code: "",
-          car_user_phone: "",
-          car_engine_number: "",
-          install_place_msg: "",
-          install_user_name: "",
-          install_user_phone: "",
-          img_url_45: "",
-          before_install_img_url: "",
-          after_install_img_url: "",
-          createTime: "",
-          createUser: "",
-          createUserName: "",
-          createUserType: "",
-          qr_code: "",
-          car_manufacture_time: "",
-          car_status: "",
-          dpf_status: ""
-        },
+          id: '',
+          city_id: '',
+          cityName: '',
+          province_id: '',
+          provinceName: '',
+          supplier_id: '',
+          supplierName: '',
+          dpf_model: '',
+          dpf_id: '',
+          car_number: '',
+          car_color: '',
+          car_type_code: '',
+          car_user_name: '',
+          car_user_identity_code: '',
+          car_user_phone: '',
+          car_engine_number: '',
+          install_place_msg: '',
+          install_user_name: '',
+          install_user_phone: '',
+          img_url_45: '',
+          before_install_img_url: '',
+          after_install_img_url: '',
+          createTime: '',
+          createUser: '',
+          createUserName: '',
+          createUserType: '',
+          qr_code: '',
+          car_manufacture_time: '',
+          car_status: '',
+          dpf_status: ''
+        }
       }
     },
     created() {
@@ -232,17 +232,17 @@
     methods: {
       lookimg(val) {
         if (this.form) {
-          if (val == 0) {
+          if (val === 0) {
             if (this.form.img_url_45) {
               this.imageView = true
               this.imgDetail = IMG_SERVER_PATH + this.form.img_url_45
             }
-          } else if (val == 1) {
+          } else if (val === 1) {
             if (this.form.before_install_img_url) {
               this.imageView = true
               this.imgDetail = IMG_SERVER_PATH + this.form.before_install_img_url
             }
-          } else if (val == 2) {
+          } else if (val === 2) {
             if (this.form.after_install_img_url) {
               this.imageView = true
               this.imgDetail = IMG_SERVER_PATH + this.form.after_install_img_url
@@ -275,12 +275,12 @@
             if (response.data.installInfo != null) {
               this.form = response.data.installInfo
               if (response.data.dataList.length > 0) {
-                let pr1 = []
-                let pr2 = []
-                let te1 = []
-                let te2 = []
-                let te3 = []
-                let timedate = []
+                const pr1 = []
+                const pr2 = []
+                const te1 = []
+                const te2 = []
+                const te3 = []
+                const timedate = []
                 for (let i = 0; i < response.data.dataList.length; i++) {
                   pr1.push(response.data.dataList[i].P1)
                   pr2.push(response.data.dataList[i].P2)
@@ -296,13 +296,12 @@
                 this.temperatureData.t3 = te3
                 this.pressureDate.dcreatetime = timedate
                 this.temperatureData.dcreatetime = timedate
-                console.log(this.temperatureData)
               } else {
                 this.temperatureData = {t1: [], t2: [], t3: [], dcreatetime: []}
                 this.pressureDate = {p1: [], p2: [], dcreatetime: []}
                 this.$message({
                   type: 'error',
-                  message: "未查到相关数据"
+                  message: '未查到相关数据'
                 })
               }
             } else {
@@ -310,7 +309,7 @@
               this.pressureDate = {p1: [], p2: [], dcreatetime: []}
               this.$message({
                 type: 'error',
-                message: "不存在此车辆，请检查搜索信息"
+                message: '不存在此车辆，请检查搜索信息'
               })
             }
           } else {
@@ -322,7 +321,7 @@
             })
           }
         })
-      },
+      }
     }
   }
 </script>

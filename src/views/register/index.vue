@@ -65,7 +65,7 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="230">
+          width="100">
           <template slot-scope="scope">
             <el-button type="success" size="mini" icon="el-icon-search" @click="handleView(scope.row)"></el-button>
           </template>
@@ -176,9 +176,9 @@
           </el-form-item>
           <el-form-item label="车辆状态">
             <el-col :span="24">
-              <a href="javascript:;" @click="openImageView(form.img_url_45)">45°照片</a>&nbsp;&nbsp;&nbsp;
-              <a @click="openImageView(form.before_install_img_url)">安装前照片</a>&nbsp;&nbsp;&nbsp;
-              <a @click="openImageView(form.after_install_img_url)">安装后照片</a>&nbsp;&nbsp;&nbsp;
+              <a style="color:#66b1ff" @click="openImageView(form.img_url_45)">45°照片</a>&nbsp;&nbsp;&nbsp;
+              <a style="color:#66b1ff" @click="openImageView(form.before_install_img_url)">安装前照片</a>&nbsp;&nbsp;&nbsp;
+              <a style="color:#66b1ff" @click="openImageView(form.after_install_img_url)">安装后照片</a>&nbsp;&nbsp;&nbsp;
             </el-col>
           </el-form-item>
           <el-form-item>
@@ -336,7 +336,6 @@
           id: row.id
         }
         lookMain(param, row.id).then(responce => {
-          responce.data.imgUrl = JSON.parse(responce.data.imgUrl)
           this.form = Object.assign({}, responce.data)
         })
         this.visibleView = true
@@ -349,7 +348,6 @@
           id: row.id
         }
         lookMain(param, row.id).then(responce => {
-          responce.data.imgUrl = JSON.parse(responce.data.imgUrl)
           this.form = Object.assign({}, responce.data)
         })
         this.visibleView = true

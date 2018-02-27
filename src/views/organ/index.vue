@@ -55,7 +55,7 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" title="添加&修改">
-        <el-form ref="form" :model="form"  :rules="rules" label-width="120px">
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px">
 
           <el-form-item label="机构名称" prop="name">
             <el-input v-model="form.name" style="width:80%;" :readonly="lookOrEdit"></el-input>
@@ -67,7 +67,7 @@
 
 
           <el-form-item>
-            <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading" >保存
+            <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading">保存
             </el-button>
             <el-button @click="qxSubmit('form')">关闭</el-button>
           </el-form-item>
@@ -79,29 +79,30 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getList,addOrgan} from '@/api/organ'
+  import {getList, addOrgan} from '@/api/organ'
+
   export default {
     data() {
       return {
         // 列表相关
-         loadingExport: false,
+        loadingExport: false,
         tableLoading: false,
-        lookOrEdit:false,
-        listSupp:[],
-        tableData:[],
+        lookOrEdit: false,
+        listSupp: [],
+        tableData: [],
         // 表单相关
         form: {
-          id:"",
-          name:"",
-          code:"",
+          id: '',
+          name: '',
+          code: ''
         },
         rules: {
           name: [
-            { required: true, message: '请输入机构名称', trigger: 'blur' },
+            {required: true, message: '请输入机构名称', trigger: 'blur'}
           ],
           code: [
-            { required: true, message: '请输入机构编号', trigger: 'blur'},
-          ],
+            {required: true, message: '请输入机构编号', trigger: 'blur'}
+          ]
         },
         submitLoading: false,
         visibleView: false,
@@ -112,7 +113,7 @@
           limit: 10,
           offset: 0,
           page: 1
-        },
+        }
       }
     },
     watch: {
@@ -130,16 +131,15 @@
     },
     created() {
       this._getList()
-     },
+    },
     methods: {
       resetTempModel() {
-
         // 重置表单
         this.form = {
-          name: "",
-          id:"",
-          code:"",
-         }
+          name: '',
+          id: '',
+          code: ''
+        }
       },
       _getList() {
         this.tableData = []
@@ -147,7 +147,7 @@
         getList(this.listQuery).then(response => {
           if (response.code === '200') {
             this.tableData = response.data
-           } else {
+          } else {
             this.$message({
               type: 'error',
               message: response.message
@@ -159,14 +159,14 @@
       handleAdd() {
         this.resetTempModel()
         this.visibleView = true
-        this.lookOrEdit=false
+        this.lookOrEdit = false
       },
-     handleExport() {
+      handleExport() {
         // 导出处理（简单做，后期可能会改用插件）
         // 显示loading
         this.loadingExport = true
 
-        const rows = [['机构编号', '机构名称','创建时间']]
+        const rows = [['机构编号', '机构名称', '创建时间']]
         this.tableData.forEach(item => {
           rows.push([
             item.code,
@@ -201,20 +201,22 @@
       },
 
       handleSubmit(formName) {
-        this.$refs[formName].validate((valid) => {//验证规则
+        this.$refs[formName].validate((valid) => {
+          // 验证规则
           if (valid) {
-           this._addSubmit()
-          }else {
-            console.log('error submit!!');
-            return false;
-          }});
+            this._addSubmit()
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       },
-      qxSubmit(formName){
+      qxSubmit(formName) {
         this.$refs[formName].resetFields()
-        this.visibleView=false
+        this.visibleView = false
       },
       _addSubmit() {
-        this.form.id=null
+        this.form.id = null
         const tempForm = Object.assign({}, this.form)
         addOrgan(tempForm).then(response => {
           if (response.code === '201') {

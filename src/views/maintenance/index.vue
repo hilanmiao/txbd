@@ -245,7 +245,7 @@
   import {getMainList, addMain, editMain, lookMain, deleMain} from '@/api/maintenance'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH} from '@/api/config'
+  import {IMG_SERVER_PATH, UPIMG_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -259,7 +259,7 @@
         noEdit: false,
         imageView: false,
         imgDetail: '',
-        upImg: process.env.BASE_API + '/v1/unit/img?token=' + getToken(),
+        upImg: UPIMG_SERVER_PATH + 'unit/img?token=' + getToken(),
         // 表单相关
         form: {
           accessSecret: '',

@@ -61,7 +61,7 @@
       }
     },
     methods: {
-      setOptions({p1,p2,cars} = {}) {
+      setOptions({p1, p2, cars} = {}) {
         this.chart.setOption({
           color: ['#003366', '#006699'],
           xAxis: {
@@ -85,7 +85,7 @@
             padding: [5, 10]
           },
           yAxis: {
-            name:'压力分析\n 单位/kPa',
+            name: '压力分析\n 单位/kPa',
             axisTick: {
               show: false
             }
@@ -98,13 +98,13 @@
               name: '前压',
               type: 'bar',
               barGap: 0,
-              data: p1,
+              data: p1
             },
             {
               name: '后压',
               type: 'bar',
-              data: p2,
-              }
+              data: p2
+            }
           ]
         })
       },

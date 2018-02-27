@@ -4,9 +4,9 @@
 
 <script>
   import echarts from 'echarts'
+
   require('echarts/theme/macarons') // echarts theme
   import {debounce} from '@/utils'
-
 
   export default {
     props: {
@@ -61,35 +61,35 @@
         this.chart = echarts.init(this.$el, 'macarons')
         this.setOptions(this.dataArr)
       },
-      setOptions({cityName,count} = {}) {
-         this.chart.setOption({
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: { // 坐标轴指示器，坐标轴触发有效
-                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-              }
-            },
+      setOptions({cityName, count} = {}) {
+        this.chart.setOption({
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
 
-            yAxis: [{
-              name: '城市',
-              type: 'category',
-              data: cityName,
-              axisTick: {
-                alignWithLabel: true
-              }
-            }],
-            xAxis: [{
-              name: '数量',
-              type: 'value'
-            }],
-            series: [{
-              name: 'DPF安装数量',
-              type: 'bar',
-              data: count,
-              animationDuration:2800
-            }]
-          })
-        }
+          yAxis: [{
+            name: '城市',
+            type: 'category',
+            data: cityName,
+            axisTick: {
+              alignWithLabel: true
+            }
+          }],
+          xAxis: [{
+            name: '数量',
+            type: 'value'
+          }],
+          series: [{
+            name: 'DPF安装数量',
+            type: 'bar',
+            data: count,
+            animationDuration: 2800
+          }]
+        })
+      }
     }
   }
 </script>

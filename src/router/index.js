@@ -134,6 +134,13 @@ export const asyncRouterMap = [
         name: '下级平台管理',
         component: _import('lower_platform/index'),
         meta: {title: '下级平台管理'}
+      },
+      {
+        id: 17,
+        path: 'threshold',
+        name: 'DPF阀值设置',
+        component: _import('threshold/index'),
+        meta: {title: 'DPF阀值设置'}
       }
     ]
   },
@@ -148,9 +155,9 @@ export const asyncRouterMap = [
       {
         id: 21,
         path: 'report_create',
-        name: '统计报表生成',
+        name: '安装监控数量统计',
         component: _import('report_create/index'),
-        meta: {title: '统计报表生成'}
+        meta: {title: '安装监控数量统计'}
       },
       {
         id: 22,
@@ -319,6 +326,13 @@ export const asyncRouterMap = [
         name: '用户管理',
         component: _import('user/index'),
         meta: {title: '用户管理'}
+      },
+      {
+        id: 63,
+        path: 'organ',
+        name: '机构管理',
+        component: _import('organ/index'),
+        meta: {title: '机构管理'}
       }
     ]
   },

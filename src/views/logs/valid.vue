@@ -13,7 +13,7 @@
                 @keyup.enter.native="handleSearch"
                 style="width:120px;" clearable
                 placeholder="输入用户名"
-       ></el-input>
+      ></el-input>
       <el-button type="primary" @click="handleSearch">查询</el-button>
     </div>
     <div class="table-container">
@@ -59,27 +59,28 @@
 </template>
 <script type="text/ecmascript-6">
   import {getLogList} from '@/api/log'
-  export default{
-    data(){
-        return{
-          dateArea:'',
-          total:0,
-          searchParams:{
-            starttime:'',
-            endtime:'',
-            username:'',
-            page:1,
-            offset:0,
-            limit:10
-          },
-          form:{
-            userid:'',
-            username:'',
-            content:'',
-            createtime:''
-          },
-          dataTable:[]
-        }
+
+  export default {
+    data() {
+      return {
+        dateArea: '',
+        total: 0,
+        searchParams: {
+          starttime: '',
+          endtime: '',
+          username: '',
+          page: 1,
+          offset: 0,
+          limit: 10
+        },
+        form: {
+          userid: '',
+          username: '',
+          content: '',
+          createtime: ''
+        },
+        dataTable: []
+      }
     },
     watch: {
       'searchParams.page': {
@@ -94,41 +95,40 @@
         deep: true
       }
     },
-    created(){
+    created() {
       this.getList()
     },
-    methods:{
-      handleSearch(){
-        if(this.dateArea){
-          this.searchParams.starttime=this.dateArea[0]
-          this.searchParams.endtime=this.dateArea[1]
-        }else{
-          this.searchParams.starttime=''
-          this.searchParams.endtime=''
+    methods: {
+      handleSearch() {
+        if (this.dateArea) {
+          this.searchParams.starttime = this.dateArea[0]
+          this.searchParams.endtime = this.dateArea[1]
+        } else {
+          this.searchParams.starttime = ''
+          this.searchParams.endtime = ''
         }
         this.getList()
       },
-      getList(){
-        this.dataTable=[]
-        getLogList(this.searchParams).then(response=>{
-          if(response.code=='200'){
-            this.dataTable=response.data.dataList
-            this.total=response.data.count
-          }else{
+      getList() {
+        this.dataTable = []
+        getLogList(this.searchParams).then(response => {
+          if (response.code === '200') {
+            this.dataTable = response.data.dataList
+            this.total = response.data.count
+          } else {
             this.$message({
-              type:'error',
-              message:response.message
+              type: 'error',
+              message: response.message
             })
           }
-
         })
       },
-      sizeChange(val){
-        this.searchParams.limit=val
+      sizeChange(val) {
+        this.searchParams.limit = val
         this.getList()
       },
-      currentChange(val){
-        this.searchParams.offset=val
+      currentChange(val) {
+        this.searchParams.offset = val
         this.getList()
       }
     }
