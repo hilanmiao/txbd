@@ -17,3 +17,11 @@ export function getCarHistory(params) {
     params
   })
 }
+
+// 获取车辆基础信息
+export function getCarBase(deviceno) {
+  return request({
+    url: 'v1/gis/carbase/' + deviceno,
+    method: 'get'
+  })
+}

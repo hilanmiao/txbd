@@ -30,7 +30,8 @@ module.exports = {
     proxyTable: {
       '/v1': {
         // 通过本地服务器将你的请求转发到这个地址
-        target: 'http://192.168.1.196/api/v1',
+        // target: 'http://192.168.1.196/api/v1',
+        target: 'http://192.168.10.114/api/v1',
         // target: 'http://192.168.1.18:8080/api/v1',
         // 设置这个参数可以避免跨域
         changeOrigin: true,

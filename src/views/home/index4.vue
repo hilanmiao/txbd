@@ -271,6 +271,16 @@
                 :data="listCarWatchReal"
                 :height="expandHeight"
               >
+                <b>设备编号：${car.deviceno}</b>&nbsp;&nbsp;&nbsp;<b>车主姓名：${car.car_user_name}</b><br>
+                <b>车辆状态：${car.status}</b>&nbsp;&nbsp;&nbsp;<b>车主电话：${car.car_user_phone}</b><br>
+                <b>行驶速度：${car.speed}</b>&nbsp;&nbsp;&nbsp;<b>在线率：${car.dpf_high_lines}</b><br>
+                <b>经度：${car.longitude}</b>&nbsp;&nbsp;&nbsp;<b>维修次数：${car.dpf_maintain_num}</b><br>
+                <b>纬度：${car.latitude}</b>&nbsp;&nbsp;&nbsp;<b>里程数：${car.dpf_mileage_num}</b><br>
+                <b>方向：${car.direction}</b>&nbsp;&nbsp;&nbsp;<b>在线时长：${car.dpf_online_num}</b><br>
+                <b>GPS定位时间：${car.gpstime}</b>&nbsp;&nbsp;&nbsp;<b>报警次数：${car.dpf_warning_num}</b><br>
+                <b>DOC原温度：${car.t1}</b>&nbsp;&nbsp;&nbsp;<b>安装点地址：${car.install_place_msg}</b><br>
+                <b>DPF前端温度：${car.t2}</b>&nbsp;&nbsp;&nbsp;<b>安装人姓名：${car.install_user_name}</b><br>
+                <b>DPF后端温度：${car.t3}</b>&nbsp;&nbsp;&nbsp;<b>安装人手机：${car.install_user_phone}</b><br>
                 <el-table-column
                   prop="platenumber"
                   label="车牌号"
@@ -279,6 +289,61 @@
                 <el-table-column
                   prop="deviceno"
                   label="设备编号"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="car_user_name"
+                  label="车主姓名"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="car_user_phone"
+                  label="车主电话"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="dpf_high_lines"
+                  label="在线率"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="dpf_maintain_num"
+                  label="维修次数"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="dpf_mileage_num"
+                  label="里程数"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="dpf_online_num"
+                  label="在线时长"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="car_user_phone"
+                  label="车主电话"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="dpf_warning_num"
+                  label="报警次数"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="install_place_msg"
+                  label="安装点地址"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="install_user_name"
+                  label="安装人员"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="install_user_phone"
+                  label="安装人手机"
                 >
                 </el-table-column>
                 <el-table-column
@@ -308,26 +373,41 @@
                   prop="t1"
                   label="DOC原温度"
                 >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.t1}}</el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="t2"
                   label="DPF前端温度"
                 >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.t2}}</el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="t3"
                   label="DPF前端温度"
                 >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.t3}}</el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="p1"
                   label="DOC前端压力"
                 >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.p1}}</el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="p2"
                   label="DOC后端压力"
                 >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.p2}}</el-tag>
+                  </template>
                 </el-table-column>
               </el-table>
             </el-tab-pane>
@@ -693,9 +773,10 @@
   import alarmAudio from '@/assets/home_images/alarm_audio.mp3'
   import screenfull from 'screenfull'
   import {getToken} from '@/utils/auth'
-  import {getCars, getCarHistory} from '@/api/gis'
+  import {getCars, getCarHistory, getCarBase} from '@/api/gis'
   import PieChart from './components/PieChart'
   import {debounce} from '@/utils'
+  import Timer from '@/utils/timer.js'
 
   export default {
     components: {
@@ -750,6 +831,9 @@
         // 实时信息面板相关
         listCarWatchReal: [],
         maxWatchCount: 20,
+        // 获取车辆基础数据时间间隔(分)
+        timeInterval: 30 * 60 * 1000,
+        myWorker: null,
         // 历史轨迹面板相关
         carTrack: undefined,
         carCodeHistory: '鲁G12345',
@@ -813,6 +897,8 @@
       this._getCars()
       // 注册下方信息面板拉动事件
       this.registerPullEvent()
+      // 开启计时器
+      this.openTimer()
     },
     methods: {
       registerPullEvent() {
@@ -978,8 +1064,9 @@
       mapMarker(cars) {
         // 填充数据
         this.listCarWatchReal = cars
+        // 填充基础数据
         // 循环标记
-        cars.forEach((car, index) => {
+        this.listCarWatchReal.forEach((car, index) => {
           // 中心点移动到第一个点
           if (index === 0) {
             window.map.panTo(new T.LngLat(car.longitude, car.latitude))
@@ -1007,16 +1094,16 @@
             const infoWin = new T.InfoWindow()
             const content = `
               <div>
-                <b>设备编号：${car.deviceno}</b><br>
-                <b>车辆状态：${car.status}</b><br>
-                <b>行驶速度：${car.speed}</b><br>
-                <b>经度：${car.longitude}</b><br>
-                <b>纬度：${car.latitude}</b><br>
-                <b>方向：${car.direction}</b><br>
-                <b>GPS定位时间：${car.gpstime}</b><br>
-                <b>DOC原温度：${car.t1}</b><br>
-                <b>DPF前端温度：${car.t2}</b><br>
-                <b>DPF后端温度：${car.t3}</b><br>
+                <b>设备编号：${car.deviceno}</b>&nbsp;&nbsp;&nbsp;<b>车主姓名：${car.car_user_name}</b><br>
+                <b>车辆状态：${car.status}</b>&nbsp;&nbsp;&nbsp;<b>车主电话：${car.car_user_phone}</b><br>
+                <b>行驶速度：${car.speed}</b>&nbsp;&nbsp;&nbsp;<b>在线率：${car.dpf_high_lines}</b><br>
+                <b>经度：${car.longitude}</b>&nbsp;&nbsp;&nbsp;<b>维修次数：${car.dpf_maintain_num}</b><br>
+                <b>纬度：${car.latitude}</b>&nbsp;&nbsp;&nbsp;<b>里程数：${car.dpf_mileage_num}</b><br>
+                <b>方向：${car.direction}</b>&nbsp;&nbsp;&nbsp;<b>在线时长：${car.dpf_online_num}</b><br>
+                <b>GPS定位时间：${car.gpstime}</b>&nbsp;&nbsp;&nbsp;<b>报警次数：${car.dpf_warning_num}</b><br>
+                <b>DOC原温度：${car.t1}</b>&nbsp;&nbsp;&nbsp;<b>安装点地址：${car.install_place_msg}</b><br>
+                <b>DPF前端温度：${car.t2}</b>&nbsp;&nbsp;&nbsp;<b>安装人姓名：${car.install_user_name}</b><br>
+                <b>DPF后端温度：${car.t3}</b>&nbsp;&nbsp;&nbsp;<b>安装人手机：${car.install_user_phone}</b><br>
                 <b>DOC前端压力：${car.p1}</b><br>
                 <b>DOC后端压力：${car.p2}</b><br>
               </div>
@@ -1038,29 +1125,31 @@
             )
           } else {
             // 更新位置
-            tempMarker.marker.setLngLat(new T.LngLat(car.longitude, car.latitude))
-            tempMarker.label.setLngLat(new T.LngLat(car.longitude, car.latitude))
             // 先关闭信息窗口
             tempMarker.infoWin.closeInfoWindow()
+            tempMarker.marker.setLngLat(new T.LngLat(car.longitude, car.latitude))
+            tempMarker.label.setLngLat(new T.LngLat(car.longitude, car.latitude))
             tempMarker.infoWin.setLngLat(new T.LngLat(car.longitude, car.latitude))
             tempMarker.content = `
               <div>
-                <b>设备编号：${car.deviceno}</b><br>
-                <b>车辆状态：${car.status}</b><br>
-                <b>行驶速度：${car.speed}</b><br>
-                <b>经度：${car.longitude}</b><br>
-                <b>纬度：${car.latitude}</b><br>
-                <b>方向：${car.direction}</b><br>
-                <b>GPS定位时间：${car.gpstime}</b><br>
-                <b>DOC原温度：${car.t1}</b><br>
-                <b>DPF前端温度：${car.t2}</b><br>
-                <b>DPF后端温度：${car.t3}</b><br>
+                <b>设备编号：${car.deviceno}</b>&nbsp;&nbsp;&nbsp;<b>车主姓名：${car.car_user_name}</b><br>
+                <b>车辆状态：${car.status}</b>&nbsp;&nbsp;&nbsp;<b>车主电话：${car.car_user_phone}</b><br>
+                <b>行驶速度：${car.speed}</b>&nbsp;&nbsp;&nbsp;<b>在线率：${car.dpf_high_lines}</b><br>
+                <b>经度：${car.longitude}</b>&nbsp;&nbsp;&nbsp;<b>维修次数：${car.dpf_maintain_num}</b><br>
+                <b>纬度：${car.latitude}</b>&nbsp;&nbsp;&nbsp;<b>里程数：${car.dpf_mileage_num}</b><br>
+                <b>方向：${car.direction}</b>&nbsp;&nbsp;&nbsp;<b>在线时长：${car.dpf_online_num}</b><br>
+                <b>GPS定位时间：${car.gpstime}</b>&nbsp;&nbsp;&nbsp;<b>报警次数：${car.dpf_warning_num}</b><br>
+                <b>DOC原温度：${car.t1}</b>&nbsp;&nbsp;&nbsp;<b>安装点地址：${car.install_place_msg}</b><br>
+                <b>DPF前端温度：${car.t2}</b>&nbsp;&nbsp;&nbsp;<b>安装人姓名：${car.install_user_name}</b><br>
+                <b>DPF后端温度：${car.t3}</b>&nbsp;&nbsp;&nbsp;<b>安装人手机：${car.install_user_phone}</b><br>
                 <b>DOC前端压力：${car.p1}</b><br>
                 <b>DOC后端压力：${car.p2}</b><br>
               </div>
             `
             tempMarker.infoWin.setContent(tempMarker.content)
             tempMarker.infoWin.update()
+            // 只能打开一个？？？
+            tempMarker.marker.openInfoWindow(tempMarker.infoWin)
           }
         })
       },
@@ -1068,9 +1157,9 @@
         // 显示控制按钮
         this.showPanelHistory = true
         // 或者使用更简单的“添加线”
-        // 移动到第一个点
-        window.map.panTo(new T.LngLat(history[0].car_longitude, history[1].car_latitude))
+        // 定位中心点
         window.map.setZoom(12)
+        window.map.panTo(new T.LngLat(history[0].car_longitude, history[1].car_latitude))
         const datas = {
           type: 'FeatureCollection',
           features: []
@@ -1185,6 +1274,15 @@
         this.webSocketClose()
         this.webSocketOpen()
       },
+      openTimer() {
+        let tempSeconds = 0
+        setInterval(() => {
+          tempSeconds++
+          if (tempSeconds >= this.timeInterval) {
+            tempSeconds = 0
+          }
+        }, 1000)
+      },
       webSocketOpen() {
         const self = this
         if (!this.listCarWatch.length) {
@@ -1195,7 +1293,8 @@
         const cars = this.listCarWatch.map(item => {
           return item.deviceno
         }).join(',')
-        this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
+        // this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
+        this.ws = new WebSocket(`ws://192.168.1.196:8087/socketWebServer/${token}/${cars}`)
         this.ws.onopen = function (evt) {
           console.log('Connection open ...')
           // ws.send('Hello WebSockets!')
@@ -1290,6 +1389,13 @@
           }
           // 取消表格loading效果
           this.loadingSearchHistory = false
+        })
+      },
+      _getCarBase(deviceno) {
+        getCarBase(deviceno).then(response => {
+          if (response.code === '200') {
+            return response.data
+          }
         })
       }
     }

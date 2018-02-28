@@ -25,12 +25,13 @@
           label="登录名">
         </el-table-column>
         <el-table-column
-          prop="password"
-          label="密码">
+          prop="rolename"
+          label="角色">
         </el-table-column>
         <el-table-column
-          prop="role_name"
-          label="角色">
+          width="120"
+          prop="organname"
+          label="机构">
         </el-table-column>
         <el-table-column
           width="120"
@@ -44,8 +45,8 @@
         </el-table-column>
         <el-table-column
           width="120"
-          prop="city_name"
-          label="城市">
+          prop="createtime"
+          label="创建时间">
         </el-table-column>
         <el-table-column
           width="120"
@@ -86,32 +87,32 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
-        <el-form ref="form" :model="tempModel" label-width="80px">
-          <el-form-item label="登录名">
+        <el-form ref="form" status-icon :rules="rules" :model="tempModel" label-width="80px">
+          <el-form-item label="登录名" prop="username">
             <el-input v-model="tempModel.username"></el-input>
           </el-form-item>
-          <el-form-item label="密码">
+          <el-form-item label="密码" prop="password">
             <el-input v-model="tempModel.password"></el-input>
           </el-form-item>
-          <el-form-item label="昵称">
+          <el-form-item label="昵称" prop="name">
             <el-input v-model="tempModel.name"></el-input>
           </el-form-item>
-          <el-form-item label="电话">
+          <el-form-item label="电话" prop="phone">
             <el-input v-model="tempModel.phone"></el-input>
           </el-form-item>
           <el-form-item label="平台">
-            <el-select v-model="tempModel.type" placeholder="请选择">
+            <el-select v-model="tempModel.from_system" placeholder="请选择">
               <el-option label="省级" value="0"></el-option>
               <el-option label="市级" value="1"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="城市">
-            <el-select v-model="tempModel.city_id" placeholder="请选择">
-              <el-option v-for="item in listCity" :key="item.id" :label="item.name"
+          <el-form-item label="机构" prop="organid">
+            <el-select v-model="tempModel.organid" placeholder="请选择">
+              <el-option v-for="item in listOrgan" :key="item.id" :label="item.name"
                          :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="角色">
+          <el-form-item label="角色" prop="role_id">
             <el-select v-model="tempModel.role_id" placeholder="请选择">
               <el-option v-for="item in listRole" :key="item.id" :label="item.name"
                          :value="item.id"></el-option>
@@ -119,7 +120,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="loadingSubmit">保存</el-button>
-            <el-button @click="dialogFormVisible = false">取消</el-button>
+            <el-button @click="closeDialog">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -128,7 +129,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform} from '@/api/lower_platform'
+  import {getListUser, postModelUser, putModelUser, deleteModelUser} from '@/api/user'
+  import {getListOrgan} from '@/api/organ'
+  import {getListRole} from '@/api/part'
 
   export default {
     data() {
@@ -146,6 +149,7 @@
         },
         // 表单相关
         listCity: [],
+        listOrgan: [],
         listRole: [],
         tempModel: {
           id: '',
@@ -153,13 +157,36 @@
           password: '',
           name: '',
           phone: '',
-          city_id: '',
+          organid: '',
           role_id: '',
           from_system: '0'
         },
         loadingSubmit: false,
         dialogFormVisible: false,
-
+        // 表单验证相关
+        rules: {
+          username: [
+            {required: true, message: '请输入登录名', trigger: 'blur'},
+            {max: 20, message: '长度在20个字符内', trigger: 'blur'}
+          ],
+          password: [
+            {required: true, message: '请输入密码', trigger: 'blur'},
+            {max: 20, message: '长度在20个字符内', trigger: 'blur'}
+          ],
+          name: [
+            {required: true, message: '请输入昵称', trigger: 'blur'},
+            {max: 40, message: '长度在40个字符内', trigger: 'blur'}
+          ],
+          phone: [
+            {required: true, message: '请输入手机号', trigger: 'blur'}
+          ],
+          organid: [
+            {required: true, message: '请选择机构', trigger: 'change'}
+          ],
+          role_id: [
+            {required: true, message: '请选择角色', trigger: 'change'}
+          ]
+        },
         // 导出相关
         loadingExport: false
       }
@@ -196,8 +223,15 @@
     created() {
       // 获取列表数据
       this._getList()
+      this._getListOrgan()
+      this._getListRole()
     },
     methods: {
+      closeDialog() {
+        this.dialogFormVisible = false
+        // 重置验证
+        this.$refs.form.resetFields()
+      },
       resetTempModel() {
         // 重置表单
         this.tempModel = {
@@ -206,7 +240,7 @@
           password: '',
           name: '',
           phone: '',
-          city_id: '',
+          organid: '',
           role_id: '',
           from_system: '0'
         }
@@ -241,24 +275,21 @@
         })
       },
       handleSubmit() {
-        // TODO: 提交前检查，必填项等。临时使用这种方式，以后或改为form自带的验证
-        if (!this.tempModel.name) {
-          this.$message({
-            type: 'error',
-            message: '平台名称必填'
-          })
-          return
-        }
-        // 提交处理
-        this.loadingSubmit = true
-        // 提交数据
-        if (!this.tempModel.id) {
-          // 没有id，是新建
-          this._postModelPlatform()
-        } else {
-          // 有id，是编辑
-          this._putModelPlatform()
-        }
+        // 表单验证
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            // 提交处理
+            this.loadingSubmit = true
+            // 提交数据
+            if (!this.tempModel.id) {
+              // 没有id，是新建
+              this._postModelUser()
+            } else {
+              // 有id，是编辑
+              this._putModelPlatform()
+            }
+          }
+        })
       },
       handleBeforeClose(done) {
         // dialog关闭前处理(http请求未完成时dialog不能关闭)
@@ -318,8 +349,8 @@
         this.listQuery.page = val
         this._getList()
       },
-      _deleteModelPlatform() {
-        deleteModelPlatform(this.tempModel.id).then(response => {
+      _deleteModelUser() {
+        deleteModelUser(this.tempModel.id).then(response => {
           if (response.code === '204') {
             this.$message({
               type: 'success',
@@ -335,8 +366,8 @@
           }
         })
       },
-      _postModelPlatform() {
-        postModelPlatform(this.tempModel).then(response => {
+      _postModelUser() {
+        postModelUser(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
@@ -357,8 +388,8 @@
           this.dialogFormVisible = false
         })
       },
-      _putModelPlatform() {
-        putModelPlatform(this.tempModel).then(response => {
+      _putModelUser() {
+        putModelUser(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
@@ -385,12 +416,12 @@
         // 设置表格loading效果
         this.loadingList = true
         // 请求表格数据
-        getListPlatform(this.listQuery).then(response => {
+        getListUser(this.listQuery).then(response => {
           if (response.code === '200') {
             // 设置表格数据
-            this.list = response.data.dataList
+            this.list = response.data
             // 设置分页插件数据总数
-            this.total = response.data.count
+            this.total = response.data.message
           } else {
             this.$message({
               type: 'error',
@@ -399,6 +430,38 @@
           }
           // 取消表格loading效果
           this.loadingList = false
+        })
+      },
+      _getListOrgan() {
+        const params = {
+          offset: 0,
+          limit: 1000
+        }
+        getListOrgan(params).then(response => {
+          if (response.code === '200') {
+            this.listOrgan = response.data
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
+      },
+      _getListRole() {
+        const params = {
+          offset: 0,
+          limit: 1000
+        }
+        getListRole(params).then(response => {
+          if (response.code === '200') {
+            this.listRole = response.data
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
         })
       }
     }

@@ -36,9 +36,16 @@ export function deleteModelPlatform(id) {
 }
 
 // 获取详情
-export function getModelPlatform(id) {
-  return request({
-    url: 'v1/lowerplatform/' + id,
-    method: 'get'
+export function getModelRole(id) {
+  // return request({
+  //   url: 'v1/user/' + id + '/menus',
+  //   method: 'get'
+  // })
+  // TODO：记得改
+  return new Promise((resolve, reject) => {
+    resolve({
+      code: 200,
+      data: {menu_ids: '11, 12, 13, 14, 15, 16, 17'}
+    })
   })
 }

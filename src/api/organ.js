@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getList(params) {
+export function getListOrgan(params) {
   return request({
     url: 'v1/organ',
     method: 'get',

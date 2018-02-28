@@ -3,28 +3,33 @@
     <el-row :gutter="20">
       <el-col :span="8">
         <div class="filter-container" style="padding-bottom: 10px;">
-          <div>当前选择角色：{{curLabel}}</div>
-          <el-input style="width: 150px;" size="mini" class="filter-item" placeholder="当前选择角色" v-model="newLabel">
-          </el-input>
-          <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit">添加、编辑</el-button>
-          <el-button type="danger" size="mini" icon="el-icon-search" @click="handleDelete">删除</el-button>
-          <el-button type="info" size="mini" icon="el-icon-search" @click="handleReset">重置</el-button>
+          <div style="padding-bottom: 10px">
+            <el-input style="width: 150px;" size="mini" class="filter-item" placeholder="新的角色名称" v-model="newLabel">
+            </el-input>
+            <el-button type="success" size="mini" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+          </div>
+          <div>
+            <el-input style="width: 150px;" size="mini" class="filter-item" placeholder="当前角色名称" v-model="curLabel">
+            </el-input>
+            <el-button :disabled="!curLabel" type="primary" size="mini" icon="el-icon-edit" @click="handleEdit">编辑</el-button>
+            <el-button :disabled="!curLabel" type="danger" size="mini" icon="el-icon-search" @click="handleDelete">删除</el-button>
+          </div>
         </div>
         <div class="tree-container"
              v-loading="treeLoading"
-             element-loading-text="加载中...">
+             element-loading-text="请稍等...">
           <el-tree style="height: 600px;"
-                   ref="tree"
+                   ref="treeRole"
                    node-key="id"
                    :data="treeData"
                    :props="defaultProps"
                    highlight-current
-                   @node-click="handleNodeClick"></el-tree>
+                   @node-click="handleNodeClick"
+          ></el-tree>
         </div>
       </el-col>
       <el-col :span="16">
         <div class="filter-container" style="padding-bottom: 10px;">
-          <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleSubmitMenu">保存授权</el-button>
           <el-button type="info" size="mini" icon="el-icon-search" @click="handleResetMenu">重置选择</el-button>
         </div>
 
@@ -35,8 +40,7 @@
                  default-expand-all
                  :data="treeDataMenu"
                  :props="defaultProps"
-                 highlight-current
-                 @node-click="handleNodeClick"></el-tree>
+                 highlight-current></el-tree>
       </el-col>
     </el-row>
   </div>
@@ -106,18 +110,17 @@
 
         this.treeLoading = false
       },
-      handleEdit() {
+      handleCreate() {
         if (!this.newLabel) {
+          this.$message({
+            type: 'error',
+            message: '请输入要创建的角色'
+          })
           return
         }
-        this.treeLoading = true
-        this.treeLoadingText = '保存中'
-        if (!this.curLabel) {
-          this._postModelRole()
-        } else {
-          this._postModelRole()
-        }
+        this._postModelRole()
       },
+      handleEdit() {},
       handleDelete() {
         if (!this.curId) {
           this.$message({
@@ -144,29 +147,31 @@
       },
       handleReset() {
       },
-      handleSubmit() {
-        this.submitLoading = true
-        // 提交数据
-        this._postModelRole()
-      },
       handleBeforeClose(done) {
         if (!this.submitLoading) {
           done()
         }
       },
       handleNodeClick(data) {
-        console.log(data)
         this.curId = data.id
         this.curLabel = data.name
-      },
-      handleSubmitMenu() {
-        // s
+        this.treeData.some(item => {
+          if (item.id === this.curId) {
+            this.$refs.treeMenu.setCheckedKeys(item.menu_ids.split(','))
+            return true
+          }
+        })
       },
       handleResetMenu() {
-        // s
+        // 清空
         this.$refs.treeMenu.setCheckedKeys([])
       },
       _getListRole() {
+        // 重置
+        this.curId = ''
+        this.curLabel = ''
+        this.newLabel = ''
+
         this.treeData = []
         this.treeLoading = true
         // 请求表格数据
@@ -178,6 +183,10 @@
         getListRole(params).then(response => {
           if (response.code === '200') {
             this.treeData = response.data
+            this.$nextTick(() => {
+              // 清空
+              this.$refs.treeMenu.setCheckedKeys([])
+            })
           } else {
             this.$message({
               type: 'error',
@@ -188,11 +197,20 @@
         })
       },
       _postModelRole() {
+        // 获取checked子节点数组
+        const menus = this.$refs.treeMenu.getCheckedKeys(false).join(',')
+        if (!menus.length) {
+          this.$message({
+            type: 'error',
+            message: '请配置菜单权限'
+          })
+          return
+        }
+        this.treeLoading = true
         const tempModel = {
-          token: getToken(),
           rolename: this.newLabel,
-          menus: 'test',
-          remark: 'test'
+          menus: menus,
+          remark: '前端路由权限存储'
         }
         postModelRole(tempModel).then(response => {
           if (response.code === '201') {
@@ -210,10 +228,6 @@
               message: response.message
             })
           }
-          // 取消加载中
-          this.loadingSubmit = false
-          // 关闭dialog
-          this.dialogFormVisible = false
         })
       }
     }

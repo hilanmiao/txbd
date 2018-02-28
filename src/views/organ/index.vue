@@ -65,7 +65,6 @@
             <el-input v-model="form.code" style="width:80%;" :readonly="lookOrEdit"></el-input>
           </el-form-item>
 
-
           <el-form-item>
             <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading">保存
             </el-button>
@@ -79,7 +78,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getList, addOrgan} from '@/api/organ'
+  import {getListOrgan, addOrgan} from '@/api/organ'
 
   export default {
     data() {
@@ -144,7 +143,7 @@
       _getList() {
         this.tableData = []
         this.tableLoading = true
-        getList(this.listQuery).then(response => {
+        getListOrgan(this.listQuery).then(response => {
           if (response.code === '200') {
             this.tableData = response.data
           } else {
