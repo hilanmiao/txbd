@@ -271,19 +271,10 @@
                 :data="listCarWatchReal"
                 :height="expandHeight"
               >
-                <b>设备编号：${car.deviceno}</b>&nbsp;&nbsp;&nbsp;<b>车主姓名：${car.car_user_name}</b><br>
-                <b>车辆状态：${car.status}</b>&nbsp;&nbsp;&nbsp;<b>车主电话：${car.car_user_phone}</b><br>
-                <b>行驶速度：${car.speed}</b>&nbsp;&nbsp;&nbsp;<b>在线率：${car.dpf_high_lines}</b><br>
-                <b>经度：${car.longitude}</b>&nbsp;&nbsp;&nbsp;<b>维修次数：${car.dpf_maintain_num}</b><br>
-                <b>纬度：${car.latitude}</b>&nbsp;&nbsp;&nbsp;<b>里程数：${car.dpf_mileage_num}</b><br>
-                <b>方向：${car.direction}</b>&nbsp;&nbsp;&nbsp;<b>在线时长：${car.dpf_online_num}</b><br>
-                <b>GPS定位时间：${car.gpstime}</b>&nbsp;&nbsp;&nbsp;<b>报警次数：${car.dpf_warning_num}</b><br>
-                <b>DOC原温度：${car.t1}</b>&nbsp;&nbsp;&nbsp;<b>安装点地址：${car.install_place_msg}</b><br>
-                <b>DPF前端温度：${car.t2}</b>&nbsp;&nbsp;&nbsp;<b>安装人姓名：${car.install_user_name}</b><br>
-                <b>DPF后端温度：${car.t3}</b>&nbsp;&nbsp;&nbsp;<b>安装人手机：${car.install_user_phone}</b><br>
                 <el-table-column
                   prop="platenumber"
                   label="车牌号"
+                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
@@ -299,6 +290,7 @@
                 <el-table-column
                   prop="car_user_phone"
                   label="车主电话"
+                  width="110"
                 >
                 </el-table-column>
                 <el-table-column
@@ -322,11 +314,6 @@
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="car_user_phone"
-                  label="车主电话"
-                >
-                </el-table-column>
-                <el-table-column
                   prop="dpf_warning_num"
                   label="报警次数"
                 >
@@ -334,6 +321,7 @@
                 <el-table-column
                   prop="install_place_msg"
                   label="安装点地址"
+                  width="110"
                 >
                 </el-table-column>
                 <el-table-column
@@ -344,6 +332,7 @@
                 <el-table-column
                   prop="install_user_phone"
                   label="安装人手机"
+                  width="110"
                 >
                 </el-table-column>
                 <el-table-column
@@ -354,6 +343,7 @@
                 <el-table-column
                   prop="status"
                   label="经纬度"
+                  width="120"
                 >
                   <template slot-scope="scope">
                     {{scope.row.longitude + ',' + scope.row.latitude}}
@@ -367,11 +357,13 @@
                 <el-table-column
                   prop="gpstime"
                   label="GPS定位时间"
+                  width="120"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="t1"
                   label="DOC原温度"
+                  width="110"
                 >
                   <template slot-scope="scope">
                     <el-tag>{{scope.row.t1}}</el-tag>
@@ -380,6 +372,7 @@
                 <el-table-column
                   prop="t2"
                   label="DPF前端温度"
+                  width="110"
                 >
                   <template slot-scope="scope">
                     <el-tag>{{scope.row.t2}}</el-tag>
@@ -388,6 +381,7 @@
                 <el-table-column
                   prop="t3"
                   label="DPF前端温度"
+                  width="110"
                 >
                   <template slot-scope="scope">
                     <el-tag>{{scope.row.t3}}</el-tag>
@@ -396,6 +390,7 @@
                 <el-table-column
                   prop="p1"
                   label="DOC前端压力"
+                  width="110"
                 >
                   <template slot-scope="scope">
                     <el-tag>{{scope.row.p1}}</el-tag>
@@ -404,6 +399,7 @@
                 <el-table-column
                   prop="p2"
                   label="DOC后端压力"
+                  width="110"
                 >
                   <template slot-scope="scope">
                     <el-tag>{{scope.row.p2}}</el-tag>
@@ -446,89 +442,78 @@
             <el-tab-pane>
               <span slot="label"><i class="el-icon-date"></i>终端上报警情（预处警）</span>
               <el-table
-                :data="listCarAlarm"
+                :data="listCarWatchReal"
                 :height="expandHeight"
               >
                 <el-table-column
-                  prop="car"
+                  prop="platenumber"
                   label="车牌"
                   width="100"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="car_user_name"
+                  label="车主姓名"
+                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="car_user_phone"
+                  label="联系电话"
+                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="t1"
+                  label="DOC原温度"
+                  width="110"
                 >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.t1}}</el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="t2"
+                  label="DPF前端温度"
+                  width="110"
                 >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.t2}}</el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="t3"
+                  label="DPF前端温度"
+                  width="110"
                 >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.t3}}</el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="p1"
+                  label="DOC前端压力"
+                  width="110"
                 >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.p1}}</el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
+                  prop="p2"
+                  label="DOC后端压力"
+                  width="110"
                 >
-                </el-table-column>
-                <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="status"
-                  label="状态"
-                  width="60"
-                >
+                  <template slot-scope="scope">
+                    <el-tag>{{scope.row.p2}}</el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   label="操作"
-                  width="60"
+                  width="120"
                 >
                   <template slot-scope="scope">
-                    <el-tooltip content="历史轨迹" placement="top">
-                      <el-button type="success" size="mini" icon="el-icon-view"></el-button>
-                    </el-tooltip>
+                    <el-button type="primary" size="mini" icon="el-icon-delete">移除警情</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -543,32 +528,24 @@
               <h4 class="header">车辆异常报警</h4>
               <div class="info">
                 <p>
-                  车牌:
-                  <el-tag type="info">鲁G809CP</el-tag>
+                  车牌:鲁G809CP
                   &nbsp;
-                  车系:
-                  <el-tag type="info">宝马X5</el-tag>
+                  车系:宝马X5
                 </p>
                 <p>
-                  前温:
-                  <el-tag type="danger">180℃</el-tag>
+                  前温:180℃
                   &nbsp;
-                  前压:
-                  <el-tag>1KPA</el-tag>
+                  前压:1KPA
                 </p>
                 <p>
-                  中温:
-                  <el-tag>180℃</el-tag>
+                  中温:180℃
                   &nbsp;
-                  中压:
-                  <el-tag type="danger">1KPA</el-tag>
+                  中压:1KPA
                 </p>
                 <p>
-                  后温:
-                  <el-tag>180℃</el-tag>
+                  后温: <span style="color: red;">180℃</span>
                   &nbsp;
-                  后压:
-                  <el-tag type="warning">1KPA</el-tag>
+                  后压: <span style="color: red;">1KPA</span>
                 </p>
                 <p>
                   报警内容：dfp未启用
@@ -584,32 +561,24 @@
               <h4 class="header">车辆异常报警</h4>
               <div class="info">
                 <p>
-                  车牌:
-                  <el-tag type="info">鲁G809CP</el-tag>
+                  车牌:鲁G809CP
                   &nbsp;
-                  车系:
-                  <el-tag type="info">宝马X5</el-tag>
+                  车系:宝马X5
                 </p>
                 <p>
-                  前温:
-                  <el-tag type="danger">180℃</el-tag>
+                  前温:180℃
                   &nbsp;
-                  前压:
-                  <el-tag>1KPA</el-tag>
+                  前压:1KPA
                 </p>
                 <p>
-                  中温:
-                  <el-tag>180℃</el-tag>
+                  中温:180℃
                   &nbsp;
-                  中压:
-                  <el-tag type="danger">1KPA</el-tag>
+                  中压:1KPA
                 </p>
                 <p>
-                  后温:
-                  <el-tag>180℃</el-tag>
+                  后温: <span style="color: red;">180℃</span>
                   &nbsp;
-                  后压:
-                  <el-tag type="warning">1KPA</el-tag>
+                  后压: <span style="color: red;">1KPA</span>
                 </p>
                 <p>
                   报警内容：dfp未启用
@@ -625,32 +594,24 @@
               <h4 class="header">车辆异常报警</h4>
               <div class="info">
                 <p>
-                  车牌:
-                  <el-tag type="info">鲁G809CP</el-tag>
+                  车牌:鲁G809CP
                   &nbsp;
-                  车系:
-                  <el-tag type="info">宝马X5</el-tag>
+                  车系:宝马X5
                 </p>
                 <p>
-                  前温:
-                  <el-tag type="danger">180℃</el-tag>
+                  前温:180℃
                   &nbsp;
-                  前压:
-                  <el-tag>1KPA</el-tag>
+                  前压:1KPA
                 </p>
                 <p>
-                  中温:
-                  <el-tag>180℃</el-tag>
+                  中温:180℃
                   &nbsp;
-                  中压:
-                  <el-tag type="danger">1KPA</el-tag>
+                  中压:1KPA
                 </p>
                 <p>
-                  后温:
-                  <el-tag>180℃</el-tag>
+                  后温: <span style="color: red;">180℃</span>
                   &nbsp;
-                  后压:
-                  <el-tag type="warning">1KPA</el-tag>
+                  后压: <span style="color: red;">1KPA</span>
                 </p>
                 <p>
                   报警内容：dfp未启用
@@ -666,32 +627,24 @@
               <h4 class="header">车辆异常报警</h4>
               <div class="info">
                 <p>
-                  车牌:
-                  <el-tag type="info">鲁G809CP</el-tag>
+                  车牌:鲁G809CP
                   &nbsp;
-                  车系:
-                  <el-tag type="info">宝马X5</el-tag>
+                  车系:宝马X5
                 </p>
                 <p>
-                  前温:
-                  <el-tag type="danger">180℃</el-tag>
+                  前温:180℃
                   &nbsp;
-                  前压:
-                  <el-tag>1KPA</el-tag>
+                  前压:1KPA
                 </p>
                 <p>
-                  中温:
-                  <el-tag>180℃</el-tag>
+                  中温:180℃
                   &nbsp;
-                  中压:
-                  <el-tag type="danger">1KPA</el-tag>
+                  中压:1KPA
                 </p>
                 <p>
-                  后温:
-                  <el-tag>180℃</el-tag>
+                  后温: <span style="color: red;">180℃</span>
                   &nbsp;
-                  后压:
-                  <el-tag type="warning">1KPA</el-tag>
+                  后压: <span style="color: red;">1KPA</span>
                 </p>
                 <p>
                   报警内容：dfp未启用
@@ -707,32 +660,24 @@
               <h4 class="header">车辆异常报警</h4>
               <div class="info">
                 <p>
-                  车牌:
-                  <el-tag type="info">鲁G809CP</el-tag>
+                  车牌:鲁G809CP
                   &nbsp;
-                  车系:
-                  <el-tag type="info">宝马X5</el-tag>
+                  车系:宝马X5
                 </p>
                 <p>
-                  前温:
-                  <el-tag type="danger">180℃</el-tag>
+                  前温:180℃
                   &nbsp;
-                  前压:
-                  <el-tag>1KPA</el-tag>
+                  前压:1KPA
                 </p>
                 <p>
-                  中温:
-                  <el-tag>180℃</el-tag>
+                  中温:180℃
                   &nbsp;
-                  中压:
-                  <el-tag type="danger">1KPA</el-tag>
+                  中压:1KPA
                 </p>
                 <p>
-                  后温:
-                  <el-tag>180℃</el-tag>
+                  后温: <span style="color: red;">180℃</span>
                   &nbsp;
-                  后压:
-                  <el-tag type="warning">1KPA</el-tag>
+                  后压: <span style="color: red;">1KPA</span>
                 </p>
                 <p>
                   报警内容：dfp未启用
@@ -743,6 +688,7 @@
               </div>
             </div>
           </el-card>
+
         </div>
         <img :src="alarm" alt="">
         <audio controls loop ref="alarmAudio">
@@ -755,7 +701,8 @@
         </div>
       </div>
       <div class="test">
-        <el-button type="danger" @click="alarmOn">警报测试按钮</el-button>
+        <el-button type="danger" @click="alarmOn">警报测试</el-button>
+        <el-button @click="alarmOff">关闭警报测试</el-button>
       </div>
     </div>
 
@@ -776,7 +723,6 @@
   import {getCars, getCarHistory, getCarBase} from '@/api/gis'
   import PieChart from './components/PieChart'
   import {debounce} from '@/utils'
-  import Timer from '@/utils/timer.js'
 
   export default {
     components: {
@@ -962,6 +908,11 @@
         this.showAlarm = true
         this.$refs.alarmAudio.play()
       },
+      alarmOff() {
+        this.controlPanelActiveName = '3'
+        this.showAlarm = false
+        this.$refs.alarmAudio.pause()
+      },
       alarmMuted() {
         this.$refs.alarmAudio.muted = true
       },
@@ -1064,11 +1015,23 @@
       mapMarker(cars) {
         // 填充数据
         this.listCarWatchReal = cars
-        // 填充基础数据
+        // TODO:填充基础数据
+        this.listCarWatchReal.forEach(item => {
+          item.car_user_name = '张三'
+          item.car_user_phone = '18353674768'
+          item.dpf_high_lines = '100%'
+          item.dpf_maintain_num = '10'
+          item.dpf_mileage_num = '29999'
+          item.dpf_online_num = '2000'
+          item.dpf_warning_num = '6'
+          item.install_place_msg = '潍坊'
+          item.install_user_name = '安装网'
+          item.install_user_phone = '13805368888'
+        })
         // 循环标记
-        this.listCarWatchReal.forEach((car, index) => {
+        this.listCarWatchReal.forEach((car, index, array) => {
           // 中心点移动到第一个点
-          if (index === 0) {
+          if (index === 0 && array.length === 1) {
             window.map.panTo(new T.LngLat(car.longitude, car.latitude))
           }
           // 查看是否已经标注
@@ -1093,19 +1056,33 @@
             // 创建信息窗口
             const infoWin = new T.InfoWindow()
             const content = `
-              <div>
-                <b>设备编号：${car.deviceno}</b>&nbsp;&nbsp;&nbsp;<b>车主姓名：${car.car_user_name}</b><br>
-                <b>车辆状态：${car.status}</b>&nbsp;&nbsp;&nbsp;<b>车主电话：${car.car_user_phone}</b><br>
-                <b>行驶速度：${car.speed}</b>&nbsp;&nbsp;&nbsp;<b>在线率：${car.dpf_high_lines}</b><br>
-                <b>经度：${car.longitude}</b>&nbsp;&nbsp;&nbsp;<b>维修次数：${car.dpf_maintain_num}</b><br>
-                <b>纬度：${car.latitude}</b>&nbsp;&nbsp;&nbsp;<b>里程数：${car.dpf_mileage_num}</b><br>
-                <b>方向：${car.direction}</b>&nbsp;&nbsp;&nbsp;<b>在线时长：${car.dpf_online_num}</b><br>
-                <b>GPS定位时间：${car.gpstime}</b>&nbsp;&nbsp;&nbsp;<b>报警次数：${car.dpf_warning_num}</b><br>
-                <b>DOC原温度：${car.t1}</b>&nbsp;&nbsp;&nbsp;<b>安装点地址：${car.install_place_msg}</b><br>
-                <b>DPF前端温度：${car.t2}</b>&nbsp;&nbsp;&nbsp;<b>安装人姓名：${car.install_user_name}</b><br>
-                <b>DPF后端温度：${car.t3}</b>&nbsp;&nbsp;&nbsp;<b>安装人手机：${car.install_user_phone}</b><br>
+              <div style="display: flex;">
+                <div style="flex: 1;">
+                <b>设备编号：${car.deviceno}</b><br>
+                <b>车辆状态：${car.status}</b><br>
+                <b>行驶速度：${car.speed}</b><br>
+                <b>经度：${car.longitude}</b><br>
+                <b>纬度：${car.latitude}</b><br>
+                <b>方向：${car.direction}</b><br>
+                <b>GPS定位时间：${car.gpstime}</b><br>
+                <b>DOC原温度：${car.t1}</b><br>
+                <b>DPF前端温度：${car.t2}</b><br>
+                <b>DPF后端温度：${car.t3}</b><br>
                 <b>DOC前端压力：${car.p1}</b><br>
                 <b>DOC后端压力：${car.p2}</b><br>
+                </div>
+                <div style="flex: 1;">
+                <b>车主姓名：${car.car_user_name}</b><br>
+                <b>车主电话：${car.car_user_phone}</b><br>
+                <b>在线率：${car.dpf_high_lines}</b><br>
+                <b>维修次数：${car.dpf_maintain_num}</b><br>
+                <b>里程数：${car.dpf_mileage_num}</b><br>
+                <b>在线时长：${car.dpf_online_num}</b><br>
+                <b>报警次数：${car.dpf_warning_num}</b><br>
+                <b>安装点地址：${car.install_place_msg}</b><br>
+                <b>安装人姓名：${car.install_user_name}</b><br>
+                <b>安装人手机：${car.install_user_phone}</b><br>
+                </div>
               </div>
             `
             infoWin.setContent(content)
@@ -1131,27 +1108,63 @@
             tempMarker.label.setLngLat(new T.LngLat(car.longitude, car.latitude))
             tempMarker.infoWin.setLngLat(new T.LngLat(car.longitude, car.latitude))
             tempMarker.content = `
-              <div>
-                <b>设备编号：${car.deviceno}</b>&nbsp;&nbsp;&nbsp;<b>车主姓名：${car.car_user_name}</b><br>
-                <b>车辆状态：${car.status}</b>&nbsp;&nbsp;&nbsp;<b>车主电话：${car.car_user_phone}</b><br>
-                <b>行驶速度：${car.speed}</b>&nbsp;&nbsp;&nbsp;<b>在线率：${car.dpf_high_lines}</b><br>
-                <b>经度：${car.longitude}</b>&nbsp;&nbsp;&nbsp;<b>维修次数：${car.dpf_maintain_num}</b><br>
-                <b>纬度：${car.latitude}</b>&nbsp;&nbsp;&nbsp;<b>里程数：${car.dpf_mileage_num}</b><br>
-                <b>方向：${car.direction}</b>&nbsp;&nbsp;&nbsp;<b>在线时长：${car.dpf_online_num}</b><br>
-                <b>GPS定位时间：${car.gpstime}</b>&nbsp;&nbsp;&nbsp;<b>报警次数：${car.dpf_warning_num}</b><br>
-                <b>DOC原温度：${car.t1}</b>&nbsp;&nbsp;&nbsp;<b>安装点地址：${car.install_place_msg}</b><br>
-                <b>DPF前端温度：${car.t2}</b>&nbsp;&nbsp;&nbsp;<b>安装人姓名：${car.install_user_name}</b><br>
-                <b>DPF后端温度：${car.t3}</b>&nbsp;&nbsp;&nbsp;<b>安装人手机：${car.install_user_phone}</b><br>
+              <div style="display: flex;">
+                <div style="flex: 1;">
+                <b>设备编号：${car.deviceno}</b>
+                <b>车辆状态：${car.status}</b>
+                <b>行驶速度：${car.speed}</b>
+                <b>经度：${car.longitude}</b>
+                <b>纬度：${car.latitude}</b>
+                <b>方向：${car.direction}</b>
+                <b>GPS定位时间：${car.gpstime}</b>
+                <b>DOC原温度：${car.t1}</b>
+                <b>DPF前端温度：${car.t2}</b>
+                <b>DPF后端温度：${car.t3}</b>
                 <b>DOC前端压力：${car.p1}</b><br>
                 <b>DOC后端压力：${car.p2}</b><br>
+                </div>
+                <div style="flex: 1;">
+                <b>车主姓名：${car.car_user_name}</b><br>
+                <b>车主电话：${car.car_user_phone}</b><br>
+                <b>在线率：${car.dpf_high_lines}</b><br>
+                <b>维修次数：${car.dpf_maintain_num}</b><br>
+                <b>里程数：${car.dpf_mileage_num}</b><br>
+                <b>在线时长：${car.dpf_online_num}</b><br>
+                <b>报警次数：${car.dpf_warning_num}</b><br>
+                <b>安装点地址：${car.install_place_msg}</b><br>
+                <b>安装人姓名：${car.install_user_name}</b><br>
+                <b>安装人手机：${car.install_user_phone}</b><br>
+                </div>
               </div>
             `
             tempMarker.infoWin.setContent(tempMarker.content)
             tempMarker.infoWin.update()
             // 只能打开一个？？？
-            tempMarker.marker.openInfoWindow(tempMarker.infoWin)
+            // tempMarker.marker.openInfoWindow(tempMarker.infoWin)
           }
         })
+        // TODO: 临时
+        let tempCar = Object.assign({}, this.listCarWatchReal[0])
+        tempCar.platenumber = '鲁G809CP'
+        this.listCarWatchReal.push(tempCar)
+        tempCar = Object.assign({}, this.listCarWatchReal[0])
+        tempCar.platenumber = '鲁V58661'
+        this.listCarWatchReal.push(tempCar)
+        tempCar = Object.assign({}, this.listCarWatchReal[0])
+        tempCar.platenumber = '鲁V22561'
+        this.listCarWatchReal.push(tempCar)
+        tempCar = Object.assign({}, this.listCarWatchReal[0])
+        tempCar.platenumber = '鲁V98985'
+        this.listCarWatchReal.push(tempCar)
+        tempCar = Object.assign({}, this.listCarWatchReal[0])
+        tempCar.platenumber = '鲁V69336'
+        this.listCarWatchReal.push(tempCar)
+        tempCar = Object.assign({}, this.listCarWatchReal[0])
+        tempCar.platenumber = '鲁V75555'
+        this.listCarWatchReal.push(tempCar)
+        tempCar = Object.assign({}, this.listCarWatchReal[0])
+        tempCar.platenumber = '鲁V56746'
+        this.listCarWatchReal.push(tempCar)
       },
       mapCarTrack(history) {
         // 显示控制按钮
@@ -1293,8 +1306,8 @@
         const cars = this.listCarWatch.map(item => {
           return item.deviceno
         }).join(',')
-        // this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
-        this.ws = new WebSocket(`ws://192.168.1.196:8087/socketWebServer/${token}/${cars}`)
+        this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
+        // this.ws = new WebSocket(`ws://192.168.1.196:8087/socketWebServer/${token}/${cars}`)
         this.ws.onopen = function (evt) {
           console.log('Connection open ...')
           // ws.send('Hello WebSockets!')
@@ -1619,7 +1632,7 @@
     .alarm {
       position: fixed;
       right: 20px;
-      top: 200px;
+      top: 100px;
       z-index: 9999;
       .info-wrapper {
         max-height: 500px;
