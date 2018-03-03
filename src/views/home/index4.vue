@@ -524,38 +524,38 @@
       <div class="alarm" v-show="showAlarm">
         <div class="info-wrapper">
           <el-card>
-            <div class="alarm-info">
-              <h4 class="header">车辆异常报警</h4>
-              <div class="info">
-                <p>
-                  车牌:鲁G809CP
-                  &nbsp;
-                  车系:宝马X5
-                </p>
-                <p>
-                  前温:180℃
-                  &nbsp;
-                  前压:1KPA
-                </p>
-                <p>
-                  中温:180℃
-                  &nbsp;
-                  中压:1KPA
-                </p>
-                <p>
-                  后温: <span style="color: red;">180℃</span>
-                  &nbsp;
-                  后压: <span style="color: red;">1KPA</span>
-                </p>
-                <p>
-                  报警内容：dfp未启用
-                </p>
-                <p>
-                  <el-button type="primary" size="mini" icon="el-icon-location">定位</el-button>
-                </p>
-              </div>
+          <div class="alarm-info">
+            <h4 class="header">车辆异常报警</h4>
+            <div class="info">
+              <p>
+                车牌:鲁G809CP
+                &nbsp;
+                车系:宝马X5
+              </p>
+              <p>
+                前温:180℃
+                &nbsp;
+                前压:1KPA
+              </p>
+              <p>
+                中温:180℃
+                &nbsp;
+                中压:1KPA
+              </p>
+              <p>
+                后温: <span style="color: red;">180℃</span>
+                &nbsp;
+                后压: <span style="color: red;">1KPA</span>
+              </p>
+              <p>
+                报警内容：dfp未启用
+              </p>
+              <p>
+                <el-button type="primary" size="mini" icon="el-icon-location">定位</el-button>
+              </p>
             </div>
-          </el-card>
+          </div>
+        </el-card>
           <el-card>
             <div class="alarm-info">
               <h4 class="header">车辆异常报警</h4>

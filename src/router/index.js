@@ -29,7 +29,7 @@ export const constantRouterMap = [
   {path: '/404', component: _import('errorPage/404'), hidden: true},
   {path: '/401', component: _import('errorPage/401'), hidden: true},
   {path: '/map_print', name: 'map_print', component: _import('home/map_print'), hidden: true},
-
+  {path: '/bigScreen', component: _import('big_screen/index'), hidden: true},
   {
     path: '/',
     component: Layout,
@@ -293,15 +293,14 @@ export const asyncRouterMap = [
         path: 'sms',
         name: '报警短信',
         component: _import('sms/index'),
-        meta: {title: '报警短信', icon: 'documentation'}
+        meta: {title: '报警短信'}
       },
       {
         id: 52,
-        path: 'notice_create',
-        name: '实时报警',
-        hidden: true,
-        component: _import('notice/create'),
-        meta: {title: '添加编辑', icon: 'documentation'}
+        path: 'alarm',
+        name: '报警处理',
+        component: _import('alarm/index'),
+        meta: {title: '报警处理'}
       }
     ]
   },

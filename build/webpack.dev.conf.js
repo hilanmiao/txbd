@@ -36,6 +36,12 @@ module.exports = merge(baseWebpackConfig, {
       favicon: resolveApp('favicon.ico'),
       inject: true
     }),
+    new HtmlWebpackPlugin({
+      filename: 'bigScreen.html',
+      template: 'bigScreen.html',
+      favicon: resolveApp('favicon.ico'),
+      inject: true
+    }),
     new FriendlyErrorsPlugin()
   ]
 })
