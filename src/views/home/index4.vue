@@ -166,7 +166,7 @@
           </div>
           <div class="tabs">
             <el-tabs type="card">
-              <el-tab-pane label="车辆列表">
+              <el-tab-pane label="报警列表">
                 <template>
                   <el-table
                     :data="listCar"
@@ -216,6 +216,39 @@
                     @current-change="handleCurrentChange"
                   >
                   </el-pagination>
+                </template>
+              </el-tab-pane>
+              <el-tab-pane label="查询列表 ">
+                <template>
+                  <el-table
+                    :data="listCarWatch"
+                    :max-height="leftTableHeight"
+                  >
+                    <el-table-column
+                      prop="carCode"
+                      label="车牌"
+                      width="80"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      prop="deviceno"
+                      label="设备编号"
+                      width="80"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      label="操作"
+                      width="60"
+                    >
+                      <template slot-scope="scope">
+                        <el-tooltip content="移除" placement="right-start">
+                          <el-button type="danger" size="mini" icon="el-icon-delete"
+                                     @click="handleWatchRemove(scope.row)"></el-button>
+                        </el-tooltip>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                  <h4 style="margin: 10px;text-align: center"><i class="el-icon-info"></i>最多同时监控20辆</h4>
                 </template>
               </el-tab-pane>
               <el-tab-pane label="监控列表 ">
@@ -700,7 +733,7 @@
           </div>
         </div>
       </div>
-      <div class="test">
+      <div class="test"　v-show="false">
         <el-button type="danger" @click="alarmOn">警报测试</el-button>
         <el-button @click="alarmOff">关闭警报测试</el-button>
       </div>
@@ -1587,7 +1620,8 @@
           border-left: 0;
           border-right: 0;
           .el-tabs__item {
-            width: 50%;
+            width: 33.33%;
+            padding: 0;
           }
         }
 
