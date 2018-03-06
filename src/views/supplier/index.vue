@@ -291,7 +291,7 @@
           ],
           finance_name: [
             {required: true, message: '请填写财务联系人', trigger: 'blur'},
-            {max: 10, message: '长度在10个字符内', trigger: 'blur'}
+            {max: 7, message: '长度在7个字符内', trigger: 'blur'}
           ],
           finance_phone: [
             {required: true, message: '请填写财务联系人电话', trigger: 'blur'},
@@ -311,11 +311,11 @@
           ],
           own_name: [
             {required: true, message: '请填写企业法人', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 7, message: '长度在7个字符内', trigger: 'blur'}
           ],
           link_name: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 7, message: '长度在7个字符内', trigger: 'blur'}
           ],
           link_phone: [
             {required: true, message: '请填写联系人手机', trigger: 'blur'},

@@ -41,18 +41,18 @@
           prop="createTime"
           label="创建时间">
         </el-table-column>
-        <el-table-column
-          width="120"
-          prop="create_user_name"
-          label="创建人">
-        </el-table-column>
-        <el-table-column
-          width="120"
-          label="状态">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.type | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>
-          </template>
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--width="120"-->
+          <!--prop="create_user_name"-->
+          <!--label="创建人">-->
+        <!--</el-table-column>-->
+        <!--<el-table-column-->
+          <!--width="120"-->
+          <!--label="设备状态">-->
+          <!--<template slot-scope="scope">-->
+            <!--<el-tag :type="scope.row.type | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column
           fixed="right"
           label="操作"
@@ -98,13 +98,13 @@
           <el-form-item label="设备型号" prop="dpf_model">
             <el-input v-model="tempModel.dpf_model"></el-input>
           </el-form-item>
-          <el-form-item label="状态" prop="type">
-            <el-select v-model="tempModel.type" placeholder="请选择">
-              <el-option label="未使用" value="0"></el-option>
-              <el-option label="已使用" value="1"></el-option>
-              <el-option label="已报废" value="2"></el-option>
-            </el-select>
-          </el-form-item>
+          <!--<el-form-item label="状态" prop="type">-->
+            <!--<el-select v-model="tempModel.type" placeholder="请选择">-->
+              <!--<el-option label="未使用" value="0"></el-option>-->
+              <!--<el-option label="已使用" value="1"></el-option>-->
+              <!--<el-option label="已报废" value="2"></el-option>-->
+            <!--</el-select>-->
+          <!--</el-form-item>-->
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="loadingSubmit">保存</el-button>
             <el-button @click="closeDialog">取消</el-button>

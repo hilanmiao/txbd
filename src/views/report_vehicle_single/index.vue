@@ -24,7 +24,6 @@
       <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
     </div>
 
-
     <el-row>
       <el-col :sm="24" :xs="24">
         <div class="chart-wrapper">
@@ -50,7 +49,6 @@
                     <el-input v-model="form.car_user_name" class="form-input" readonly></el-input>
                   </el-col>
                 </el-form-item>
-
                 <el-form-item>
                   <el-col :span="2">联系方式</el-col>
                   <el-col :span="5">

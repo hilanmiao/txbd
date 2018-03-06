@@ -10,7 +10,7 @@
                 placeholder="年限">
       </el-input>
       <el-button type="primary" icon="el-icon-search">搜索</el-button>
-      <el-button type="primary" icon="el-icon-download">导出</el-button>
+      <!--<el-button type="primary" icon="el-icon-download">导出</el-button>-->
     </div>
 
     <el-row :gutter="32">

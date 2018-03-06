@@ -303,8 +303,16 @@ export const asyncRouterMap = [
         meta: {title: '报警处理'}
       },
       {
-        id: 52,
+        id: 53,
+        path: 'time_threshold',
+        name: '阀值管理',
+        component: _import('time_threshold/index'),
+        meta: {title: '阀值管理'}
+      },
+      {
+        id: 54,
         path: 'history',
+        hidden: true,
         name: '历史轨迹',
         component: _import('history/index'),
         meta: {title: '历史轨迹'}

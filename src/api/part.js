@@ -19,9 +19,9 @@ export function postModelRole(params) {
 }
 
 // 修改
-export function putModelPlatform(data) {
+export function putModelRole(data) {
   return request({
-    url: 'v1/lowerplatform/update',
+    url: 'v1/user/role',
     method: 'put',
     data
   })

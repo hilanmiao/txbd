@@ -755,6 +755,7 @@
   import {getCars, getCarHistory, getCarBase} from '@/api/gis'
   import PieChart from './components/PieChart'
   import {debounce} from '@/utils'
+  import {SERVER_PATH} from '@/api/config'
 
   export default {
     components: {
@@ -1342,7 +1343,7 @@
           return item.deviceno
         }).join(',')
         // this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
-        this.ws = new WebSocket(`ws://192.168.1.111:8087/socketWebServer/${token}/${cars}`)
+        this.ws = new WebSocket(`ws://${SERVER_PATH}:8087/socketWebServer/${token}/${cars}`)
         this.ws.onopen = function (evt) {
           console.log('Connection open ...')
           // ws.send('Hello WebSockets!')

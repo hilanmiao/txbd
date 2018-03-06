@@ -116,10 +116,6 @@
           </el-form-item>
           <el-form-item label="车主姓名" prop="carOwnerName">
             <el-input v-model="form.carOwnerName" :disabled="lookOrEdit"></el-input>
-            <el-col :span="4">联系电话</el-col>
-            <el-col :span="8">
-              <el-input v-model="form.carOwnerPhone" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
           <el-form-item label="联系电话" prop="carOwnerPhone">
             <el-input v-model="form.carOwnerPhone" :disabled="lookOrEdit"></el-input>

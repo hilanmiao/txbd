@@ -47,7 +47,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListRole, postModelRole} from '@/api/part'
+  import {getListRole, postModelRole, putModelRole} from '@/api/part'
   import {asyncRouterMap} from '@/router'
   import {getToken} from '@/utils/auth'
 
@@ -120,7 +120,16 @@
         }
         this._postModelRole()
       },
-      handleEdit() {},
+      handleEdit() {
+        if (!this.curLabel) {
+          this.$message({
+            type: 'error',
+            message: '请输入要编辑的角色'
+          })
+          return
+        }
+        this._putModelRole()
+      },
       handleDelete() {
         if (!this.curId) {
           this.$message({
@@ -213,6 +222,40 @@
           remark: '前端路由权限存储'
         }
         postModelRole(tempModel).then(response => {
+          if (response.code === '201') {
+            // 弹出提醒信息
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            })
+            // 重新请求数据(带着原先的查询参数)
+            this.treeData = []
+            this._getListRole()
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
+      },
+      _putModelRole() {
+        // 获取checked子节点数组
+        const menus = this.$refs.treeMenu.getCheckedKeys(false).join(',')
+        if (!menus.length) {
+          this.$message({
+            type: 'error',
+            message: '请配置菜单权限'
+          })
+          return
+        }
+        this.treeLoading = true
+        const tempModel = {
+          rolename: this.newLabel,
+          menus: menus,
+          remark: '前端路由权限存储'
+        }
+        putModelRole(tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({

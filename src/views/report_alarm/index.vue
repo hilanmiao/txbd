@@ -34,7 +34,7 @@
                 placeholder="供应商">
       </el-input>
       <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
+      <!--<el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>-->
       <el-button type="primary" icon="el-icon-search" @click="changeShow">切换展示</el-button>
     </div>
 
