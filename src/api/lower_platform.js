@@ -12,7 +12,7 @@ export function getListPlatform(params) {
 // 创建
 export function postModelPlatform(data) {
   return request({
-    url: 'v1/lowerplatform/save',
+    url: 'v1/lowerplatform/',
     method: 'post',
     data
   })
@@ -21,7 +21,7 @@ export function postModelPlatform(data) {
 // 修改
 export function putModelPlatform(data) {
   return request({
-    url: 'v1/lowerplatform/update',
+    url: 'v1/lowerplatform/',
     method: 'put',
     data
   })
@@ -40,5 +40,14 @@ export function getModelPlatform(id) {
   return request({
     url: 'v1/lowerplatform/' + id,
     method: 'get'
+  })
+}
+
+// 导出
+export function exportEnquipment(params) {
+  return request({
+    url: 'v1/repairFactory/export',
+    method: 'get',
+    params
   })
 }

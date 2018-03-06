@@ -11,7 +11,7 @@ export function getListEnquipment(params) {
 // 创建
 export function postModelEnquipment(data) {
   return request({
-    url: 'v1/dpfInfo/dpfInfo',
+    url: 'v1/dpfInfo/',
     method: 'post',
     data
   })
@@ -20,7 +20,7 @@ export function postModelEnquipment(data) {
 // 修改
 export function putModelEnquipment(data) {
   return request({
-    url: 'v1/dpfInfo/dpfInfo',
+    url: 'v1/dpfInfo/',
     method: 'put',
     data
   })
@@ -39,5 +39,14 @@ export function getModelEnquipment(id) {
   return request({
     url: 'v1/dpfInfo/' + id,
     method: 'get'
+  })
+}
+
+// 导出
+export function exportEnquipment(params) {
+  return request({
+    url: 'v1/dpfInfo/export',
+    method: 'get',
+    params
   })
 }

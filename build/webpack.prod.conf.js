@@ -12,7 +12,7 @@ var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var env = config.build.env
 
 function resolveApp(relativePath) {
-    return path.resolve(relativePath);
+  return path.resolve(relativePath);
 }
 
 var webpackConfig = merge(baseWebpackConfig, {
@@ -56,6 +56,21 @@ var webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'index.html',
+      inject: true,
+      favicon: resolveApp('favicon.ico'),
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
+    }),
+    new HtmlWebpackPlugin({
+      filename: config.build.bigScreen,
+      template: 'bigScreen.html',
       inject: true,
       favicon: resolveApp('favicon.ico'),
       minify: {

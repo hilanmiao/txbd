@@ -38,3 +38,12 @@ export function deleMain(id) {
     method: 'delete'
   })
 }
+
+// 导出
+export function exportEnquipment(params) {
+  return request({
+    url: 'v1/repairFactory/export',
+    method: 'get',
+    params
+  })
+}

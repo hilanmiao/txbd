@@ -97,84 +97,55 @@
       <el-dialog :visible.sync="visibleView" :title="titMsg">
         <el-form ref="form" :model="form" label-width="120px">
 
-          <el-form-item label="城市名">
-            <el-col :span="10">
-              <el-input v-model="form.cityName" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">供应商</el-col>
-            <el-col :span="8">
+          <el-form-item label="城市名" prop="cityName">
+              <el-input v-model="form.cityName" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="供应商" prop="supplierName">
               <el-input v-model="form.supplierName" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-          <el-form-item label="dpf型号">
-            <el-col :span="10">
-              <el-input v-model="form.dpf_model" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">车辆编号</el-col>
-            <el-col :span="8">
+          <el-form-item label="dpf型号" prop="dpf_model">
+              <el-input v-model="form.dpf_model" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="车辆编号" prop="car_number">
               <el-input v-model="form.car_number" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-          <el-form-item label="颜色">
-            <el-col :span="10">
-              <el-input v-model="form.car_color" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">型号</el-col>
-            <el-col :span="8">
+          <el-form-item label="颜色" prop="car_color">
+              <el-input v-model="form.car_color" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="型号">
               <el-input v-model="form.car_type_code" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-          <el-form-item label="车主姓名">
-            <el-col :span="10">
-              <el-input v-model="form.car_user_name" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">车主身份证号</el-col>
-            <el-col :span="8">
+          <el-form-item label="车主姓名" prop="car_user_name">
+              <el-input v-model="form.car_user_name"  :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="车主身份证号" prop="car_user_identity_code">
               <el-input v-model="form.car_user_identity_code" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-          <el-form-item label="车主电话">
-            <el-col :span="10">
-              <el-input v-model="form.car_user_phone" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">发动机编号</el-col>
-            <el-col :span="8">
+          <el-form-item label="车主电话" prop="car_user_phone">
+              <el-input v-model="form.car_user_phone"  :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="发动机编号" prop="car_engine_number">
               <el-input v-model="form.car_engine_number" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-          <el-form-item label="安装地点信息">
-            <el-col :span="10">
-              <el-input v-model="form.install_place_msg" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">安装人信息</el-col>
-            <el-col :span="8">
+          <el-form-item label="安装地点信息" prop="install_place_msg">
+              <el-input v-model="form.install_place_msg" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="安装人信息" prop="install_user_name">
               <el-input v-model="form.install_user_name" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-          <el-form-item label="安装人电话">
-            <el-col :span="10">
-              <el-input v-model="form.install_user_phone" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">创建时间</el-col>
-            <el-col :span="8">
-              <el-input v-model="form.createTime" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <el-form-item label="安装人电话" prop="install_user_phone">
+              <el-input v-model="form.install_user_phone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="唯一标识">
-            <el-col :span="10">
+          <el-form-item label="唯一标识" prop="qr_code">
               <el-input v-model="form.qr_code" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">车辆出厂日期</el-col>
-            <el-col :span="8">
+          </el-form-item>
+          <el-form-item label="车辆出厂日期" prop="car_manufacture_time">
               <el-input v-model="form.car_manufacture_time" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-          <el-form-item label="车辆状态">
-            <el-col :span="10">
-              <el-input v-model="form.car_status" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <el-form-item label="车辆状态" prop="car_status">
+              <el-input v-model="form.car_status" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="车辆状态">
+          <el-form-item label="车辆照片">
             <el-col :span="24">
               <a style="color:#66b1ff" @click="openImageView(form.img_url_45)">45°照片</a>&nbsp;&nbsp;&nbsp;
               <a style="color:#66b1ff" @click="openImageView(form.before_install_img_url)">安装前照片</a>&nbsp;&nbsp;&nbsp;

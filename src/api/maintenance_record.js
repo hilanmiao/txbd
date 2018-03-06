@@ -39,7 +39,8 @@ export function deleMain(id) {
   })
 }
 
-export function exportMain(params) {
+// 导出
+export function exportEnquipment(params) {
   return request({
     url: 'v1/repairInfo/export',
     method: 'get',

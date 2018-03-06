@@ -93,17 +93,17 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
-        <el-form ref="form" :model="tempModel" label-width="80px">
-          <el-form-item label="平台名称">
+        <el-form ref="form"  status-icon :rules="rules" :model="tempModel" label-width="80px" size="mini">
+          <el-form-item label="平台名称" prop="name">
             <el-input v-model="tempModel.name"></el-input>
           </el-form-item>
-          <el-form-item label="联系人">
+          <el-form-item label="联系人" prop="link_name">
             <el-input v-model="tempModel.link_name"></el-input>
           </el-form-item>
-          <el-form-item label="电话">
+          <el-form-item label="电话" prop="link_phone">
             <el-input v-model="tempModel.link_phone"></el-input>
           </el-form-item>
-          <el-form-item label="类型">
+          <el-form-item label="类型" prop="type">
             <el-select v-model="tempModel.type" placeholder="请选择">
               <el-option label="市级平台" value="0"></el-option>
               <el-option label="供应商平台" value="1"></el-option>
@@ -120,7 +120,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform} from '@/api/lower_platform'
+  import {getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform,exportEnquipment} from '@/api/lower_platform'
+  import {EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -144,6 +145,25 @@
           link_name: '',
           link_phone: '',
           type: '0'
+        },
+        // 表单验证相关
+        rules: {
+          name: [
+            {required: true, message: '请输入名称', trigger: 'blur'},
+            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
+          ],
+          link_name: [
+            {required: true, message: '请输入联系人名称', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          link_phone: [
+            {required: true, message: '请输入联系人电话', trigger: 'blur'},
+            {max: 15, message: '长度在13个字符内', trigger: 'blur'}
+          ],
+          type: [
+            {required: true, message: '请输入类型', trigger: 'blur'},
+            {max: 13, message: '长度在13个字符内', trigger: 'blur'}
+          ]
         },
         loadingSubmit: false,
         dialogFormVisible: false,
@@ -226,24 +246,21 @@
         })
       },
       handleSubmit() {
-        // TODO: 提交前检查，必填项等。临时使用这种方式，以后或改为form自带的验证
-        if (!this.tempModel.name) {
-          this.$message({
-            type: 'error',
-            message: '平台名称必填'
-          })
-          return
-        }
-        // 提交处理
-        this.loadingSubmit = true
-        // 提交数据
-        if (!this.tempModel.id) {
-          // 没有id，是新建
-          this._postModelPlatform()
-        } else {
-          // 有id，是编辑
-          this._putModelPlatform()
-        }
+        // 表单验证
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            // 提交处理
+            this.loadingSubmit = true
+            // 提交数据
+            if (!this.tempModel.id) {
+              // 没有id，是新建
+              this._postModelPlatform()
+            } else {
+              // 有id，是编辑
+              this._putModelPlatform()
+            }
+          }
+        })
       },
       handleBeforeClose(done) {
         // dialog关闭前处理(http请求未完成时dialog不能关闭)
@@ -252,39 +269,25 @@
         }
       },
       handleExport() {
-        // 导出处理（简单做，后期可能会改用插件）
         // 显示loading
         this.loadingExport = true
-
-        const rows = [['id', '平台名称', '联系人', '电话', '状态', '创建时间', 'accessKey', 'accessSecret']]
-        this.tableData.forEach(item => {
-          rows.push([
-            item.id,
-            item.name,
-            item.link_name,
-            item.link_phone,
-            item.type,
-            item.createTime,
-            item.accessKey,
-            item.accessSecret
-          ])
+        // 获取excel
+        exportEnquipment().then(response => {
+          if (response.code === '200') {
+            const link = document.createElement('a')
+            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('download', 'download.xls')
+            document.body.appendChild(link) // Required for FF
+            link.click() // This will download the data file named "my_data.csv".
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 隐藏loading
+          this.loadingExport = false
         })
-        let csvContent = 'data:text/csv;charset=utf-8,'
-        rows.forEach(rowArray => {
-          const row = rowArray.join(',')
-          csvContent += row + '\r\n'
-        })
-
-        // window.open(encodedUri)
-        const encodedUri = encodeURI(csvContent)
-        const link = document.createElement('a')
-        link.setAttribute('href', encodedUri)
-        link.setAttribute('download', 'download.csv')
-        document.body.appendChild(link) // Required for FF
-        link.click() // This will download the data file named "my_data.csv".
-
-        // 隐藏loading
-        this.loadingExport = false
       },
       handleFilter() {
         // 搜索处理

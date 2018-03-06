@@ -85,20 +85,20 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
-        <el-form ref="form" :model="tempModel" label-width="80px">
-          <el-form-item label="设备序号">
+        <el-form ref="form" status-icon :rules="rules" :model="tempModel" label-width="80px">
+          <el-form-item label="设备序号" prop="dpf_code">
             <el-input v-model="tempModel.dpf_code"></el-input>
           </el-form-item>
-          <el-form-item label="供应商">
+          <el-form-item label="供应商" prop="supplier_id">
             <el-select v-model="tempModel.supplier_id" placeholder="请选择供应商">
               <el-option v-for="item in listSupplier" :key="item.id" :label="item.name"
                          :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="设备型号">
+          <el-form-item label="设备型号" prop="dpf_model">
             <el-input v-model="tempModel.dpf_model"></el-input>
           </el-form-item>
-          <el-form-item label="状态">
+          <el-form-item label="状态" prop="type">
             <el-select v-model="tempModel.type" placeholder="请选择">
               <el-option label="未使用" value="0"></el-option>
               <el-option label="已使用" value="1"></el-option>
@@ -107,7 +107,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="loadingSubmit">保存</el-button>
-            <el-button @click="dialogFormVisible = false">取消</el-button>
+            <el-button @click="closeDialog">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -116,8 +116,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListEnquipment, postModelEnquipment, putModelEnquipment, deleteModelEnquipment} from '@/api/enquipment'
-  import {getListSupplier} from '@/api/supplier'
+  import {
+    getListEnquipment,
+    postModelEnquipment,
+    putModelEnquipment,
+    deleteModelEnquipment,
+    exportEnquipment
+  } from '@/api/enquipment'
+  import {getSuppList} from '@/api/supplier'
+  import {EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -145,7 +152,23 @@
         },
         loadingSubmit: false,
         dialogFormVisible: false,
-
+        // 表单验证相关
+        rules: {
+          dpf_code: [
+            {required: true, message: '请输入设备序号', trigger: 'blur'},
+            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
+          ],
+          supplier_id: [
+            {required: true, message: '请选择供应商', trigger: 'blur'}
+          ],
+          dpf_model: [
+            {required: true, message: '请输入设备型号', trigger: 'blur'},
+            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
+          ],
+          type: [
+            {required: true, message: '请选择状态', trigger: 'blur'}
+          ]
+        },
         // 导出相关
         loadingExport: false
       }
@@ -188,6 +211,11 @@
       this._getListSupplier()
     },
     methods: {
+      closeDialog() {
+        this.dialogFormVisible = false
+        // 重置验证
+        this.$refs.form.resetFields()
+      },
       resetTempModel() {
         // 重置表单
         this.tempModel = {
@@ -228,24 +256,21 @@
         })
       },
       handleSubmit() {
-        // TODO: 提交前检查，必填项等。临时使用这种方式，以后或改为form自带的验证
-        if (!this.tempModel.dpf_code) {
-          this.$message({
-            type: 'error',
-            message: '设备序号必填'
-          })
-          return
-        }
-        // 提交处理
-        this.loadingSubmit = true
-        // 提交数据
-        if (!this.tempModel.id) {
-          // 没有id，是新建
-          this._postModelEnquipment()
-        } else {
-          // 有id，是编辑
-          this._putModelEnquipment()
-        }
+        // 表单验证
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            // 提交处理
+            this.loadingSubmit = true
+            // 提交数据
+            if (!this.tempModel.id) {
+              // 没有id，是新建
+              this._postModelEnquipment()
+            } else {
+              // 有id，是编辑
+              this._putModelEnquipment()
+            }
+          }
+        })
       },
       handleBeforeClose(done) {
         // dialog关闭前处理(http请求未完成时dialog不能关闭)
@@ -254,37 +279,25 @@
         }
       },
       handleExport() {
-        // 导出处理（简单做，后期可能会改用插件）
         // 显示loading
         this.loadingExport = true
-
-        const rows = [['DPF设备序号', 'DPF供应商', 'DPF设备型号', '状态', '创建时间', '创建人']]
-        this.tableData.forEach(item => {
-          rows.push([
-            item.dpf_code,
-            item.supplier,
-            item.dpf_model,
-            item.status,
-            item.createtime,
-            item.createuser
-          ])
+        // 获取excel
+        exportEnquipment().then(response => {
+          if (response.code === '200') {
+            const link = document.createElement('a')
+            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('download', 'download.xls')
+            document.body.appendChild(link) // Required for FF
+            link.click() // This will download the data file named "my_data.csv".
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 隐藏loading
+          this.loadingExport = false
         })
-        let csvContent = 'data:text/csv;charset=utf-8,'
-        rows.forEach(rowArray => {
-          const row = rowArray.join(',')
-          csvContent += row + '\r\n'
-        })
-
-        // window.open(encodedUri)
-        const encodedUri = encodeURI(csvContent)
-        const link = document.createElement('a')
-        link.setAttribute('href', encodedUri)
-        link.setAttribute('download', 'download.csv')
-        document.body.appendChild(link) // Required for FF
-        link.click() // This will download the data file named "my_data.csv".
-
-        // 隐藏loading
-        this.loadingExport = false
       },
       handleFilter() {
         // 搜索处理
@@ -387,14 +400,11 @@
         })
       },
       _getListSupplier() {
-        // TODO: 接口不对模拟一下
-        this.listSupplier.push({
-          id: '61cb1b6182404d6aaed661338ff63711',
-          name: '青岛高新DPF长'
+        getSuppList({offset: 0, limit: 1000}).then(response => {
+          if (response.code === '200') {
+            this.listSupplier = response.data.dataList
+          }
         })
-        // getListSupplier({}).then(response => {
-        //   this.listSupplier = response.data.data
-        // })
       }
     }
   }

@@ -2,3 +2,5 @@
 export const IMG_SERVER_PATH = 'http://192.168.1.198:8089/file/show/'
 // 图片上传地址
 export const UPIMG_SERVER_PATH = 'http://192.168.1.196/api/v1/'
+// excel下载地址
+export const EXCEL_SERVER_PATH = 'http://192.168.1.111:8089/file/show/'

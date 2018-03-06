@@ -2,20 +2,20 @@
   <div class="app-container">
 
     <div class="filter-container" style="padding-bottom: 10px;">
-      <el-date-picker
-        v-model="dateArea"
-        type="daterange"
-        align="right"
-        unlink-panels
-        value-format="yyyy-MM-dd"
-        range-separator="-"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        @change="selectDate"
-        style="width:300px;"
-        clearable
-      >
-      </el-date-picker>
+      <!--<el-date-picker-->
+      <!--v-model="dateArea"-->
+      <!--type="daterange"-->
+      <!--align="right"-->
+      <!--unlink-panels-->
+      <!--value-format="yyyy-MM-dd"-->
+      <!--range-separator="-"-->
+      <!--start-placeholder="开始日期"-->
+      <!--end-placeholder="结束日期"-->
+      <!--@change="selectDate"-->
+      <!--style="width:300px;"-->
+      <!--clearable-->
+      <!--&gt;-->
+      <!--</el-date-picker>-->
       <el-select @keyup.enter.native="handleSearch" v-model="listQuery.city_id" style="width:120px;" clearable
                  placeholder="选择城市">
         <el-option v-for="item in listCity" :key="item.id" :label="item.name"
@@ -223,10 +223,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getSuppList, addSupp, editSupp, lookSupp, deleSupp} from '@/api/supplier'
+  import {getSuppList, addSupp, editSupp, lookSupp, deleSupp, exportEnquipment} from '@/api/supplier'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH, UPIMG_SERVER_PATH} from '@/api/config'
+  import {IMG_SERVER_PATH, UPIMG_SERVER_PATH, EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -271,49 +271,63 @@
         },
         rules: {
           name: [
-            {required: true, message: '请输入名称', trigger: 'blur'}
+            {required: true, message: '请输入名称', trigger: 'blur'},
+            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
           ],
           e_code: [
-            {required: true, message: '请输入编号', trigger: 'blur'}
+            {required: true, message: '请输入编号', trigger: 'blur'},
+            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
           ],
           city_id: [
             {required: true, message: '请选择城市', trigger: 'change'}
           ],
           business: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写主营范围', trigger: 'blur'},
+            {max: 255, message: '长度在255个字符内', trigger: 'blur'}
           ],
           address: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写企业地址', trigger: 'blur'},
+            {max: 100, message: '长度在100个字符内', trigger: 'blur'}
           ],
           finance_name: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写财务联系人', trigger: 'blur'},
+            {max: 10, message: '长度在10个字符内', trigger: 'blur'}
           ],
           finance_phone: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写财务联系人电话', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           link_tel: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写联系人电话', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           link_fax: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写联系人传真', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           invoice_msg: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写开票信息', trigger: 'blur'},
+            {max: 100, message: '长度在100个字符内', trigger: 'blur'}
           ],
           own_name: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写企业法人', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           link_name: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写联系人姓名', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           link_phone: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写联系人手机', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           main_product: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写主要产品描述', trigger: 'blur'},
+            {max: 255, message: '长度在255个字符内', trigger: 'blur'}
           ],
           registered_capital: [
-            {required: true, message: '请填写内容', trigger: 'blur'}
+            {required: true, message: '请填写注册资金', trigger: 'blur'},
+            {max: 10, message: '长度在10个字符内', trigger: 'blur'}
           ]
         },
         listCity: [],
@@ -518,29 +532,25 @@
         })
       },
       handleExport() {
+        // 显示loading
         this.loadingExport = true
-
-        const rows = [['城市', '供应商', '联系人', '联系人手机']]
-        this.tableData.forEach(item => {
-          rows.push([
-            item.city_name,
-            item.name,
-            item.link_name,
-            item.link_phone
-          ])
+        // 获取excel
+        exportEnquipment().then(response => {
+          if (response.code === '200') {
+            const link = document.createElement('a')
+            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('download', 'download.xls')
+            document.body.appendChild(link) // Required for FF
+            link.click() // This will download the data file named "my_data.csv".
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 隐藏loading
+          this.loadingExport = false
         })
-        let csvContent = 'data:text/csv;charset=utf-8,'
-        rows.forEach(rowArray => {
-          const row = rowArray.join(',')
-          csvContent += row + '\r\n'
-        })
-
-        const encodedUri = encodeURI(csvContent)
-        const link = document.createElement('a')
-        link.setAttribute('href', encodedUri)
-        link.setAttribute('download', 'download.csv')
-        document.body.appendChild(link) // Required for FF
-        this.loadingExport = false
       },
       selectDate() {
         if (this.dateArea != null) {

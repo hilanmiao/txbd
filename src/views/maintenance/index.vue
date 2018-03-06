@@ -108,70 +108,46 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" :title="titMsg">
-        <el-form ref="form" :model="form" label-width="120px">
-
-          <el-form-item label="修理厂名称">
-            <el-col :span="10">
-              <el-input v-model="form.name" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">企业代码</el-col>
-            <el-col :span="8">
+        <el-form ref="form" status-icon :rules="rules" :model="form" label-width="120px" size="mini">
+          <el-form-item label="修理厂名称" prop="name">
+              <el-input v-model="form.name" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="企业代码" prop="shopId">
               <el-input v-model="form.shopId" :disabled="noEdit"></el-input>
-            </el-col>
           </el-form-item>
-          <el-form-item label="企业面积">
-            <el-col :span="10">
-              <el-input v-model="form.area" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">企业人数</el-col>
-            <el-col :span="8">
+          <el-form-item label="企业面积" prop="area">
+              <el-input v-model="form.area" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="企业人数" prop="employees">
               <el-input v-model="form.employees" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-
-          <el-form-item label="业务范围">
-            <el-col :span="10">
-              <el-input v-model="form.business" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">企业类别</el-col>
-            <el-col :span="8">
+          <el-form-item label="业务范围" prop="business">
+              <el-input v-model="form.business" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="企业类别" prop="type">
               <el-input v-model="form.type" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-
-          <el-form-item label="省份">
-            <el-col :span="10">
-              <el-input v-model="form.provinceName" style="width:80%;" :disabled="lookOrEdit" value="37"></el-input>
-            </el-col>
-            <el-col :span="4">城市</el-col>
-            <el-col :span="8">
-              <el-select v-model="form.city_id" style="width:100%;" :disabled="lookOrEdit" placeholder="请选择供应商">
+          <!--<el-form-item label="省份" prop="provinceName">-->
+              <!--<el-input v-model="form.provinceName" :disabled="lookOrEdit" value="37"></el-input>-->
+          <!--</el-form-item>-->
+          <el-form-item label="城市">
+              <el-select v-model="form.city_id" style="width:100%;" :disabled="lookOrEdit" placeholder="请选择城市">
                 <el-option v-for="item in listCity" :key="item.id" :label="item.name"
                            :value="item.id"></el-option>
               </el-select>
-            </el-col>
           </el-form-item>
-          <el-form-item label="经度">
-            <el-col :span="10">
-              <el-input v-model="form.longitude" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">维度</el-col>
-            <el-col :span="8">
+          <el-form-item label="经度" prop="longitude">
+              <el-input v-model="form.longitude" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="纬度" prop="latitude">
               <el-input v-model="form.latitude" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-
-          <el-form-item label="财务姓名">
-            <el-col :span="10">
-              <el-input v-model="form.financeName" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">财务电话</el-col>
-            <el-col :span="8">
+          <el-form-item label="财务姓名" prop="financeName">
+              <el-input v-model="form.financeName"  :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="财务电话" prop="financePhone">
               <el-input v-model="form.financePhone" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-
-
           <el-form-item label="营业执照">
             <el-upload
               :limit="1"
@@ -189,51 +165,37 @@
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
             </el-upload>
           </el-form-item>
-
-          <el-form-item label="企业法人姓名">
-            <el-col :span="10">
-              <el-input style="width:80%;" v-model="form.ownName" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">企业法人电话</el-col>
-            <el-col :span="8">
+          <el-form-item label="企业法人姓名" prop="ownName">
+              <el-input v-model="form.ownName" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="企业法人电话" prop="ownPhone">
               <el-input v-model="form.ownPhone" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-
-          <el-form-item label="注册资本">
-            <el-col :span="10">
-              <el-input v-model="form.registeredCapital" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">总资产规模</el-col>
-            <el-col :span="8">
+          <el-form-item label="注册资本" prop="registeredCapital">
+              <el-input v-model="form.registeredCapital" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="总资产规模" prop="assets">
               <el-input v-model="form.assets" :disabled="lookOrEdit"></el-input>
-            </el-col>
           </el-form-item>
-
-          <el-form-item label="开票信息">
+          <el-form-item label="开票信息" prop="invoiceMsg">
             <el-input v-model="form.invoiceMsg" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-
-          <el-form-item label="注册地址">
+          <el-form-item label="注册地址" prop="registeredAddress">
             <el-input v-model="form.registeredAddress" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-
-          <el-form-item label="企业所在地区">
+          <el-form-item label="企业所在地区" prop="location">
             <el-input v-model="form.location" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-
-          <el-form-item label="维修车型">
+          <el-form-item label="维修车型" prop="repireCarType">
             <el-input v-model="form.repireCarType" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-
-          <el-form-item label="备注信息">
+          <el-form-item label="备注信息" prop="remark">
             <el-input type="textarea" v-model="form.remark" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="submitLoading" v-if="!lookOrEdit">保存
             </el-button>
-            <el-button @click="visibleView = false">关闭</el-button>
+            <el-button @click="closeDialog">关闭</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -242,10 +204,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getMainList, addMain, editMain, lookMain, deleMain} from '@/api/maintenance'
+  import {getMainList, addMain, editMain, lookMain, deleMain, exportEnquipment} from '@/api/maintenance'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH, UPIMG_SERVER_PATH} from '@/api/config'
+  import {IMG_SERVER_PATH, UPIMG_SERVER_PATH, EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -292,6 +254,86 @@
           shopId: '',
           type: ''
         },
+        // 表单验证相关
+        rules: {
+          name: [
+            {required: true, message: '请输入名称', trigger: 'blur'},
+            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
+          ],
+          // city_id: [
+          //   {required: true, message: '请选择城市', trigger: 'blur'}
+          // ],
+          ownName: [
+            {required: true, message: '请输入法人名称', trigger: 'blur'},
+            {max: 40, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          ownPhone: [
+            {required: true, message: '请输入法人电话', trigger: 'blur'},
+            {max: 13, message: '长度在13个字符内', trigger: 'blur'}
+          ],
+          address: [
+            {required: true, message: '请输入地址', trigger: 'change'},
+            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
+          ],
+          longitude: [
+            {required: true, message: '请输入经度', trigger: 'change'}
+          ],
+          latitude: [
+            {required: true, message: '请输入纬度', trigger: 'change'}
+          ],
+          business: [
+            {required: true, message: '请输入主营范围', trigger: 'change'},
+            {max: 100, message: '长度在100个字符内', trigger: 'blur'}
+          ],
+          shopId: [
+            {required: true, message: '请输入企业代码', trigger: 'change'},
+            {max: 100, message: '长度在100个字符内', trigger: 'blur'}
+          ],
+          registeredCapital: [
+            {required: true, message: '请输入注册资本', trigger: 'change'},
+            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
+          ],
+          employees: [
+            {required: true, message: '请输入员工数量', trigger: 'change'},
+            {max: 16, message: '长度在16个字符内', trigger: 'blur'}
+          ],
+          type: [
+            {required: true, message: '请输入企业类别', trigger: 'change'},
+            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
+          ],
+          assets: [
+            {required: true, message: '请输入企业总资产规模', trigger: 'change'},
+            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
+          ],
+          area: [
+            {required: true, message: '请输入企业占地面积', trigger: 'change'},
+            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
+          ],
+          repireCarType: [
+            {required: true, message: '请输入维修汽车类型', trigger: 'change'},
+            {max: 100, message: '长度在100个字符内', trigger: 'blur'}
+          ],
+          invoiceMsg: [
+            {required: true, message: '请输入开票信息', trigger: 'change'},
+            {max: 100, message: '长度在100个字符内', trigger: 'blur'}
+          ],
+          financeName: [
+            {required: true, message: '请输入财务联系人姓名', trigger: 'change'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          financePhone: [
+            {required: true, message: '请输入财务联系人电话', trigger: 'change'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          registeredAddress: [
+            {required: true, message: '请输入注册地址', trigger: 'change'},
+            {max: 100, message: '长度在100个字符内', trigger: 'blur'}
+          ],
+          location: [
+            {required: true, message: '请输入企业所在地区', trigger: 'change'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ]
+        },
         listCity: [],
         submitLoading: false,
         visible: false,
@@ -328,6 +370,11 @@
       this._getCityList()
     },
     methods: {
+      closeDialog() {
+        this.visibleView = false
+        // 重置验证
+        this.$refs.form.resetFields()
+      },
       resetTempModel() {
         // 重置表单
         this.form = {
@@ -470,35 +517,25 @@
         })
       },
       handleExport() {
-        // 导出处理（简单做，后期可能会改用插件）
         // 显示loading
         this.loadingExport = true
-
-        const rows = [['城市', '供应商', '联系人', '联系人手机']]
-        this.tableData.forEach(item => {
-          rows.push([
-            item.city_name,
-            item.name,
-            item.link_name,
-            item.link_phone
-          ])
+        // 获取excel
+        exportEnquipment().then(response => {
+          if (response.code === '200') {
+            const link = document.createElement('a')
+            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('download', 'download.xls')
+            document.body.appendChild(link) // Required for FF
+            link.click() // This will download the data file named "my_data.csv".
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 隐藏loading
+          this.loadingExport = false
         })
-        let csvContent = 'data:text/csv;charset=utf-8,'
-        rows.forEach(rowArray => {
-          const row = rowArray.join(',')
-          csvContent += row + '\r\n'
-        })
-
-        // window.open(encodedUri)
-        const encodedUri = encodeURI(csvContent)
-        const link = document.createElement('a')
-        link.setAttribute('href', encodedUri)
-        link.setAttribute('download', 'download.csv')
-        document.body.appendChild(link) // Required for FF
-        link.click() // This will download the data file named "my_data.csv".
-
-        // 隐藏loading
-        this.loadingExport = false
       },
       selectDate() {
         if (this.dateArea != null) {
@@ -521,14 +558,19 @@
         this._getList()
       },
       handleSubmit() {
-        this.submitLoading = true
-        // 提交数据
-        if (this.form.id === '') {
-          this._addSubmit()
-        }
-        if (this.form.id !== '') {
-          this._editSubmit()
-        }
+        // 表单验证
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            this.submitLoading = true
+            // 提交数据
+            if (this.form.id === '') {
+              this._addSubmit()
+            }
+            if (this.form.id !== '') {
+              this._editSubmit()
+            }
+          }
+        })
       },
       _addSubmit() {
         const tempForm = Object.assign({}, this.form)

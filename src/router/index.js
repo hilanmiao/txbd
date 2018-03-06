@@ -285,8 +285,8 @@ export const asyncRouterMap = [
     path: '/Warning',
     component: Layout,
     redirect: '/warning/sms',
-    name: '报警管理',
-    meta: {title: '报警管理', icon: 'documentation', roles: ['admin']},
+    name: '监控报警管理',
+    meta: {title: '监控报警管理', icon: 'documentation', roles: ['admin']},
     children: [
       {
         id: 51,
@@ -301,6 +301,13 @@ export const asyncRouterMap = [
         name: '报警处理',
         component: _import('alarm/index'),
         meta: {title: '报警处理'}
+      },
+      {
+        id: 52,
+        path: 'history',
+        name: '历史轨迹',
+        component: _import('history/index'),
+        meta: {title: '历史轨迹'}
       }
     ]
   },

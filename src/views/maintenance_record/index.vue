@@ -107,79 +107,62 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" :title="titMsg">
-        <el-form ref="form" :model="form" label-width="120px">
-
-          <el-form-item label="车牌号">
-            <el-col :span="10">
-              <el-input v-model="form.carNumber" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">车辆型号</el-col>
-            <el-col :span="8">
-              <el-input v-model="form.carType" :disabled="lookOrEdit"></el-input>
-            </el-col>
+        <el-form ref="form" status-icon :rules="rules" :model="form" label-width="120px" size="mini">
+          <el-form-item label="车牌号" prop="carNumber">
+            <el-input v-model="form.carNumber" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="车主姓名">
-            <el-col :span="10">
-              <el-input v-model="form.carOwnerName" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <el-form-item label="车辆型号" prop="carType">
+            <el-input v-model="form.carType" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="车主姓名" prop="carOwnerName">
+            <el-input v-model="form.carOwnerName" :disabled="lookOrEdit"></el-input>
             <el-col :span="4">联系电话</el-col>
             <el-col :span="8">
               <el-input v-model="form.carOwnerPhone" :disabled="lookOrEdit"></el-input>
             </el-col>
           </el-form-item>
-          <el-form-item label="dpf型号">
-            <el-col :span="10">
-              <el-input v-model="form.dpfModel" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">dpf编码</el-col>
-            <el-col :span="8">
-              <el-input v-model="form.dpfId" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <el-form-item label="联系电话" prop="carOwnerPhone">
+            <el-input v-model="form.carOwnerPhone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="dpf厂家">
-            <el-col :span="10">
-              <el-input v-model="form.dpfFactory" style="width:80%;" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <el-form-item label="dpf型号" prop="dpfModel">
+            <el-input v-model="form.dpfModel" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="信息上传人类型">
-            <el-col :span="10">
-              <el-select v-model="form.createUserType" style="width:70%;" :disabled="lookOrEdit">
-                <el-option label="下级平台" value="0"></el-option>
-                <el-option label="省级平台" value="1"></el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="4">dpf安装时间</el-col>
-            <el-col :span="8">
-              <el-date-picker
-                :disabled="lookOrEdit"
-                v-model="form.installTime"
-                align="right"
-                type="date"
-                placeholder="选择日期"
-                value-format="yyyy-MM-dd"
-                :picker-options="pickerOptions">
-              </el-date-picker>
-            </el-col>
+          <el-form-item label="dpf编码" prop="dpfId">
+            <el-input v-model="form.dpfId" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="维修厂">
-            <el-col :span="10">
-              <el-input style="width:80%;" v-model="form.maintainShopName" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">维修厂电话</el-col>
-            <el-col :span="8">
-              <el-input v-model="form.maintainShopPhone" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <el-form-item label="dpf厂家" prop="dpfFactory">
+            <el-input v-model="form.dpfFactory" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="维修人员">
-            <el-col :span="10">
-              <el-input style="width:80%;" v-model="form.maintainUser" :disabled="lookOrEdit"></el-input>
-            </el-col>
-            <el-col :span="4">维修人员电话</el-col>
-            <el-col :span="8">
-              <el-input v-model="form.maintainPhone" :disabled="lookOrEdit"></el-input>
-            </el-col>
+          <el-form-item label="信息上传人类型" prop="createUserType">
+            <el-select v-model="form.createUserType" :disabled="lookOrEdit">
+              <el-option label="下级平台" value="0"></el-option>
+              <el-option label="省级平台" value="1"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="维护内容">
+          <el-form-item label="dpf安装时间">
+            <el-date-picker
+              :disabled="lookOrEdit"
+              v-model="form.installTime"
+              align="right"
+              type="date"
+              placeholder="选择日期"
+              value-format="yyyy-MM-dd"
+              :picker-options="pickerOptions">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="维修厂" prop="maintainShopName">
+            <el-input v-model="form.maintainShopName" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="维修厂电话" prop="maintainShopPhone">
+            <el-input v-model="form.maintainShopPhone" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="维修人员电话" prop="maintainPhone">
+            <el-input v-model="form.maintainPhone" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="维修人员" prop="maintainUser">
+            <el-input v-model="form.maintainUser" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="维护内容" prop="maintainContent">
             <el-input type="textarea" v-model="form.maintainContent" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="备注信息">
@@ -188,7 +171,7 @@
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="submitLoading" v-if="!lookOrEdit">保存
             </el-button>
-            <el-button @click="visibleView = false">关闭</el-button>
+            <el-button @click="closeDialog">关闭</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -197,10 +180,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getMainList, addMain, editMain, lookMain, deleMain} from '@/api/maintenance_record'
+  import {getMainList, addMain, editMain, lookMain, deleMain, exportEnquipment} from '@/api/maintenance_record'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH} from '@/api/config'
+  import {IMG_SERVER_PATH, EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -235,6 +218,64 @@
           maintainUser: '',
           maintainUserPhone: '',
           remark: ''
+        },
+        // 表单验证相关
+        rules: {
+          carNumber: [
+            {required: true, message: '请输入车牌号', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          carType: [
+            {required: true, message: '请输入车辆型号', trigger: 'blur'},
+            {max: 20, message: '长度在20个字符内', trigger: 'blur'}
+          ],
+          carOwnerName: [
+            {required: true, message: '请输入车主姓名', trigger: 'blur'},
+            {max: 15, message: '长度在13个字符内', trigger: 'blur'}
+          ],
+          carOwnerPhone: [
+            {required: true, message: '请输入车主联系电话', trigger: 'change'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          dpfModel: [
+            {required: true, message: '请输入dpf型号', trigger: 'change'},
+            {max: 20, message: '长度在20个字符内', trigger: 'blur'}
+          ],
+          dpfId: [
+            {required: true, message: '请输入dpf编码', trigger: 'change'},
+            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
+          ],
+          dpfFactory: [
+            {required: true, message: '请输入dpf厂家', trigger: 'change'},
+            {max: 35, message: '长度在35个字符内', trigger: 'blur'}
+          ],
+          createUserType: [
+            {required: true, message: '请选择信息上传人类型', trigger: 'change'}
+          ],
+          installTime: [
+            {required: true, message: '请选择dpf安装时间', trigger: 'change'},
+            {max: 35, message: '长度在35个字符内', trigger: 'blur'}
+          ],
+          maintainShopName: [
+            {required: true, message: '请输入维修厂', trigger: 'change'},
+            {max: 35, message: '长度在35个字符内', trigger: 'blur'}
+          ],
+          maintainShopPhone: [
+            {required: true, message: '请输入维修厂电话', trigger: 'change'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          maintainUser: [
+            {required: true, message: '请输入维修人员', trigger: 'change'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          maintainPhone: [
+            {required: true, message: '请输入维修人员电话', trigger: 'change'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          maintainContent: [
+            {required: true, message: '请输入维修内容', trigger: 'change'},
+            {max: 200, message: '长度在200个字符内', trigger: 'blur'}
+          ]
         },
         listCity: [],
         submitLoading: false,
@@ -296,6 +337,11 @@
       this._getCityList()
     },
     methods: {
+      closeDialog() {
+        this.visibleView = false
+        // 重置验证
+        this.$refs.form.resetFields()
+      },
       resetTempModel() {
         // 重置表单
         this.form = {
@@ -425,35 +471,25 @@
         })
       },
       handleExport() {
-        // 导出处理（简单做，后期可能会改用插件）
         // 显示loading
         this.loadingExport = true
-
-        const rows = [['城市', '供应商', '联系人', '联系人手机']]
-        this.tableData.forEach(item => {
-          rows.push([
-            item.city_name,
-            item.name,
-            item.link_name,
-            item.link_phone
-          ])
+        // 获取excel
+        exportEnquipment().then(response => {
+          if (response.code === '200') {
+            const link = document.createElement('a')
+            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('download', 'download.xls')
+            document.body.appendChild(link) // Required for FF
+            link.click() // This will download the data file named "my_data.csv".
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 隐藏loading
+          this.loadingExport = false
         })
-        let csvContent = 'data:text/csv;charset=utf-8,'
-        rows.forEach(rowArray => {
-          const row = rowArray.join(',')
-          csvContent += row + '\r\n'
-        })
-
-        // window.open(encodedUri)
-        const encodedUri = encodeURI(csvContent)
-        const link = document.createElement('a')
-        link.setAttribute('href', encodedUri)
-        link.setAttribute('download', 'download.csv')
-        document.body.appendChild(link) // Required for FF
-        link.click() // This will download the data file named "my_data.csv".
-
-        // 隐藏loading
-        this.loadingExport = false
       },
       selectDate() {
         if (this.dateArea != null) {
@@ -476,14 +512,19 @@
         this._getList()
       },
       handleSubmit() {
-        this.submitLoading = true
-        // 提交数据
-        if (this.form.id === '') {
-          this._addSubmit()
-        }
-        if (this.form.id !== '') {
-          this._editSubmit()
-        }
+        // 表单验证
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            this.submitLoading = true
+            // 提交数据
+            if (this.form.id === '') {
+              this._addSubmit()
+            }
+            if (this.form.id !== '') {
+              this._editSubmit()
+            }
+          }
+        })
       },
       _addSubmit() {
         const tempForm = Object.assign({}, this.form)

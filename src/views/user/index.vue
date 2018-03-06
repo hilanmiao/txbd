@@ -178,7 +178,8 @@
             {max: 40, message: '长度在40个字符内', trigger: 'blur'}
           ],
           phone: [
-            {required: true, message: '请输入手机号', trigger: 'blur'}
+            {required: true, message: '请输入手机号', trigger: 'blur'},
+            {max: 13, message: '长度在13个字符内', trigger: 'blur'}
           ],
           organid: [
             {required: true, message: '请选择机构', trigger: 'change'}

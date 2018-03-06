@@ -3,16 +3,16 @@
     <div class="nav">
       <div class="menu">
         <img :src="logo"/>
-        <el-dropdown>
+        <el-dropdown @command="handleCommand">
 						      <span class="el-dropdown-link">
 						       <i class="el-icon-edit-outline"></i> DPF信息管理<i class="el-icon-arrow-down el-icon--right"></i>
 						      </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>供应商管理</el-dropdown-item>
-            <el-dropdown-item>登记信息管理</el-dropdown-item>
-            <el-dropdown-item>设备信息管理</el-dropdown-item>
-            <el-dropdown-item>维修厂管理</el-dropdown-item>
-            <el-dropdown-item>维修管理</el-dropdown-item>
+            <el-dropdown-item command="dpf/supplier">供应商管理</el-dropdown-item>
+            <el-dropdown-item command="dpf/register">登记信息管理</el-dropdown-item>
+            <el-dropdown-item command="dpf/equipment">设备信息管理</el-dropdown-item>
+            <el-dropdown-item command="dpf/maintenance">维修厂管理</el-dropdown-item>
+            <el-dropdown-item command="dpf/maintenance_record">维修管理</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -23,22 +23,22 @@
 							        <i class="el-icon-arrow-down el-icon--right"></i>
 						      </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>在线率统计</el-dropdown-item>
-            <el-dropdown-item>里程统计</el-dropdown-item>
-            <el-dropdown-item>车辆信息统计</el-dropdown-item>
-            <el-dropdown-item>车辆不在线统计</el-dropdown-item>
-            <el-dropdown-item>汽车指标统计</el-dropdown-item>
+            <el-dropdown-item command="report/report_create">安装监控数量统计</el-dropdown-item>
+            <el-dropdown-item command="report/report_online">在线率统计</el-dropdown-item>
+            <el-dropdown-item command="report/report_mileage">里程统计</el-dropdown-item>
+            <el-dropdown-item command="report/report_vehicle_city">地市车辆统计</el-dropdown-item>
+            <el-dropdown-item command="report/report_vehicle_single">单车指标统计</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
         <el-dropdown @command="handleCommand">
 						      	<span class="el-dropdown-link">
 							      	<i class="el-icon-message"></i>
-							        日志管理<i class="el-icon-arrow-down el-icon--right"></i>
+							        监控报警管理<i class="el-icon-arrow-down el-icon--right"></i>
 						      	</span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>平台日志管理</el-dropdown-item>
-            <el-dropdown-item>审核日志查询</el-dropdown-item>
+            <el-dropdown-item command="warning/alarm">报警处理</el-dropdown-item>
+            <el-dropdown-item command="warning/history">历史轨迹查询</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -48,13 +48,13 @@
 						        系统管理<i class="el-icon-arrow-down el-icon--right"></i>
 						      	</span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>机构管理</el-dropdown-item>
-            <el-dropdown-item>角色管理</el-dropdown-item>
-            <el-dropdown-item>用户管理</el-dropdown-item>
+            <el-dropdown-item command="system/organ">机构管理</el-dropdown-item>
+            <el-dropdown-item command="system/part">角色管理</el-dropdown-item>
+            <el-dropdown-item command="system/user">用户管理</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
-        <el-button type="text" icon="el-icon-info">系统帮助</el-button>
+        <el-button type="text" icon="el-icon-info" command="dashboard">系统帮助</el-button>
       </div>
       <div class="map-tool">
         <el-tooltip content="全屏" placement="bottom">
@@ -166,7 +166,7 @@
           </div>
           <div class="tabs">
             <el-tabs type="card">
-              <el-tab-pane label="报警列表">
+              <el-tab-pane label="预警列表">
                 <template>
                   <el-table
                     :data="listCar"
@@ -248,7 +248,6 @@
                       </template>
                     </el-table-column>
                   </el-table>
-                  <h4 style="margin: 10px;text-align: center"><i class="el-icon-info"></i>最多同时监控20辆</h4>
                 </template>
               </el-tab-pane>
               <el-tab-pane label="监控列表 ">
@@ -281,7 +280,7 @@
                       </template>
                     </el-table-column>
                   </el-table>
-                  <h4 style="margin: 10px;text-align: center"><i class="el-icon-info"></i>最多同时监控20辆</h4>
+                  <!--<h4 style="margin: 10px;text-align: center"><i class="el-icon-info"></i>最多同时监控20辆</h4>-->
                 </template>
               </el-tab-pane>
             </el-tabs>
@@ -440,155 +439,155 @@
                 </el-table-column>
               </el-table>
             </el-tab-pane>
-            <el-tab-pane>
-              <span slot="label"><i class="el-icon-date"></i>车辆历史记录</span>
-              <div :style="{height: expandHeight + 'px'}">
-                <div>
-                  <el-input style="width: 200px;"
-                            class="filter-item"
-                            placeholder="车牌号"
-                            v-model="carCodeHistory"
-                  >
-                  </el-input>
-                  <el-date-picker
-                    v-model="dateRangeHistory"
-                    type="daterange"
-                    align="right"
-                    unlink-panels
-                    value-format="yyyy-MM-dd"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    :picker-options="pickerOptions"
-                  >
-                  </el-date-picker>
-                  <el-button type="primary" icon="el-icon-search" @click="_getCarHistory"
-                             :loading="loadingSearchHistory">确认
-                  </el-button>
-                </div>
-                <div style="padding-top: 10px" v-show="showPanelHistory">
-                  <el-button type="primary" icon="el-icon-search" @click="carTrackStart">开始</el-button>
-                  <el-button type="warning" icon="el-icon-download" @click="carTrackPause">暂停</el-button>
-                  <el-button type="danger" icon="el-icon-download" @click="carTrackStop">结束</el-button>
-                </div>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane>
-              <span slot="label"><i class="el-icon-date"></i>终端上报警情（预处警）</span>
-              <el-table
-                :data="listCarWatchReal"
-                :height="expandHeight"
-              >
-                <el-table-column
-                  prop="platenumber"
-                  label="车牌"
-                  width="100"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="car_user_name"
-                  label="车主姓名"
-                  width="100"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="car_user_phone"
-                  label="联系电话"
-                  width="100"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="t1"
-                  label="DOC原温度"
-                  width="110"
-                >
-                  <template slot-scope="scope">
-                    <el-tag>{{scope.row.t1}}</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  prop="t2"
-                  label="DPF前端温度"
-                  width="110"
-                >
-                  <template slot-scope="scope">
-                    <el-tag>{{scope.row.t2}}</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  prop="t3"
-                  label="DPF前端温度"
-                  width="110"
-                >
-                  <template slot-scope="scope">
-                    <el-tag>{{scope.row.t3}}</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  prop="p1"
-                  label="DOC前端压力"
-                  width="110"
-                >
-                  <template slot-scope="scope">
-                    <el-tag>{{scope.row.p1}}</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  prop="p2"
-                  label="DOC后端压力"
-                  width="110"
-                >
-                  <template slot-scope="scope">
-                    <el-tag>{{scope.row.p2}}</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  label="操作"
-                  width="120"
-                >
-                  <template slot-scope="scope">
-                    <el-button type="primary" size="mini" icon="el-icon-delete">移除警情</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-tab-pane>
+            <!--<el-tab-pane>-->
+            <!--<span slot="label"><i class="el-icon-date"></i>车辆历史记录</span>-->
+            <!--<div :style="{height: expandHeight + 'px'}">-->
+            <!--<div>-->
+            <!--<el-input style="width: 200px;"-->
+            <!--class="filter-item"-->
+            <!--placeholder="车牌号"-->
+            <!--v-model="carCodeHistory"-->
+            <!--&gt;-->
+            <!--</el-input>-->
+            <!--<el-date-picker-->
+            <!--v-model="dateRangeHistory"-->
+            <!--type="daterange"-->
+            <!--align="right"-->
+            <!--unlink-panels-->
+            <!--value-format="yyyy-MM-dd"-->
+            <!--start-placeholder="开始日期"-->
+            <!--end-placeholder="结束日期"-->
+            <!--:picker-options="pickerOptions"-->
+            <!--&gt;-->
+            <!--</el-date-picker>-->
+            <!--<el-button type="primary" icon="el-icon-search" @click="_getCarHistory"-->
+            <!--:loading="loadingSearchHistory">确认-->
+            <!--</el-button>-->
+            <!--</div>-->
+            <!--<div style="padding-top: 10px" v-show="showPanelHistory">-->
+            <!--<el-button type="primary" icon="el-icon-search" @click="carTrackStart">开始</el-button>-->
+            <!--<el-button type="warning" icon="el-icon-download" @click="carTrackPause">暂停</el-button>-->
+            <!--<el-button type="danger" icon="el-icon-download" @click="carTrackStop">结束</el-button>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane>-->
+            <!--<span slot="label"><i class="el-icon-date"></i>终端上报警情（预处警）</span>-->
+            <!--<el-table-->
+            <!--:data="listCarWatchReal"-->
+            <!--:height="expandHeight"-->
+            <!--&gt;-->
+            <!--<el-table-column-->
+            <!--prop="platenumber"-->
+            <!--label="车牌"-->
+            <!--width="100"-->
+            <!--&gt;-->
+            <!--</el-table-column>-->
+            <!--<el-table-column-->
+            <!--prop="car_user_name"-->
+            <!--label="车主姓名"-->
+            <!--width="100"-->
+            <!--&gt;-->
+            <!--</el-table-column>-->
+            <!--<el-table-column-->
+            <!--prop="car_user_phone"-->
+            <!--label="联系电话"-->
+            <!--width="100"-->
+            <!--&gt;-->
+            <!--</el-table-column>-->
+            <!--<el-table-column-->
+            <!--prop="t1"-->
+            <!--label="DOC原温度"-->
+            <!--width="110"-->
+            <!--&gt;-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-tag>{{scope.row.t1}}</el-tag>-->
+            <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column-->
+            <!--prop="t2"-->
+            <!--label="DPF前端温度"-->
+            <!--width="110"-->
+            <!--&gt;-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-tag>{{scope.row.t2}}</el-tag>-->
+            <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column-->
+            <!--prop="t3"-->
+            <!--label="DPF前端温度"-->
+            <!--width="110"-->
+            <!--&gt;-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-tag>{{scope.row.t3}}</el-tag>-->
+            <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column-->
+            <!--prop="p1"-->
+            <!--label="DOC前端压力"-->
+            <!--width="110"-->
+            <!--&gt;-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-tag>{{scope.row.p1}}</el-tag>-->
+            <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column-->
+            <!--prop="p2"-->
+            <!--label="DOC后端压力"-->
+            <!--width="110"-->
+            <!--&gt;-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-tag>{{scope.row.p2}}</el-tag>-->
+            <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column-->
+            <!--label="操作"-->
+            <!--width="120"-->
+            <!--&gt;-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-button type="primary" size="mini" icon="el-icon-delete">移除警情</el-button>-->
+            <!--</template>-->
+            <!--</el-table-column>-->
+            <!--</el-table>-->
+            <!--</el-tab-pane>-->
           </el-tabs>
         </div>
       </div>
       <div class="alarm" v-show="showAlarm">
         <div class="info-wrapper">
           <el-card>
-          <div class="alarm-info">
-            <h4 class="header">车辆异常报警</h4>
-            <div class="info">
-              <p>
-                车牌:鲁G809CP
-                &nbsp;
-                车系:宝马X5
-              </p>
-              <p>
-                前温:180℃
-                &nbsp;
-                前压:1KPA
-              </p>
-              <p>
-                中温:180℃
-                &nbsp;
-                中压:1KPA
-              </p>
-              <p>
-                后温: <span style="color: red;">180℃</span>
-                &nbsp;
-                后压: <span style="color: red;">1KPA</span>
-              </p>
-              <p>
-                报警内容：dfp未启用
-              </p>
-              <p>
-                <el-button type="primary" size="mini" icon="el-icon-location">定位</el-button>
-              </p>
+            <div class="alarm-info">
+              <h4 class="header">车辆异常报警</h4>
+              <div class="info">
+                <p>
+                  车牌:鲁G809CP
+                  &nbsp;
+                  车系:宝马X5
+                </p>
+                <p>
+                  前温:180℃
+                  &nbsp;
+                  前压:1KPA
+                </p>
+                <p>
+                  中温:180℃
+                  &nbsp;
+                  中压:1KPA
+                </p>
+                <p>
+                  后温: <span style="color: red;">180℃</span>
+                  &nbsp;
+                  后压: <span style="color: red;">1KPA</span>
+                </p>
+                <p>
+                  报警内容：dfp未启用
+                </p>
+                <p>
+                  <el-button type="primary" size="mini" icon="el-icon-location">定位</el-button>
+                </p>
+              </div>
             </div>
-          </div>
-        </el-card>
+          </el-card>
           <el-card>
             <div class="alarm-info">
               <h4 class="header">车辆异常报警</h4>
@@ -733,7 +732,7 @@
           </div>
         </div>
       </div>
-      <div class="test"　v-show="false">
+      <div class="test" 　v-show="false">
         <el-button type="danger" @click="alarmOn">警报测试</el-button>
         <el-button @click="alarmOff">关闭警报测试</el-button>
       </div>
@@ -809,7 +808,7 @@
         listCarAlarm: [],
         // 实时信息面板相关
         listCarWatchReal: [],
-        maxWatchCount: 20,
+        maxWatchCount: 200,
         // 获取车辆基础数据时间间隔(分)
         timeInterval: 30 * 60 * 1000,
         myWorker: null,
@@ -921,7 +920,10 @@
         // this.$refs.carTab.style.height = (window.innerHeight - 228) + 'px'
       },
       handleCommand(command) {
-        this.goToDashboard()
+        // this.goToDashboard()
+        this.$router.push({
+          path: command
+        })
       },
       goToDashboard() {
         // 解析路由
@@ -1284,7 +1286,7 @@
         if (this.listCarWatch.length >= this.maxWatchCount) {
           this.$message({
             type: 'error',
-            message: '最多监控20辆车'
+            message: '最多监控200辆车'
           })
           return
         }
@@ -1339,8 +1341,8 @@
         const cars = this.listCarWatch.map(item => {
           return item.deviceno
         }).join(',')
-        this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
-        // this.ws = new WebSocket(`ws://192.168.1.196:8087/socketWebServer/${token}/${cars}`)
+        // this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
+        this.ws = new WebSocket(`ws://192.168.1.111:8087/socketWebServer/${token}/${cars}`)
         this.ws.onopen = function (evt) {
           console.log('Connection open ...')
           // ws.send('Hello WebSockets!')

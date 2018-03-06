@@ -45,3 +45,12 @@ export function allSupp() {
     method: 'get'
   })
 }
+
+// 导出
+export function exportEnquipment(params) {
+  return request({
+    url: 'v1/web_supplier/export',
+    method: 'get',
+    params
+  })
+}
