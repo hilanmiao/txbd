@@ -164,10 +164,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getMainList, lookMain} from '@/api/register'
+  import {getMainList, lookMain, exportEnquipment} from '@/api/register'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH} from '@/api/config'
+  import {IMG_SERVER_PATH, EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -331,35 +331,25 @@
         this.visibleView = true
       },
       handleExport() {
-        // 导出处理（简单做，后期可能会改用插件）
         // 显示loading
         this.loadingExport = true
-
-        const rows = [['城市', '供应商', '联系人', '联系人手机']]
-        this.tableData.forEach(item => {
-          rows.push([
-            item.city_name,
-            item.name,
-            item.link_name,
-            item.link_phone
-          ])
+        // 获取excel
+        exportEnquipment().then(response => {
+          if (response.code === '200') {
+            const link = document.createElement('a')
+            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('download', 'download.xls')
+            document.body.appendChild(link) // Required for FF
+            link.click() // This will download the data file named "my_data.csv".
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 隐藏loading
+          this.loadingExport = false
         })
-        let csvContent = 'data:text/csv;charset=utf-8,'
-        rows.forEach(rowArray => {
-          const row = rowArray.join(',')
-          csvContent += row + '\r\n'
-        })
-
-        // window.open(encodedUri)
-        const encodedUri = encodeURI(csvContent)
-        const link = document.createElement('a')
-        link.setAttribute('href', encodedUri)
-        link.setAttribute('download', 'download.csv')
-        document.body.appendChild(link) // Required for FF
-        link.click() // This will download the data file named "my_data.csv".
-
-        // 隐藏loading
-        this.loadingExport = false
       },
       selectDate() {
         if (this.dateArea != null) {
