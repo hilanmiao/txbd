@@ -122,7 +122,7 @@ const user = {
           commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
           commit('SET_INTRODUCTION', data.name)
           getModelRole(state.token).then(response => {
-            response.data.menu_ids = '1,11,12,13,14,15,16,17,5,51,52,53,6,61,62,63,64,65'.split(',')
+            response.data.menu_ids = '1,11,12,13,14,15,16,17,2,21,22,23,24,25,26,27,28,29,30,3,31,32,33,4,41,42,5,51,52,53,6,61,62,63'.split(',')
             if (response.code !== '200') {
               reject('error')
             }

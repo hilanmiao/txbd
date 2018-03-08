@@ -366,7 +366,13 @@
               message: responce.message
             })
           }
-          this._getWarning()
+          this.$alert('报警处理成功，继续处理请按“下一个”操作按钮', '操作提示', {
+            confirmButtonText: '下一个',
+            roundButton: true,
+            callback: action => {
+              this._getWarning()
+            }
+          })
         })
       }
     }
