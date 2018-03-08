@@ -129,12 +129,6 @@
           <el-form-item label="dpf厂家" prop="dpfFactory">
             <el-input v-model="form.dpfFactory" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="信息上传人类型" prop="createUserType">
-            <el-select v-model="form.createUserType" :disabled="lookOrEdit">
-              <el-option label="下级平台" value="0"></el-option>
-              <el-option label="省级平台" value="1"></el-option>
-            </el-select>
-          </el-form-item>
           <el-form-item label="dpf安装时间">
             <el-date-picker
               :disabled="lookOrEdit"
@@ -152,8 +146,8 @@
           <el-form-item label="维修厂电话" prop="maintainShopPhone">
             <el-input v-model="form.maintainShopPhone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="维修人员电话" prop="maintainPhone">
-            <el-input v-model="form.maintainPhone" :disabled="lookOrEdit"></el-input>
+          <el-form-item label="维修人员电话" prop="maintainUserPhone">
+            <el-input v-model="form.maintainUserPhone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="维修人员" prop="maintainUser">
             <el-input v-model="form.maintainUser" :disabled="lookOrEdit"></el-input>
@@ -183,6 +177,14 @@
 
   export default {
     data() {
+      // 自定义校验规则
+      var validatePhone = (rule, value, callback) => {
+        if (/^[\d\-]+$/.test(value)) {
+          callback()
+        } else {
+          callback(new Error('电话号码格式不正确，只能输入0536-1234567和11位纯数字'))
+        }
+      }
       return {
         // 列表相关
         tableData: [],
@@ -227,11 +229,12 @@
           ],
           carOwnerName: [
             {required: true, message: '请输入车主姓名', trigger: 'blur'},
-            {max: 15, message: '长度在13个字符内', trigger: 'blur'}
+            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
           ],
           carOwnerPhone: [
             {required: true, message: '请输入车主联系电话', trigger: 'change'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ],
           dpfModel: [
             {required: true, message: '请输入dpf型号', trigger: 'change'},
@@ -258,15 +261,17 @@
           ],
           maintainShopPhone: [
             {required: true, message: '请输入维修厂电话', trigger: 'change'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ],
           maintainUser: [
             {required: true, message: '请输入维修人员', trigger: 'change'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
           ],
-          maintainPhone: [
+          maintainUserPhone: [
             {required: true, message: '请输入维修人员电话', trigger: 'change'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ],
           maintainContent: [
             {required: true, message: '请输入维修内容', trigger: 'change'},

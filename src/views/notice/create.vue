@@ -17,7 +17,7 @@
 
 <script type="text/ecmascript-6">
   import E from 'wangeditor'
-  import {postModelPlatform, putModelPlatform, getModelPlatform} from '@/api/notice'
+  import {postModelNotice, putModelNotice, getModelNotice} from '@/api/notice'
   import {getToken} from '@/utils/auth'
   import {uploadImg} from '@/api/unit'
   import {IMG_SERVER_PATH} from '@/api/config'
@@ -95,10 +95,10 @@
         // 提交数据
         if (!this.tempModel.id) {
           // 没有id，是新建
-          this._postModelPlatform()
+          this._postModelNotice()
         } else {
           // 有id，是编辑
-          this._putModelPlatform()
+          this._putModelNotice()
         }
       },
       _uploadImage(img) {
@@ -120,8 +120,8 @@
           }
         })
       },
-      _postModelPlatform() {
-        postModelPlatform(this.tempModel).then(response => {
+      _postModelNotice() {
+        postModelNotice(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
@@ -139,8 +139,8 @@
           this.loadingSubmit = false
         })
       },
-      _putModelPlatform() {
-        putModelPlatform(this.tempModel).then(response => {
+      _putModelNotice() {
+        putModelNotice(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
@@ -161,7 +161,7 @@
       _getModel() {
         // 提交处理
         this.loadingSubmit = true
-        getModelPlatform({id: this.id}).then(response => {
+        getModelNotice({id: this.id}).then(response => {
           if (response.code === '200') {
             this.tempModel = response.data
             this.editor.txt.html(decodeURIComponent(this.tempModel.content))

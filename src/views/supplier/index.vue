@@ -230,6 +230,14 @@
 
   export default {
     data() {
+      // 自定义校验规则
+      var validatePhone = (rule, value, callback) => {
+        if (/^[\d\-]+$/.test(value)) {
+          callback()
+        } else {
+          callback(new Error('电话号码格式不正确，只能输入0536-1234567和11位纯数字'))
+        }
+      }
       return {
         // 列表相关
         tableData: [],
@@ -291,15 +299,17 @@
           ],
           finance_name: [
             {required: true, message: '请填写财务联系人', trigger: 'blur'},
-            {max: 7, message: '长度在7个字符内', trigger: 'blur'}
+            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
           ],
           finance_phone: [
             {required: true, message: '请填写财务联系人电话', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ],
           link_tel: [
             {required: true, message: '请填写联系人电话', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ],
           link_fax: [
             {required: true, message: '请填写联系人传真', trigger: 'blur'},
@@ -311,15 +321,16 @@
           ],
           own_name: [
             {required: true, message: '请填写企业法人', trigger: 'blur'},
-            {max: 7, message: '长度在7个字符内', trigger: 'blur'}
+            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
           ],
           link_name: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'},
-            {max: 7, message: '长度在7个字符内', trigger: 'blur'}
+            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
           ],
           link_phone: [
             {required: true, message: '请填写联系人手机', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ],
           main_product: [
             {required: true, message: '请填写主要产品描述', trigger: 'blur'},
@@ -411,7 +422,6 @@
               item.img_url = JSON.parse(item.img_url)
             })
             // 设置表格数据
-            console.log(response.data.count)
             this.tableData = response.data.dataList
             // 设置分页插件数据总数
             this.total = response.data.count

@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 获取列表数据
-export function getListPlatform(params) {
+export function getListNotice(params) {
   return request({
     url: 'v1/notice/notices',
     method: 'get',
@@ -10,7 +10,7 @@ export function getListPlatform(params) {
 }
 
 // 创建
-export function postModelPlatform(data) {
+export function postModelNotice(data) {
   return request({
     url: 'v1/notice/',
     method: 'post',
@@ -19,7 +19,7 @@ export function postModelPlatform(data) {
 }
 
 // 修改
-export function putModelPlatform(data) {
+export function putModelNotice(data) {
   return request({
     url: 'v1/notice/',
     method: 'put',
@@ -28,7 +28,7 @@ export function putModelPlatform(data) {
 }
 
 // 删除
-export function deleteModelPlatform(id) {
+export function deleteModelNotice(id) {
   return request({
     url: 'v1/notice/' + id,
     method: 'delete'
@@ -36,7 +36,7 @@ export function deleteModelPlatform(id) {
 }
 
 // 获取详情
-export function getModelPlatform(params) {
+export function getModelNotice(params) {
   return request({
     url: 'v1/notice/',
     method: 'get',

@@ -35,24 +35,23 @@ export function logout() {
   })
 }
 
-export function getUserInfo(token) {
-  // return request({
-  //   url: '/user/info',
-  //   method: 'get',
-  //   params: {token}
-  // })
-  // TODO：记得改
-  return new Promise((resolve, reject) => {
-    resolve({
-      "code": 20000,
-      "data": {
-        "roles": ["admin"],
-        // roles: [1, 11, 12, 13, 14, 15, 16, 17],
-        "role": ["admin"],
-        "name": "admin",
-        "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
-      }
-    })
+export function getUserInfo() {
+  return request({
+    url: 'v1/user/',
+    method: 'get'
   })
+  // TODO：记得改
+  // return new Promise((resolve, reject) => {
+  //   resolve({
+  //     "code": 20000,
+  //     "data": {
+  //       "roles": ["admin"],
+  //       // roles: [1, 11, 12, 13, 14, 15, 16, 17],
+  //       "role": ["admin"],
+  //       "name": "admin",
+  //       "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+  //     }
+  //   })
+  // })
 }
 

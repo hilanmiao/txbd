@@ -25,3 +25,12 @@ export function getCarBase(deviceno) {
     method: 'get'
   })
 }
+
+// 获取车辆
+export function getCarWarning(params) {
+  return request({
+    url: 'v1/gis/warningcars/',
+    method: 'get',
+    params
+  })
+}

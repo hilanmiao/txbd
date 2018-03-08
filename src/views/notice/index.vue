@@ -85,7 +85,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getModelPlatform, getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform} from '@/api/notice'
+  import {getModelNotice, getListNotice, postModelNotice, putModelNotice, deleteModelNotice} from '@/api/notice'
 
   export default {
     data() {
@@ -163,7 +163,7 @@
       },
       handleView(row) {
         this.dialogFormVisible = true
-        getModelPlatform({id: row.id}).then(response => {
+        getModelNotice({id: row.id}).then(response => {
           if (response.code === '200') {
             this.tempModel = response.data
           } else {
@@ -192,7 +192,7 @@
           type: 'warning'
         }).then(() => {
           // 删除
-          this._deleteModelPlatform()
+          this._deleteModelNotice()
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -214,10 +214,10 @@
         // 提交数据
         if (!this.tempModel.id) {
           // 没有id，是新建
-          this._postModelPlatform()
+          this._postModelNotice()
         } else {
           // 有id，是编辑
-          this._putModelPlatform()
+          this._putModelNotice()
         }
       },
       handleBeforeClose(done) {
@@ -243,8 +243,8 @@
         this.listQuery.page = val
         this._getList()
       },
-      _deleteModelPlatform() {
-        deleteModelPlatform(this.tempModel.id).then(response => {
+      _deleteModelNotice() {
+        deleteModelNotice(this.tempModel.id).then(response => {
           if (response.code === '204') {
             this.$message({
               type: 'success',
@@ -260,8 +260,8 @@
           }
         })
       },
-      _postModelPlatform() {
-        postModelPlatform(this.tempModel).then(response => {
+      _postModelNotice() {
+        postModelNotice(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
@@ -282,8 +282,8 @@
           this.dialogFormVisible = false
         })
       },
-      _putModelPlatform() {
-        putModelPlatform(this.tempModel).then(response => {
+      _putModelNotice() {
+        putModelNotice(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({
@@ -310,7 +310,7 @@
         // 设置表格loading效果
         this.loadingList = true
         // 请求表格数据
-        getListPlatform(this.listQuery).then(response => {
+        getListNotice(this.listQuery).then(response => {
           if (response.code === '200') {
             // 设置表格数据
             this.list = response.data.dataList

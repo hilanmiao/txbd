@@ -142,25 +142,13 @@
           <div class="label">监控面板</div>
           <div class="search">
             <el-input placeholder="请输入设备编号" v-model="listQuery.carCode"></el-input>
-            <el-button @click="_getCars">查询</el-button>
+            <el-button @click="_getCarWarning">查询</el-button>
           </div>
           <div class="citySelect">
             <el-select v-model="listQuery.city" placeholder="">
               <el-option label="选择城市" value=""></el-option>
               <el-option label="济南" value="济南"></el-option>
               <el-option label="潍坊" value="潍坊"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
-              <el-option label="青岛" value="青岛"></el-option>
               <el-option label="青岛" value="青岛"></el-option>
             </el-select>
           </div>
@@ -218,15 +206,16 @@
                   </el-pagination>
                 </template>
               </el-tab-pane>
-              <el-tab-pane label="查询列表 ">
+              <el-tab-pane label="查询列表">
                 <template>
                   <el-table
-                    :data="listCarWatch"
+                    :data="listCar2"
                     :max-height="leftTableHeight"
+                    v-loading="loadingList2" element-loading-text="加载中..."
                   >
                     <el-table-column
                       prop="carCode"
-                      label="车牌"
+                      label="车牌号"
                       width="80"
                     >
                     </el-table-column>
@@ -241,10 +230,20 @@
                       width="60"
                     >
                       <template slot-scope="scope">
-                        <el-tooltip content="移除" placement="right-start">
-                          <el-button type="danger" size="mini" icon="el-icon-delete"
-                                     @click="handleWatchRemove(scope.row)"></el-button>
-                        </el-tooltip>
+                        <template>
+                          <div v-show="scope.row.checked">
+                            <el-tooltip content="监控" placement="right-start">
+                              <el-button type="success" size="mini" icon="el-icon-check"
+                                         @click="handleWatch(scope.row)"></el-button>
+                            </el-tooltip>
+                          </div>
+                          <div v-show="!scope.row.checked">
+                            <el-tooltip content="监控" placement="right-start">
+                              <el-button type="primary" size="mini" icon="el-icon-d-arrow-right"
+                                         @click="handleWatch(scope.row)"></el-button>
+                            </el-tooltip>
+                          </div>
+                        </template>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -752,7 +751,7 @@
   import alarmAudio from '@/assets/home_images/alarm_audio.mp3'
   import screenfull from 'screenfull'
   import {getToken} from '@/utils/auth'
-  import {getCars, getCarHistory, getCarBase} from '@/api/gis'
+  import {getCars, getCarHistory, getCarBase, getCarWarning} from '@/api/gis'
   import PieChart from './components/PieChart'
   import {debounce} from '@/utils'
   import {SERVER_PATH} from '@/api/config'
@@ -791,7 +790,9 @@
         // 车辆面板
         leftTableHeight: '0',
         listCar: [],
+        listCar2: [],
         loadingList: false,
+        loadingList2: false,
         total: 0,
         listQuery: {
           page: 1,
@@ -811,7 +812,8 @@
         listCarWatchReal: [],
         maxWatchCount: 200,
         // 获取车辆基础数据时间间隔(分)
-        timeInterval: 30 * 60 * 1000,
+        // timeInterval: 30 * 60,
+        timeInterval: 5 * 60,
         myWorker: null,
         // 历史轨迹面板相关
         carTrack: undefined,
@@ -865,6 +867,8 @@
       }
     },
     mounted() {
+      // 开启计时器
+      this.openTimer()
       this.setLayout()
       this.drawMap()
       // 监听resize事件
@@ -876,10 +880,29 @@
       this._getCars()
       // 注册下方信息面板拉动事件
       this.registerPullEvent()
-      // 开启计时器
-      this.openTimer()
     },
     methods: {
+      openTimer() {
+        const that = this
+        // 获取基础数据
+        that._getCarBase()
+        const worker = new Worker('/static/js/timer.js')
+        worker.onmessage = function (event) {
+          // console.log(event.data)
+          const seconds = event.data
+          if (seconds <= 0) {
+            // 获取基础数据
+            that._getCarBase()
+            // 重新开始循环
+            worker.postMessage(that.timeInterval)
+          }
+        }
+        worker.onerror = function (error) {
+          console.log(error.filename, error.lineno, error.message)
+          worker.terminate()
+        }
+        worker.postMessage(this.timeInterval)
+      },
       registerPullEvent() {
         const self = this
         const expandDom = document.getElementById('expand')
@@ -1049,21 +1072,21 @@
         this.lineTool.close()
       },
       mapMarker(cars) {
+        // 响应填充基础数据
+        cars.forEach(item => {
+          item.car_user_name = ''
+          item.car_user_phone = ''
+          item.dpf_high_lines = ''
+          item.dpf_maintain_num = ''
+          item.dpf_mileage_num = ''
+          item.dpf_online_num = ''
+          item.dpf_warning_num = ''
+          item.install_place_msg = ''
+          item.install_user_name = ''
+          item.install_user_phone = ''
+        })
         // 填充数据
         this.listCarWatchReal = cars
-        // TODO:填充基础数据
-        this.listCarWatchReal.forEach(item => {
-          item.car_user_name = '张三'
-          item.car_user_phone = '18353674768'
-          item.dpf_high_lines = '100%'
-          item.dpf_maintain_num = '10'
-          item.dpf_mileage_num = '29999'
-          item.dpf_online_num = '2000'
-          item.dpf_warning_num = '6'
-          item.install_place_msg = '潍坊'
-          item.install_user_name = '安装网'
-          item.install_user_phone = '13805368888'
-        })
         // 循环标记
         this.listCarWatchReal.forEach((car, index, array) => {
           // 中心点移动到第一个点
@@ -1293,7 +1316,7 @@
         }
 
         // 查询是否已经在在监控中
-        const index = this.listCarWatch.findIndex(item => item === row)
+        const index = this.listCarWatch.findIndex(item => item.deviceno === row.deviceno)
         if (index > -1) {
           this.$message({
             type: 'warning',
@@ -1304,8 +1327,14 @@
         // 添加到监控列表
         this.listCarWatch.push(row)
         // 改变状态
-        const oriIndex = this.listCar.findIndex(item => item === row)
-        this.listCar[oriIndex].checked = true
+        if (row.from === 1) {
+          const oriIndex = this.listCar.findIndex(item => item === row)
+          this.listCar[oriIndex].checked = true
+        } else {
+          const oriIndex = this.listCar2.findIndex(item => item === row)
+          this.listCar2[oriIndex].checked = true
+        }
+
         // 断开连接
         this.webSocketClose()
         // 建立连接
@@ -1317,20 +1346,16 @@
         // 从监控列表中删除
         this.listCarWatch.splice(index, 1)
         // 改变状态
-        const oriIndex = this.listCar.findIndex(item => item === row)
-        this.listCar[oriIndex].checked = false
+        if (row.from === 1) {
+          const oriIndex = this.listCar.findIndex(item => item === row)
+          this.listCar[oriIndex].checked = false
+        } else {
+          const oriIndex = this.listCar2.findIndex(item => item === row)
+          this.listCar2[oriIndex].checked = false
+        }
         // 关闭并重新连接
         this.webSocketClose()
         this.webSocketOpen()
-      },
-      openTimer() {
-        let tempSeconds = 0
-        setInterval(() => {
-          tempSeconds++
-          if (tempSeconds >= this.timeInterval) {
-            tempSeconds = 0
-          }
-        }, 1000)
       },
       webSocketOpen() {
         const self = this
@@ -1343,7 +1368,8 @@
           return item.deviceno
         }).join(',')
         // this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
-        this.ws = new WebSocket(`ws://${SERVER_PATH}:8087/socketWebServer/${token}/${cars}`)
+        // this.ws = new WebSocket(`ws://${SERVER_PATH}:8087/socketWebServer/${token}/${cars}`)
+        this.ws = new WebSocket(`ws://${SERVER_PATH}/socketWebServer/${token}/${cars}`)
         this.ws.onopen = function (evt) {
           console.log('Connection open ...')
           // ws.send('Hello WebSockets!')
@@ -1383,7 +1409,7 @@
             this.total = parseInt(response.message)
             // 重新拼装
             this.listCar = this.listCar.map(item => {
-              const tempObj = {checked: false}
+              const tempObj = {checked: false, from: 1}
               // 翻页后需要重新检查
               const watchIndex = this.listCarWatch.findIndex(itemWatch => itemWatch === item)
               if (watchIndex > -1) {
@@ -1400,6 +1426,41 @@
           }
           // 取消表格loading效果
           this.loadingList = false
+        })
+      },
+      _getCarWarning() {
+        // 设置表格loading效果
+        this.loadingList2 = true
+        // 请求表格数据
+        const params = {
+          carCode: this.carCode,
+          offset: 0,
+          limit: 1
+        }
+        getCarWarning(params).then(response => {
+          if (response.code === '200') {
+            // 设置表格数据
+            this.listCar2 = response.data
+            // 重新拼装
+            this.listCar2 = this.listCar2.map(item => {
+              const tempObj = {checked: false, from: 2}
+              // 翻页后需要重新检查
+              const watchIndex = this.listCarWatch.findIndex(itemWatch => itemWatch === item)
+              if (watchIndex > -1) {
+                tempObj.checked = true
+              }
+              return Object.assign(tempObj, item)
+            })
+            console.log(this.listCar2)
+          } else {
+            this.listCar2 = []
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          // 取消表格loading效果
+          this.loadingList2 = false
         })
       },
       _getCarHistory() {
@@ -1440,12 +1501,31 @@
           this.loadingSearchHistory = false
         })
       },
-      _getCarBase(deviceno) {
-        getCarBase(deviceno).then(response => {
-          if (response.code === '200') {
-            return response.data
-          }
-        })
+      _getCarBase() {
+        if (this.listCarWatch.length) {
+          this.listCarWatch.forEach(item => {
+            getCarBase(item.deviceno).then(response => {
+              if (response.code === '200') {
+                this.listCarWatchReal.some(itemReal => {
+                  if (item.deviceno === itemReal.deviceno) {
+                    // itemReal = Object.assign(response.data, itemReal)
+                    itemReal.car_user_name = response.data.car_user_name
+                    itemReal.car_user_phone = response.data.car_user_phone
+                    itemReal.dpf_high_lines = response.data.dpf_high_lines
+                    itemReal.dpf_maintain_num = response.data.dpf_maintain_num
+                    itemReal.dpf_mileage_num = response.data.dpf_mileage_num
+                    itemReal.dpf_online_num = response.data.dpf_online_num
+                    itemReal.dpf_warning_num = response.data.dpf_warning_num
+                    itemReal.install_place_msg = response.data.install_place_msg
+                    itemReal.install_user_name = response.data.install_user_name
+                    itemReal.install_user_phone = response.data.install_user_phone
+                    return true
+                  }
+                })
+              }
+            })
+          })
+        }
       }
     }
   }

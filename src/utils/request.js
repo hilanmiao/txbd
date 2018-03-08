@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
 import store from '../store'
+import router from '../router/index'
 import {getToken} from '@/utils/auth'
 
 // 创建axios实例
@@ -39,16 +40,21 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
+    // 由于登录错误也是返回的401，所以特别处理下
     if (res.code === '401') {
-      MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
-        confirmButtonText: '重新登录',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        store.dispatch('FedLogOut').then(() => {
-          location.reload()// 为了重新实例化vue-router对象 避免bug
+      if (router.currentRoute.name === 'login') {
+        Message.error(res.message)
+      } else {
+        MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('FedLogOut').then(() => {
+            location.reload()// 为了重新实例化vue-router对象 避免bug
+          })
         })
-      })
+      }
       return Promise.reject('error')
     } else {
       return response.data

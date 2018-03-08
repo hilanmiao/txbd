@@ -51,13 +51,13 @@
           prop="accessSecret"
           label="accessSecret">
         </el-table-column>
-        <el-table-column
-          width="120"
-          label="类型">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.type | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>
-          </template>
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--width="120"-->
+          <!--label="类型">-->
+          <!--<template slot-scope="scope">-->
+            <!--<el-tag :type="scope.row.type | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column
           fixed="right"
           label="操作"
@@ -103,12 +103,12 @@
           <el-form-item label="电话" prop="link_phone">
             <el-input v-model="tempModel.link_phone"></el-input>
           </el-form-item>
-          <el-form-item label="类型" prop="type">
-            <el-select v-model="tempModel.type" placeholder="请选择">
-              <el-option label="市级平台" value="0"></el-option>
-              <el-option label="供应商平台" value="1"></el-option>
-            </el-select>
-          </el-form-item>
+          <!--<el-form-item label="类型" prop="type">-->
+            <!--<el-select v-model="tempModel.type" placeholder="请选择">-->
+              <!--<el-option label="市级平台" value="0"></el-option>-->
+              <!--<el-option label="供应商平台" value="1"></el-option>-->
+            <!--</el-select>-->
+          <!--</el-form-item>-->
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="loadingSubmit">保存</el-button>
             <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -154,7 +154,7 @@
           ],
           link_name: [
             {required: true, message: '请输入联系人名称', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
           ],
           link_phone: [
             {required: true, message: '请输入联系人电话', trigger: 'blur'},

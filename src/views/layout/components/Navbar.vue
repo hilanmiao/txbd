@@ -3,7 +3,7 @@
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
     <div class="right-menu">
-
+      <notice></notice>
       <el-tooltip effect="dark" content="全屏" placement="bottom">
         <screenfull class="screenfull right-menu-item"></screenfull>
       </el-tooltip>
@@ -36,12 +36,14 @@
   import Breadcrumb from '@/components/Breadcrumb'
   import Hamburger from '@/components/Hamburger'
   import Screenfull from '@/components/Screenfull'
+  import Notice from './Notice'
 
   export default {
     components: {
       Breadcrumb,
       Hamburger,
-      Screenfull
+      Screenfull,
+      Notice
     },
     computed: {
       ...mapGetters([

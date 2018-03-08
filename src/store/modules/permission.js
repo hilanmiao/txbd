@@ -5,20 +5,21 @@ import {asyncRouterMap, constantRouterMap} from '@/router'
  * @param roles
  * @param route
  */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.indexOf(role) >= 0)
-  } else {
-    return true
-  }
-}
 // function hasPermission(roles, route) {
-//   if (route.id) {
-//     return roles.some(role => route.id === role)
+//   if (route.meta && route.meta.roles) {
+//     return roles.some(role => route.meta.roles.indexOf(role) >= 0)
 //   } else {
 //     return true
 //   }
 // }
+// TODO: 这里改了
+function hasPermission(roles, route) {
+  if (route.id) {
+    return roles.some(role => route.id === parseInt(role))
+  } else {
+    return true
+  }
+}
 
 /**
  * 递归过滤异步路由表，返回符合用户角色权限的路由表
@@ -50,27 +51,28 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes({commit}, data) {
-      return new Promise(resolve => {
-        const {roles} = data
-        let accessedRouters
-        if (roles.indexOf('admin') >= 0) {
-          accessedRouters = asyncRouterMap
-        } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        }
-        commit('SET_ROUTERS', accessedRouters)
-        resolve()
-      })
-    }
     // GenerateRoutes({commit}, data) {
     //   return new Promise(resolve => {
     //     const {roles} = data
-    //     const accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+    //     let accessedRouters
+    //     if (roles.indexOf('admin') >= 0) {
+    //       accessedRouters = asyncRouterMap
+    //     } else {
+    //       accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+    //     }
     //     commit('SET_ROUTERS', accessedRouters)
     //     resolve()
     //   })
     // }
+    // TODO: 这里改了
+    GenerateRoutes({commit}, data) {
+      return new Promise(resolve => {
+        const {roles} = data
+        const accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+        commit('SET_ROUTERS', accessedRouters)
+        resolve()
+      })
+    }
   }
 }
 

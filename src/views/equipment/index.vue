@@ -91,8 +91,8 @@
           </el-form-item>
           <el-form-item label="供应商" prop="supplier_id">
             <el-select v-model="tempModel.supplier_id" placeholder="请选择供应商">
-              <el-option v-for="item in listSupplier" :key="item.id" :label="item.name"
-                         :value="item.id"></el-option>
+              <el-option v-for="item in listSupplier" :key="item.SUPPLIER_ID" :label="item.NAME"
+                         :value="item.SUPPLIER_ID"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="设备型号" prop="dpf_model">
@@ -123,7 +123,7 @@
     deleteModelEnquipment,
     exportEnquipment
   } from '@/api/enquipment'
-  import {getSuppList} from '@/api/supplier'
+  import {allSupp} from '@/api/supplier'
   import {EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
@@ -356,6 +356,7 @@
         })
       },
       _putModelEnquipment() {
+        this.tempModel.type = '0'
         putModelEnquipment(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
@@ -400,9 +401,9 @@
         })
       },
       _getListSupplier() {
-        getSuppList({offset: 0, limit: 1000}).then(response => {
+        allSupp({offset: 0, limit: 1000}).then(response => {
           if (response.code === '200') {
-            this.listSupplier = response.data.dataList
+            this.listSupplier = response.data
           }
         })
       }

@@ -211,6 +211,14 @@
 
   export default {
     data() {
+      // 自定义校验规则
+      var validatePhone = (rule, value, callback) => {
+        if (/^[\d\-]+$/.test(value)) {
+          callback()
+        } else {
+          callback(new Error('电话号码格式不正确，只能输入0536-1234567和11位纯数字'))
+        }
+      }
       return {
         // 列表相关
         tableData: [],
@@ -265,11 +273,12 @@
           // ],
           ownName: [
             {required: true, message: '请输入法人名称', trigger: 'blur'},
-            {max: 40, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
           ],
           ownPhone: [
             {required: true, message: '请输入法人电话', trigger: 'blur'},
-            {max: 13, message: '长度在13个字符内', trigger: 'blur'}
+            {max: 13, message: '长度在13个字符内', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ],
           address: [
             {required: true, message: '请输入地址', trigger: 'change'},
@@ -319,11 +328,12 @@
           ],
           financeName: [
             {required: true, message: '请输入财务联系人姓名', trigger: 'change'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
           ],
           financePhone: [
             {required: true, message: '请输入财务联系人电话', trigger: 'change'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ],
           registeredAddress: [
             {required: true, message: '请输入注册地址', trigger: 'change'},
