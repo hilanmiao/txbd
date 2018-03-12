@@ -38,7 +38,7 @@
 						      	</span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="warning/alarm">报警处理</el-dropdown-item>
-            <el-dropdown-item command="warning/history">历史轨迹查询</el-dropdown-item>
+            <!--<el-dropdown-item command="warning/history">历史轨迹查询</el-dropdown-item>-->
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -754,7 +754,6 @@
   import {getCars, getCarHistory, getCarBase, getCarWarning} from '@/api/gis'
   import PieChart from './components/PieChart'
   import {debounce} from '@/utils'
-  import {SERVER_PATH} from '@/api/config'
 
   export default {
     components: {
@@ -1368,8 +1367,7 @@
           return item.deviceno
         }).join(',')
         // this.ws = new WebSocket(`ws://192.168.1.196/socketWebServer/${token}/${cars}`)
-        // this.ws = new WebSocket(`ws://${SERVER_PATH}:8087/socketWebServer/${token}/${cars}`)
-        this.ws = new WebSocket(`ws://${SERVER_PATH}/socketWebServer/${token}/${cars}`)
+        this.ws = new WebSocket(`${process.env.WEB_SOCKET}/${token}/${cars}`)
         this.ws.onopen = function (evt) {
           console.log('Connection open ...')
           // ws.send('Hello WebSockets!')

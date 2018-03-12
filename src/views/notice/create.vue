@@ -20,7 +20,6 @@
   import {postModelNotice, putModelNotice, getModelNotice} from '@/api/notice'
   import {getToken} from '@/utils/auth'
   import {uploadImg} from '@/api/unit'
-  import {IMG_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -41,7 +40,7 @@
       this.editor = new E('#editor')
       // this.editor.customConfig.uploadImgShowBase64 = true
       this.editor.customConfig.uploadFileName = 'img'
-      this.editor.customConfig.uploadImgServer = process.env.BASE_API + '/v1/unit/img?token=' + getToken(),
+      this.editor.customConfig.uploadImgServer = process.env.BASE_API + 'v1/unit/img?token=' + getToken()
       this.editor.customConfig.uploadImgHooks = {
         // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
         // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
@@ -52,7 +51,7 @@
           // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
           // var url = result.url
           if (result.code === '201') {
-            var url = IMG_SERVER_PATH + result.data
+            var url = process.env.IMG_SERVER_PATH + result.data
             insertImg(url)
           } else {
             this.$message({

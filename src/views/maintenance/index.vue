@@ -110,72 +110,74 @@
       <el-dialog :visible.sync="visibleView" :title="titMsg">
         <el-form ref="form" status-icon :rules="rules" :model="form" label-width="120px" size="mini">
           <el-form-item label="修理厂名称" prop="name">
-              <el-input v-model="form.name" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.name" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="企业代码" prop="shopId">
-              <el-input v-model="form.shopId" :disabled="noEdit"></el-input>
+            <el-input v-model="form.shopId" :disabled="noEdit"></el-input>
           </el-form-item>
           <el-form-item label="企业面积" prop="area">
-              <el-input v-model="form.area" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.area" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="企业人数" prop="employees">
-              <el-input v-model="form.employees" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.employees" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="业务范围" prop="business">
-              <el-input v-model="form.business" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.business" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="企业类别" prop="type">
-              <el-input v-model="form.type" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.type" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <!--<el-form-item label="省份" prop="provinceName">-->
-              <!--<el-input v-model="form.provinceName" :disabled="lookOrEdit" value="37"></el-input>-->
+          <!--<el-input v-model="form.provinceName" :disabled="lookOrEdit" value="37"></el-input>-->
           <!--</el-form-item>-->
           <el-form-item label="城市">
-              <el-select v-model="form.city_id" style="width:100%;" :disabled="lookOrEdit" placeholder="请选择城市">
-                <el-option v-for="item in listCity" :key="item.id" :label="item.name"
-                           :value="item.id"></el-option>
-              </el-select>
+            <el-select v-model="form.city_id" style="width:100%;" :disabled="lookOrEdit" placeholder="请选择城市">
+              <el-option v-for="item in listCity" :key="item.id" :label="item.name"
+                         :value="item.id"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="经度" prop="longitude">
-              <el-input v-model="form.longitude" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.longitude" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="纬度" prop="latitude">
-              <el-input v-model="form.latitude" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.latitude" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="财务姓名" prop="financeName">
-              <el-input v-model="form.financeName"  :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.financeName" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="财务电话" prop="financePhone">
-              <el-input v-model="form.financePhone" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.financePhone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="营业执照">
             <el-upload
+              class="upload-demo"
+              :action="uploadUrl"
               :limit="1"
               :on-preview="handleUploadPreview"
               :on-remove="handleUploadRemove"
-              class="upload-demo"
-              :action="upImg"
-              list-type="picture"
-              name="img"
               accept="image/*"
+              :disabled="lookOrEdit"
               :file-list="form.imgUrl"
               :on-success="handleUploadSuccess"
-            >
+              :before-upload="handleBeforeUpload"
+              :on-exceed="handleUploadExceed"
+              name="img"
+              list-type="picture">
               <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+              <div slot="tip" class="el-upload__tip">文件不超过10Mb</div>
             </el-upload>
           </el-form-item>
           <el-form-item label="企业法人姓名" prop="ownName">
-              <el-input v-model="form.ownName" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.ownName" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="企业法人电话" prop="ownPhone">
-              <el-input v-model="form.ownPhone" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.ownPhone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="注册资本" prop="registeredCapital">
-              <el-input v-model="form.registeredCapital" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.registeredCapital" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="总资产规模" prop="assets">
-              <el-input v-model="form.assets" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.assets" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="开票信息" prop="invoiceMsg">
             <el-input v-model="form.invoiceMsg" :disabled="lookOrEdit"></el-input>
@@ -207,7 +209,6 @@
   import {getMainList, addMain, editMain, lookMain, deleMain, exportEnquipment} from '@/api/maintenance'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH, UPIMG_SERVER_PATH, EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -229,7 +230,8 @@
         noEdit: false,
         imageView: false,
         imgDetail: '',
-        upImg: UPIMG_SERVER_PATH + 'unit/img?token=' + getToken(),
+        // 上传相关
+        uploadUrl: process.env.BASE_API + 'v1/unit/img?token=' + getToken(),
         // 表单相关
         form: {
           accessSecret: '',
@@ -445,21 +447,38 @@
           this.form.imgUrl = []
           this.form.imgUrl.push({
             name: file.name,
-            url: IMG_SERVER_PATH + response.data
+            url: process.env.IMG_SERVER_PATH + response.data
           })
         } else {
           this.$message.error(response.message)
         }
       },
+      handleUploadExceed() {
+        this.$message.error('只能上传一个文件')
+      },
       handleUploadRemove(file, fileList) {
         this.form.imgUrl = []
       },
       handleUploadPreview(file) {
-        this.imgDetail = file.url
+        this.imgDetail = process.env.IMG_SERVER_PATH + file.url
         this.imageView = true
       },
       closeImage() {
         this.imageView = false
+      },
+      handleBeforeUpload(file) {
+        // const isJPG = file.type === 'image/jpeg'
+        const isLt2M = file.size / 1024 / 1024 * 10
+        // if (!isJPG) {
+        //   this.$message.error('上传头像图片只能是 JPG 格式!')
+        //   return false
+        // }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过10MB!')
+          return false
+        }
+        // return isJPG && isLt2M
+        return true
       },
       handleView(row) {
         this.titMsg = '查看'
@@ -469,7 +488,11 @@
           id: row.id
         }
         lookMain(param, row.id).then(responce => {
-          responce.data.imgUrl = JSON.parse(responce.data.imgUrl)
+          if (JSON.parse(responce.data.imgUrl).length) {
+            const imgUrl = JSON.parse(responce.data.imgUrl)
+            imgUrl[0].url = process.env.IMG_SERVER_PATH + imgUrl[0].url
+            responce.data.imgUrl = imgUrl
+          }
           this.form = Object.assign({}, responce.data)
         })
         this.visibleView = true
@@ -482,7 +505,11 @@
           id: row.id
         }
         lookMain(param, row.id).then(responce => {
-          responce.data.imgUrl = JSON.parse(responce.data.imgUrl)
+          if (JSON.parse(responce.data.imgUrl).length) {
+            const imgUrl = JSON.parse(responce.data.imgUrl)
+            imgUrl[0].url = process.env.IMG_SERVER_PATH + imgUrl[0].url
+            responce.data.imgUrl = imgUrl
+          }
           this.form = Object.assign({}, responce.data)
         })
         this.visibleView = true
@@ -533,7 +560,7 @@
         exportEnquipment().then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
-            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
             link.setAttribute('download', 'download.xls')
             document.body.appendChild(link) // Required for FF
             link.click() // This will download the data file named "my_data.csv".
@@ -584,7 +611,11 @@
       },
       _addSubmit() {
         const tempForm = Object.assign({}, this.form)
-        tempForm.imgUrl = JSON.stringify(tempForm.imgUrl)
+        if (tempForm.imgUrl.length > 0) {
+          // 处理图片路径
+          tempForm.imgUrl[0].url = tempForm.imgUrl[0].url.replace(process.env.IMG_SERVER_PATH, '')
+          tempForm.imgUrl = JSON.stringify(tempForm.imgUrl)
+        }
         addMain(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
@@ -605,7 +636,11 @@
       },
       _editSubmit() {
         const tempForm = Object.assign({}, this.form)
-        tempForm.imgUrl = JSON.stringify(tempForm.imgUrl)
+        if (tempForm.imgUrl.length > 0) {
+          // 处理图片路径
+          tempForm.imgUrl[0].url = tempForm.imgUrl[0].url.replace(process.env.IMG_SERVER_PATH, '')
+          tempForm.imgUrl = JSON.stringify(tempForm.imgUrl)
+        }
         editMain(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息

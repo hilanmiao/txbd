@@ -167,7 +167,6 @@
   import {getWarning, noHandle, doMark} from '@/api/alarm'
   import {getDetail} from '@/api/time_threshold'
   import {getToken} from '@/utils/auth'
-  import {UPIMG_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -176,7 +175,7 @@
         iconfault, wartime, person, backimg, dhPic, btn1,
         imgcar, online, numberL, title, address, detail, btn2,
         listGrade: [],
-        upImg: UPIMG_SERVER_PATH + 'unit/img?token=' + getToken(),
+        upImg: process.env.BASE_API + 'v1/unit/img?token=' + getToken(),
         longTime: false,
         moreBig: false,
         noWarming: true,

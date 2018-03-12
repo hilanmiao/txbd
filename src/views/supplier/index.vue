@@ -162,9 +162,8 @@
               name="img"
               list-type="picture">
               <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">文件不超过1024kb</div>
+              <div slot="tip" class="el-upload__tip">文件不超过10Mb</div>
             </el-upload>
-
           </el-form-item>
           <br>
           <el-form-item label="联系人姓名" prop="link_name">
@@ -226,7 +225,6 @@
   import {getSuppList, addSupp, editSupp, lookSupp, deleSupp, exportEnquipment} from '@/api/supplier'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH, UPIMG_SERVER_PATH, EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -359,7 +357,7 @@
           page: 1
         },
         // 上传相关
-        uploadUrl: UPIMG_SERVER_PATH + 'unit/img?token=' + getToken()
+        uploadUrl: process.env.BASE_API + 'v1/unit/img?token=' + getToken()
       }
     },
     watch: {
@@ -439,10 +437,10 @@
         this.$message.error('只能上传一个文件')
       },
       handleUploadRemove(file, fileList) {
-        this.form.imgUrl = []
+        this.form.img_url = []
       },
       handleUploadPreview(file) {
-        this.imgDetail = file.url
+        this.imgDetail = process.env.IMG_SERVER_PATH + file.url
         this.imageView = true
       },
       closeImage() {
@@ -456,7 +454,7 @@
           this.form.img_url = []
           this.form.img_url.push({
             name: file.name,
-            url: IMG_SERVER_PATH + response.data
+            url: process.env.IMG_SERVER_PATH + response.data
           })
         } else {
           this.$message.error(response.message)
@@ -464,13 +462,13 @@
       },
       handleBeforeUpload(file) {
         // const isJPG = file.type === 'image/jpeg'
-        const isLt2M = file.size / 1024 / 1024
+        const isLt2M = file.size / 1024 / 1024 * 10
         // if (!isJPG) {
         //   this.$message.error('上传头像图片只能是 JPG 格式!')
         //   return false
         // }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 1MB!')
+          this.$message.error('上传头像图片大小不能超过10MB!')
           return false
         }
         // return isJPG && isLt2M
@@ -484,7 +482,11 @@
           id: row.id
         }
         lookSupp(param, row.id).then(responce => {
-          responce.data.img_url = JSON.parse(responce.data.img_url)
+          if (JSON.parse(responce.data.img_url).length) {
+            const img_url = JSON.parse(responce.data.img_url)
+            img_url[0].url = process.env.IMG_SERVER_PATH + img_url[0].url
+            responce.data.img_url = img_url
+          }
           this.form = Object.assign({}, responce.data)
         })
         this.visibleView = true
@@ -497,7 +499,11 @@
           id: row.id
         }
         lookSupp(param, row.id).then(responce => {
-          responce.data.img_url = JSON.parse(responce.data.img_url)
+          if (JSON.parse(responce.data.img_url).length) {
+            const img_url = JSON.parse(responce.data.img_url)
+            img_url[0].url = process.env.IMG_SERVER_PATH + img_url[0].url
+            responce.data.img_url = img_url
+          }
           this.form = Object.assign({}, responce.data)
         })
         this.visibleView = true
@@ -548,7 +554,7 @@
         exportEnquipment().then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
-            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
             link.setAttribute('download', 'download.xls')
             document.body.appendChild(link) // Required for FF
             link.click() // This will download the data file named "my_data.csv".
@@ -604,7 +610,11 @@
       },
       _addSubmit() {
         const tempForm = Object.assign({}, this.form)
-        tempForm.img_url = JSON.stringify(tempForm.img_url)
+        if (tempForm.img_url.length > 0) {
+          // 处理图片路径
+          tempForm.img_url[0].url = tempForm.img_url[0].url.replace(process.env.IMG_SERVER_PATH, '')
+          tempForm.img_url = JSON.stringify(tempForm.img_url)
+        }
         addSupp(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
@@ -626,7 +636,11 @@
 
       _editSubmit() {
         const tempForm = Object.assign({}, this.form)
-        tempForm.img_url = JSON.stringify(tempForm.img_url)
+        if (tempForm.img_url.length > 0) {
+          // 处理图片路径
+          tempForm.img_url[0].url = tempForm.img_url[0].url.replace(process.env.IMG_SERVER_PATH, '')
+          tempForm.img_url = JSON.stringify(tempForm.img_url)
+        }
         editSupp(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息

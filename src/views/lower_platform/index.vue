@@ -63,9 +63,6 @@
           label="操作"
           width="200">
           <template slot-scope="scope">
-            <el-tooltip content="授权" placement="top">
-              <el-button type="success" size="mini" icon="el-icon-success"></el-button>
-            </el-tooltip>
             <el-tooltip content="编辑" placement="top">
               <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
             </el-tooltip>
@@ -121,7 +118,6 @@
 
 <script type="text/ecmascript-6">
   import {getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform,exportEnquipment} from '@/api/lower_platform'
-  import {EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -275,7 +271,7 @@
         exportEnquipment().then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
-            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
             link.setAttribute('download', 'download.xls')
             document.body.appendChild(link) // Required for FF
             link.click() // This will download the data file named "my_data.csv".

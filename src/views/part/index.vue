@@ -237,6 +237,7 @@
               message: response.message
             })
           }
+          this.treeLoading = false
         })
       },
       _putModelRole() {
@@ -251,8 +252,12 @@
         }
         this.treeLoading = true
         const tempModel = {
-          rolename: this.newLabel,
-          menus: menus,
+          email: '2222@qq.com',
+          isSendEmail: '1',
+          menus: [],
+          id: this.curId,
+          name: this.curLabel,
+          menus_ids: menus,
           remark: '前端路由权限存储'
         }
         putModelRole(tempModel).then(response => {
@@ -271,6 +276,7 @@
               message: response.message
             })
           }
+          this.treeLoading = false
         })
       }
     }

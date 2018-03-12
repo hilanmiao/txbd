@@ -124,7 +124,6 @@
     exportEnquipment
   } from '@/api/enquipment'
   import {allSupp} from '@/api/supplier'
-  import {EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -285,7 +284,7 @@
         exportEnquipment().then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
-            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
             link.setAttribute('download', 'download.xls')
             document.body.appendChild(link) // Required for FF
             link.click() // This will download the data file named "my_data.csv".

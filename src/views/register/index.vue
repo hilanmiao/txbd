@@ -98,52 +98,52 @@
         <el-form ref="form" :model="form" label-width="120px">
 
           <el-form-item label="城市名" prop="cityName">
-              <el-input v-model="form.cityName" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.cityName" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="供应商" prop="supplierName">
-              <el-input v-model="form.supplierName" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.supplierName" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="dpf型号" prop="dpf_model">
-              <el-input v-model="form.dpf_model" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.dpf_model" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车辆编号" prop="car_number">
-              <el-input v-model="form.car_number" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.car_number" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="颜色" prop="car_color">
-              <el-input v-model="form.car_color" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.car_color" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="型号">
-              <el-input v-model="form.car_type_code" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.car_type_code" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车主姓名" prop="car_user_name">
-              <el-input v-model="form.car_user_name"  :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.car_user_name" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车主身份证号" prop="car_user_identity_code">
-              <el-input v-model="form.car_user_identity_code" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.car_user_identity_code" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车主电话" prop="car_user_phone">
-              <el-input v-model="form.car_user_phone"  :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.car_user_phone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="发动机编号" prop="car_engine_number">
-              <el-input v-model="form.car_engine_number" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.car_engine_number" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="安装地点信息" prop="install_place_msg">
-              <el-input v-model="form.install_place_msg" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.install_place_msg" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="安装人信息" prop="install_user_name">
-              <el-input v-model="form.install_user_name" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.install_user_name" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="安装人电话" prop="install_user_phone">
-              <el-input v-model="form.install_user_phone" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.install_user_phone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="唯一标识" prop="qr_code">
-              <el-input v-model="form.qr_code" style="width:80%;" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.qr_code" style="width:80%;" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车辆出厂日期" prop="car_manufacture_time">
-              <el-input v-model="form.car_manufacture_time" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.car_manufacture_time" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车辆状态" prop="car_status">
-              <el-input v-model="form.car_status" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.car_status" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车辆照片">
             <el-col :span="24">
@@ -167,7 +167,6 @@
   import {getMainList, lookMain, exportEnquipment} from '@/api/register'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH, EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -279,7 +278,7 @@
           this.form.imgUrl = []
           this.form.imgUrl.push({
             name: file.name,
-            url: IMG_SERVER_PATH + response.data
+            url: process.env.IMG_SERVER_PATH + response.data
           })
         } else {
           this.$message.error(response.message)
@@ -289,11 +288,11 @@
         this.form.imgUrl = []
       },
       handleUploadPreview(file) {
-        this.imgDetail = file.url
+        this.imgDetail = process.env.IMG_SERVER_PATH + file.url
         this.imageView = true
       },
       openImageView(src) {
-        this.imgDetail = src
+        this.imgDetail = process.env.IMG_SERVER_PATH + src
         this.imageView = true
       },
       closeImage() {
@@ -337,7 +336,7 @@
         exportEnquipment().then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
-            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
             link.setAttribute('download', 'download.xls')
             document.body.appendChild(link) // Required for FF
             link.click() // This will download the data file named "my_data.csv".

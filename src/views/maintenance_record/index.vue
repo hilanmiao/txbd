@@ -173,7 +173,6 @@
   import {getMainList, addMain, editMain, lookMain, deleMain, exportEnquipment} from '@/api/maintenance_record'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
-  import {IMG_SERVER_PATH, EXCEL_SERVER_PATH} from '@/api/config'
 
   export default {
     data() {
@@ -392,7 +391,7 @@
           this.form.imgUrl = []
           this.form.imgUrl.push({
             name: file.name,
-            url: IMG_SERVER_PATH + response.data
+            url: process.env.IMG_SERVER_PATH + response.data
           })
         } else {
           this.$message.error(response.message)
@@ -478,7 +477,7 @@
         exportEnquipment().then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
-            link.setAttribute('href', EXCEL_SERVER_PATH + response.data)
+            link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
             link.setAttribute('download', 'download.xls')
             document.body.appendChild(link) // Required for FF
             link.click() // This will download the data file named "my_data.csv".

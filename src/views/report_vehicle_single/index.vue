@@ -153,7 +153,6 @@
   import PressureLineChart from './components/PressureLineChart'
   import TemperatureLineChart from './components/TemperatureLineChart'
   import {getCarDetail} from '@/api/report_vehicle_single'
-  import {IMG_SERVER_PATH} from '@/api/config'
 
   export default {
     name: 'dashboard-admin',
@@ -233,17 +232,17 @@
           if (val === 0) {
             if (this.form.img_url_45) {
               this.imageView = true
-              this.imgDetail = IMG_SERVER_PATH + this.form.img_url_45
+              this.imgDetail = process.env.IMG_SERVER_PATH + this.form.img_url_45
             }
           } else if (val === 1) {
             if (this.form.before_install_img_url) {
               this.imageView = true
-              this.imgDetail = IMG_SERVER_PATH + this.form.before_install_img_url
+              this.imgDetail = process.env.IMG_SERVER_PATH + this.form.before_install_img_url
             }
           } else if (val === 2) {
             if (this.form.after_install_img_url) {
               this.imageView = true
-              this.imgDetail = IMG_SERVER_PATH + this.form.after_install_img_url
+              this.imgDetail = process.env.IMG_SERVER_PATH + this.form.after_install_img_url
             }
           }
         } else {
