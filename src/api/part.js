@@ -19,11 +19,11 @@ export function postModelRole(params) {
 }
 
 // 修改
-export function putModelRole(data) {
+export function putModelRole(params) {
   return request({
     url: 'v1/user/role',
     method: 'put',
-    data
+    params
   })
 }
 
@@ -36,16 +36,9 @@ export function deleteModelPlatform(id) {
 }
 
 // 获取详情
-export function getModelRole() {
+export function getModelRole(id) {
   return request({
-    url: 'v1/user/userRole',
+    url: 'v1/user/userRole/' + id,
     method: 'get'
   })
-  // TODO：记得改
-  // return new Promise((resolve, reject) => {
-  //   resolve({
-  //     code: 200,
-  //     data: {menu_ids: '11, 12, 13, 14, 15, 16, 17'}
-  //   })
-  // })
 }

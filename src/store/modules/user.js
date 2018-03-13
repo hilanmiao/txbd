@@ -93,25 +93,6 @@ const user = {
     GetUserInfo({commit, state}) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.token).then(response => {
-          // TODO: 临时
-          response = {
-            code: '200',
-            message: '',
-            data: {
-              "id": null,
-              "username": "admin",
-              "password": null,
-              "role_id": "1",
-              "name": "超级管理员",
-              "status": "0",
-              "createtime": null,
-              "phone": "15626669999",
-              "from_system": "0",
-              "organid": "1",
-              "organname": null,
-              "rolename": null
-            }
-          }
           if (response.code !== '200') {
             reject('error')
           }
@@ -121,8 +102,9 @@ const user = {
           commit('SET_ROLEID', data.role_id)
           commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
           commit('SET_INTRODUCTION', data.name)
-          getModelRole(state.token).then(response => {
-            response.data.menu_ids = '1,11,12,13,14,15,16,17,2,21,22,23,24,25,26,27,28,29,30,3,31,32,33,4,41,42,5,51,52,53,6,61,62,63'.split(',')
+          getModelRole(state.roleid).then(response => {
+            // response.data.menu_ids = '1,11,12,13,14,15,16,17,2,21,22,23,24,25,26,27,28,29,30,3,31,32,33,4,41,42,5,51,52,53,6,61,62,63'.split(',')
+            response.data.menu_ids = response.data.menu_ids.split(',')
             if (response.code !== '200') {
               reject('error')
             }

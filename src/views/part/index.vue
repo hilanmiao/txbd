@@ -219,7 +219,9 @@
         const tempModel = {
           rolename: this.newLabel,
           menus: menus,
-          remark: '前端路由权限存储'
+          remark: '前端路由权限存储',
+          email: '2222@qq.com',
+          isSendEmail: '1'
         }
         postModelRole(tempModel).then(response => {
           if (response.code === '201') {
@@ -243,6 +245,7 @@
       _putModelRole() {
         // 获取checked子节点数组
         const menus = this.$refs.treeMenu.getCheckedKeys(false).join(',')
+        // const menus = this.$refs.treeMenu.getHalfCheckedKeys().join(',')
         if (!menus.length) {
           this.$message({
             type: 'error',
@@ -252,13 +255,12 @@
         }
         this.treeLoading = true
         const tempModel = {
-          email: '2222@qq.com',
-          isSendEmail: '1',
-          menus: [],
           id: this.curId,
-          name: this.curLabel,
-          menus_ids: menus,
-          remark: '前端路由权限存储'
+          rolename: this.curLabel,
+          menus: menus,
+          remark: '前端路由权限存储',
+          email: '2222@qq.com',
+          isSendEmail: '1'
         }
         putModelRole(tempModel).then(response => {
           if (response.code === '201') {
