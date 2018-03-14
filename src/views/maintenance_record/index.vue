@@ -107,62 +107,95 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" :title="titMsg">
-        <el-form ref="form" status-icon :rules="rules" :model="form" label-width="120px" size="mini">
-          <el-form-item label="车牌号" prop="carNumber">
-            <el-input v-model="form.carNumber" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="车辆型号" prop="carType">
-            <el-input v-model="form.carType" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="车主姓名" prop="carOwnerName">
-            <el-input v-model="form.carOwnerName" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="联系电话" prop="carOwnerPhone">
-            <el-input v-model="form.carOwnerPhone" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="dpf型号" prop="dpfModel">
-            <el-input v-model="form.dpfModel" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="dpf编码" prop="dpfId">
-            <el-input v-model="form.dpfId" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="dpf厂家" prop="dpfFactory">
-            <el-input v-model="form.dpfFactory" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="dpf安装时间">
-            <el-date-picker
-              :disabled="lookOrEdit"
-              v-model="form.installTime"
-              align="right"
-              type="date"
-              placeholder="选择日期"
-              value-format="yyyy-MM-dd"
-              :picker-options="pickerOptions">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="维修厂" prop="maintainShopName">
-            <el-input v-model="form.maintainShopName" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="维修厂电话" prop="maintainShopPhone">
-            <el-input v-model="form.maintainShopPhone" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="维修人员电话" prop="maintainUserPhone">
-            <el-input v-model="form.maintainUserPhone" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="维修人员" prop="maintainUser">
-            <el-input v-model="form.maintainUser" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="维护内容" prop="maintainContent">
-            <el-input type="textarea" v-model="form.maintainContent" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item label="备注信息">
-            <el-input type="textarea" v-model="form.remark" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="handleSubmit" :loading="submitLoading" v-if="!lookOrEdit">保存
-            </el-button>
-            <el-button @click="closeDialog">关闭</el-button>
-          </el-form-item>
+        <el-form ref="form" status-icon :rules="rules" :model="form" label-width="110px" size="mini">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="车牌号" prop="carNumber">
+                <el-input v-model="form.carNumber" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="车辆型号" prop="carType">
+                <el-input v-model="form.carType" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="车主姓名" prop="carOwnerName">
+                <el-input v-model="form.carOwnerName" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="联系电话" prop="carOwnerPhone">
+                <el-input v-model="form.carOwnerPhone" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="dpf型号" prop="dpfModel">
+                <el-input v-model="form.dpfModel" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="dpf编码" prop="dpfId">
+                <el-input v-model="form.dpfId" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="dpf厂家" prop="dpfFactory">
+                <el-input v-model="form.dpfFactory" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="dpf安装时间" prop="installTime">
+                <el-date-picker
+                  style="width: 100%"
+                  :disabled="lookOrEdit"
+                  v-model="form.installTime"
+                  align="right"
+                  type="date"
+                  placeholder="选择日期"
+                  value-format="yyyy-MM-dd"
+                  :picker-options="pickerOptions">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="维修厂" prop="maintainShopName">
+                <el-input v-model="form.maintainShopName" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="维修厂电话" prop="maintainShopPhone">
+                <el-input v-model="form.maintainShopPhone" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="维修人员电话" prop="maintainUserPhone">
+                <el-input v-model="form.maintainUserPhone" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="维修人员" prop="maintainUser">
+                <el-input v-model="form.maintainUser" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="维护内容" prop="maintainContent">
+                <el-input type="textarea" v-model="form.maintainContent" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="备注信息">
+                <el-input type="textarea" v-model="form.remark" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item>
+                <el-button type="primary" @click="handleSubmit" :loading="submitLoading" v-if="!lookOrEdit">保存
+                </el-button>
+                <el-button @click="closeDialog">关闭</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
       </el-dialog>
     </div>
@@ -181,7 +214,7 @@
         if (/^[\d\-]+$/.test(value)) {
           callback()
         } else {
-          callback(new Error('电话号码格式不正确，只能输入0536-1234567和11位纯数字'))
+          callback(new Error('只能输入0536-xxx或纯数字'))
         }
       }
       return {
@@ -251,8 +284,7 @@
             {required: true, message: '请选择信息上传人类型', trigger: 'change'}
           ],
           installTime: [
-            {required: true, message: '请选择dpf安装时间', trigger: 'change'},
-            {max: 35, message: '长度在35个字符内', trigger: 'blur'}
+            {required: true, message: '请选择dpf安装时间', trigger: 'change'}
           ],
           maintainShopName: [
             {required: true, message: '请输入维修厂', trigger: 'change'},

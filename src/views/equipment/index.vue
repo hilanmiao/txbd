@@ -85,7 +85,7 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
-        <el-form ref="form" status-icon :rules="rules" :model="tempModel" label-width="80px">
+        <el-form ref="form" status-icon :rules="rules" :model="tempModel" label-width="80px" size="mini">
           <el-form-item label="设备序号" prop="dpf_code">
             <el-input v-model="tempModel.dpf_code"></el-input>
           </el-form-item>
@@ -155,14 +155,14 @@
         rules: {
           dpf_code: [
             {required: true, message: '请输入设备序号', trigger: 'blur'},
-            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           supplier_id: [
             {required: true, message: '请选择供应商', trigger: 'blur'}
           ],
           dpf_model: [
             {required: true, message: '请输入设备型号', trigger: 'blur'},
-            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           type: [
             {required: true, message: '请选择状态', trigger: 'blur'}

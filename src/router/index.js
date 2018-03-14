@@ -90,8 +90,8 @@ export const asyncRouterMap = [
     path: '/dpf',
     component: Layout,
     redirect: '/dpf/supplier',
-    name: 'DPF信息管理',
-    meta: {title: 'DPF信息管理', icon: 'form', roles: ['editor']},
+    name: 'DPF管理',
+    meta: {title: 'DPF管理', icon: 'form'},
     children: [
       {
         id: 11,
@@ -134,13 +134,6 @@ export const asyncRouterMap = [
         name: '下级平台管理',
         component: _import('lower_platform/index'),
         meta: {title: '下级平台管理'}
-      },
-      {
-        id: 17,
-        path: 'threshold',
-        name: 'DPF阀值设置',
-        component: _import('threshold/index'),
-        meta: {title: 'DPF阀值设置'}
       }
     ]
   },
@@ -150,7 +143,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/vehicle_report_run',
     name: '统计分析',
-    meta: {title: '统计分析', icon: 'chart', roles: ['admin']},
+    meta: {title: '统计分析', icon: 'chart'},
     children: [
       {
         id: 21,
@@ -230,7 +223,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/Logs/system',
     name: '日志管理',
-    meta: {title: '日志管理', icon: 'excel', roles: ['admin']},
+    meta: {title: '日志管理', icon: 'excel'},
     children: [
       {
         id: 31,
@@ -261,7 +254,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/Notice/notice',
     name: '公告管理',
-    meta: {title: '公告管理', icon: 'documentation', roles: ['admin']},
+    meta: {title: '公告管理', icon: 'documentation'},
     children: [
       {
         id: 41,
@@ -285,8 +278,8 @@ export const asyncRouterMap = [
     path: '/Warning',
     component: Layout,
     redirect: '/warning/sms',
-    name: '监控报警管理',
-    meta: {title: '监控报警管理', icon: 'documentation', roles: ['admin']},
+    name: '报警管理',
+    meta: {title: '报警管理', icon: 'documentation'},
     children: [
       {
         id: 51,
@@ -305,12 +298,19 @@ export const asyncRouterMap = [
       {
         id: 53,
         path: 'time_threshold',
-        name: '阀值管理',
+        name: '时间阀值设置',
         component: _import('time_threshold/index'),
-        meta: {title: '阀值管理'}
+        meta: {title: '时间阀值设置'}
       },
       {
         id: 54,
+        path: 'threshold',
+        name: 'dpf阀值设置',
+        component: _import('threshold/index'),
+        meta: {title: 'dpf阀值设置'}
+      },
+      {
+        id: 55,
         path: 'history',
         hidden: true,
         name: '历史轨迹',

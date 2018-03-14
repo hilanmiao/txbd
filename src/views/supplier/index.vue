@@ -109,112 +109,131 @@
     </div>
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" :title="titMsg">
-        <el-form ref="form" :model="form" :rules="rules" label-width="100px" :inline="true">
-
-          <el-form-item label="名称" prop="name">
-            <el-input v-model="form.name" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="企业代码" prop="e_code">
-            <el-input v-model="form.e_code" :disabled="noEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="经营范围" prop="business">
-            <el-input v-model="form.business" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="企业地址" prop="address">
-            <el-input v-model="form.address" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="省份" prop="provinceName">
-            <el-input v-model="form.provinceName" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="城市" prop="city_id">
-            <el-select v-model="form.city_id" :disabled="lookOrEdit" style="width: 93%">
-              <el-option v-for="item in listCity" :key="item.id" :label="item.name"
-                         :value="item.id"></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="财务姓名" prop="finance_name">
-            <el-input v-model="form.finance_name" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="财务电话" prop="finance_phone">
-            <el-input v-model="form.finance_phone" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <br>
-          <el-form-item label="营业执照">
-            <el-upload
-              class="upload-demo"
-              :action="uploadUrl"
-              :limit="1"
-              :on-preview="handleUploadPreview"
-              :on-remove="handleUploadRemove"
-              accept="image/*"
-              :disabled="lookOrEdit"
-              :file-list="form.img_url"
-              :on-success="handleUploadSuccess"
-              :before-upload="handleBeforeUpload"
-              :on-exceed="handleUploadExceed"
-              name="img"
-              list-type="picture">
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">文件不超过10Mb</div>
-            </el-upload>
-          </el-form-item>
-          <br>
-          <el-form-item label="联系人姓名" prop="link_name">
-            <el-input v-model="form.link_name" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="联系人手机" prop="link_phone">
-            <el-input v-model="form.link_phone" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="联系人电话" prop="link_tel">
-            <el-input v-model="form.link_tel" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="联系人传真" prop="link_fax">
-            <el-input v-model="form.link_fax" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="法人姓名" prop="own_name">
-            <el-input v-model="form.own_name" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="生产编码" prop="production_licence_code">
-            <el-input v-model="form.production_licence_code" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="注册资金" prop="registered_capital">
-            <el-input v-model="form.registered_capital" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="供应商ID" prop="supplier_id">
-            <el-input v-model="form.supplier_id" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="开票信息" prop="invoice_msg">
-            <el-input v-model="form.invoice_msg" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <br>
-          <el-form-item label="产品描述" prop="main_product">
-            <el-input type="textarea" class="allLine" v-model="form.main_product" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <br>
-          <el-form-item label="备注信息" prop="remark">
-            <el-input type="textarea" class="allLine" v-model="form.remark" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
-          <br>
-          <el-form-item style="margin-left: 20px;">
-            <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading" v-if="!lookOrEdit">保存
-            </el-button>
-            <el-button @click="qxSubmit('form')">关闭</el-button>
-          </el-form-item>
+        <el-form ref="form" :model="form" :rules="rules" label-width="110px" size="mini">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="名称" prop="name">
+                <el-input v-model="form.name" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="企业代码" prop="e_code">
+                <el-input v-model="form.e_code" :disabled="noEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="经营范围" prop="business">
+                <el-input v-model="form.business" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="企业地址" prop="address">
+                <el-input v-model="form.address" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="财务姓名" prop="finance_name">
+                <el-input v-model="form.finance_name" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="财务电话" prop="finance_phone">
+                <el-input v-model="form.finance_phone" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="联系人姓名" prop="link_name">
+                <el-input v-model="form.link_name" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="联系人手机" prop="link_phone">
+                <el-input v-model="form.link_phone" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="联系人电话" prop="link_tel">
+                <el-input v-model="form.link_tel" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="联系人传真" prop="link_fax">
+                <el-input v-model="form.link_fax" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="法人姓名" prop="own_name">
+                <el-input v-model="form.own_name" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="生产许可编码" prop="production_licence_code">
+                <el-input v-model="form.production_licence_code" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="注册资金" prop="registered_capital">
+                <el-input v-model="form.registered_capital" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="供应商ID" prop="supplier_id">
+                <el-input v-model="form.supplier_id" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="开票信息" prop="invoice_msg">
+                <el-input v-model="form.invoice_msg" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="城市" prop="city_id">
+                <el-select v-model="form.city_id" :disabled="lookOrEdit" style="width:100%;" placeholder="请选择城市">
+                  <el-option v-for="item in listCity" :key="item.id" :label="item.name"
+                             :value="item.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="产品描述" prop="main_product">
+                <el-input type="textarea" style="width: 100%" class="allLine" v-model="form.main_product"
+                          :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="备注信息" prop="remark">
+                <el-input type="textarea" class="allLine" v-model="form.remark" :disabled="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="营业执照" :required="true" :error="imgRequired">
+                <el-upload
+                  class="upload-demo"
+                  :action="uploadUrl"
+                  :limit="1"
+                  :on-preview="handleUploadPreview"
+                  :on-remove="handleUploadRemove"
+                  accept="image/*"
+                  :disabled="lookOrEdit"
+                  :file-list="form.img_url"
+                  :on-success="handleUploadSuccess"
+                  :before-upload="handleBeforeUpload"
+                  :on-exceed="handleUploadExceed"
+                  name="img"
+                  list-type="picture">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                  <div slot="tip" class="el-upload__tip">文件不超过10Mb</div>
+                </el-upload>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item>
+                <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading" v-if="!lookOrEdit">保存
+                </el-button>
+                <el-button @click="qxSubmit('form')">关闭</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
       </el-dialog>
     </div>
@@ -233,7 +252,7 @@
         if (/^[\d\-]+$/.test(value)) {
           callback()
         } else {
-          callback(new Error('电话号码格式不正确，只能输入0536-1234567和11位纯数字'))
+          callback(new Error('只能输入0536-xxx或纯数字'))
         }
       }
       return {
@@ -263,7 +282,7 @@
           province_id: '37',
           provinceName: '山东省',
           link_tel: '',
-          img_url: [],
+          img_url: '',
           link_fax: '',
           invoice_msg: '',
           own_name: '',
@@ -278,26 +297,29 @@
         rules: {
           name: [
             {required: true, message: '请输入名称', trigger: 'blur'},
-            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           e_code: [
-            {required: true, message: '请输入编号', trigger: 'blur'},
-            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
+            {required: true, message: '请输入企业代码', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
           city_id: [
             {required: true, message: '请选择城市', trigger: 'change'}
           ],
+          provinceName: [
+            {required: true, message: '请输入省份', trigger: 'change'}
+          ],
           business: [
             {required: true, message: '请填写主营范围', trigger: 'blur'},
-            {max: 255, message: '长度在255个字符内', trigger: 'blur'}
+            {max: 80, message: '长度在80个字符内', trigger: 'blur'}
           ],
           address: [
             {required: true, message: '请填写企业地址', trigger: 'blur'},
-            {max: 100, message: '长度在100个字符内', trigger: 'blur'}
+            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
           ],
           finance_name: [
             {required: true, message: '请填写财务联系人', trigger: 'blur'},
-            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
+            {max: 7, message: '长度在7个字符内', trigger: 'blur'}
           ],
           finance_phone: [
             {required: true, message: '请填写财务联系人电话', trigger: 'blur'},
@@ -315,15 +337,15 @@
           ],
           invoice_msg: [
             {required: true, message: '请填写开票信息', trigger: 'blur'},
-            {max: 100, message: '长度在100个字符内', trigger: 'blur'}
+            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
           ],
           own_name: [
             {required: true, message: '请填写企业法人', trigger: 'blur'},
-            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
+            {max: 7, message: '长度在7个字符内', trigger: 'blur'}
           ],
           link_name: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'},
-            {max: 5, message: '长度在5个字符内', trigger: 'blur'}
+            {max: 7, message: '长度在7个字符内', trigger: 'blur'}
           ],
           link_phone: [
             {required: true, message: '请填写联系人手机', trigger: 'blur'},
@@ -332,11 +354,19 @@
           ],
           main_product: [
             {required: true, message: '请填写主要产品描述', trigger: 'blur'},
-            {max: 255, message: '长度在255个字符内', trigger: 'blur'}
+            {max: 80, message: '长度在80个字符内', trigger: 'blur'}
           ],
           registered_capital: [
             {required: true, message: '请填写注册资金', trigger: 'blur'},
             {max: 10, message: '长度在10个字符内', trigger: 'blur'}
+          ],
+          production_licence_code: [
+            {required: true, message: '请填写生产许可编码', trigger: 'blur'},
+            {max: 20, message: '长度在20个字符内', trigger: 'blur'}
+          ],
+          supplier_id: [
+            {required: true, message: '请填写供应商ID', trigger: 'blur'},
+            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ]
         },
         listCity: [],
@@ -357,7 +387,8 @@
           page: 1
         },
         // 上传相关
-        uploadUrl: process.env.BASE_API + 'v1/unit/img?token=' + getToken()
+        uploadUrl: process.env.BASE_API + 'v1/unit/img?token=' + getToken(),
+        imgRequired: ''
       }
     },
     watch: {
@@ -456,6 +487,8 @@
             name: file.name,
             url: process.env.IMG_SERVER_PATH + response.data
           })
+          // 清空上传验证信息
+          this.imgRequired = ''
         } else {
           this.$message.error(response.message)
         }
@@ -481,15 +514,22 @@
         const param = {
           id: row.id
         }
-        lookSupp(param, row.id).then(responce => {
-          if (JSON.parse(responce.data.img_url).length) {
-            const img_url = JSON.parse(responce.data.img_url)
-            img_url[0].url = process.env.IMG_SERVER_PATH + img_url[0].url
-            responce.data.img_url = img_url
+        lookSupp(param, row.id).then(response => {
+          if (response.code === '200') {
+            const img_url = JSON.parse(response.data.img_url)
+            if (img_url.length) {
+              img_url[0].url = process.env.IMG_SERVER_PATH + img_url[0].url
+              response.data.img_url = img_url
+            }
+            this.form = Object.assign({}, response.data)
+            this.visibleView = true
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
           }
-          this.form = Object.assign({}, responce.data)
         })
-        this.visibleView = true
       },
       handleEdit(row) {
         this.lookOrEdit = false
@@ -498,15 +538,22 @@
         const param = {
           id: row.id
         }
-        lookSupp(param, row.id).then(responce => {
-          if (JSON.parse(responce.data.img_url).length) {
-            const img_url = JSON.parse(responce.data.img_url)
-            img_url[0].url = process.env.IMG_SERVER_PATH + img_url[0].url
-            responce.data.img_url = img_url
+        lookSupp(param, row.id).then(response => {
+          if (response.code === '200') {
+            const img_url = JSON.parse(response.data.img_url)
+            if (img_url.length) {
+              img_url[0].url = process.env.IMG_SERVER_PATH + img_url[0].url
+              response.data.img_url = img_url
+            }
+            this.form = Object.assign({}, response.data)
+            this.visibleView = true
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
           }
-          this.form = Object.assign({}, responce.data)
         })
-        this.visibleView = true
       },
       handleAdd() {
         this.titMsg = '添加'
@@ -592,6 +639,15 @@
         this.$refs[formName].validate((valid) => {
           // 验证规则
           if (valid) {
+            // 照片上传手动验证
+            if (!this.form.img_url.length) {
+              this.imgRequired = '请上传照片'
+              return false
+            } else {
+              // 清空上传验证信息
+              this.imgRequired = ''
+            }
+            this.submitLoading = true
             if (this.form.id === '') {
               this._addSubmit()
             }
@@ -609,12 +665,13 @@
         this.$refs[formName].resetFields()
       },
       _addSubmit() {
-        const tempForm = Object.assign({}, this.form)
+        // 因为要改变了值，所以要深拷贝
+        const tempForm = JSON.parse(JSON.stringify(this.form))
         if (tempForm.img_url.length > 0) {
           // 处理图片路径
           tempForm.img_url[0].url = tempForm.img_url[0].url.replace(process.env.IMG_SERVER_PATH, '')
-          tempForm.img_url = JSON.stringify(tempForm.img_url)
         }
+        tempForm.img_url = JSON.stringify(tempForm.img_url)
         addSupp(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
@@ -633,22 +690,22 @@
           this.submitLoading = false
         })
       },
-
       _editSubmit() {
-        const tempForm = Object.assign({}, this.form)
+        // 因为要改变了值，所以要深拷贝
+        const tempForm = JSON.parse(JSON.stringify(this.form))
         if (tempForm.img_url.length > 0) {
           // 处理图片路径
           tempForm.img_url[0].url = tempForm.img_url[0].url.replace(process.env.IMG_SERVER_PATH, '')
-          tempForm.img_url = JSON.stringify(tempForm.img_url)
         }
+        tempForm.img_url = JSON.stringify(tempForm.img_url)
         editSupp(tempForm).then(response => {
           if (response.code === '201') {
+            this.visibleView = false
             // 弹出提醒信息
             this.$message({
               type: 'success',
               message: '操作成功!'
             })
-            this.visibleView = false
             this._getList()
           } else {
             this.$message({
@@ -686,7 +743,7 @@
     margin-bottom: 32px;
   }
 
-  .allLine {
-    width: 700px;
+  .el-upload__tip {
+    color: #cccccc;
   }
 </style>

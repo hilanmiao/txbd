@@ -14,7 +14,7 @@ import {asyncRouterMap, constantRouterMap} from '@/router'
 // }
 // TODO: 这里改了
 function hasPermission(roles, route) {
-  if (route.id) {
+  if (route.id && !route.hidden) {
     return roles.some(role => route.id === parseInt(role))
   } else {
     return true
@@ -27,7 +27,9 @@ function hasPermission(roles, route) {
  * @param roles
  */
 function filterAsyncRouter(asyncRouterMap, roles) {
-  const accessedRouters = asyncRouterMap.filter(route => {
+  // 做一次深拷贝
+  const tempAsyncRouterMap = JSON.parse(JSON.stringify(asyncRouterMap))
+  const accessedRouters = tempAsyncRouterMap.filter(route => {
     if (hasPermission(roles, route)) {
       if (route.children && route.children.length) {
         route.children = filterAsyncRouter(route.children, roles)

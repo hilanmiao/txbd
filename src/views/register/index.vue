@@ -95,8 +95,7 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" :title="titMsg">
-        <el-form ref="form" :model="form" label-width="120px">
-
+        <el-form ref="form" :model="form" label-width="120px" size="mini">
           <el-form-item label="城市名" prop="cityName">
             <el-input v-model="form.cityName" :disabled="lookOrEdit"></el-input>
           </el-form-item>
@@ -144,6 +143,37 @@
           </el-form-item>
           <el-form-item label="车辆状态" prop="car_status">
             <el-input v-model="form.car_status" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="车辆业务类别" prop="car_status">
+            <el-select v-model="form.car_bus_type" placeholder="" :disabled="lookOrEdit">
+              <el-option label="客车" value="0"></el-option>
+              <el-option label="普通货车" value="1"></el-option>
+              <el-option label="危险品货车" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="已安装数据采集器" prop="car_status">
+            <el-select v-model="form.collector" placeholder="" :disabled="lookOrEdit">
+              <el-option label="已安装" value="0"></el-option>
+              <el-option label="未安装" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="设备类别" prop="car_status">
+            <el-select v-model="form.dpf_type" placeholder="" :disabled="lookOrEdit">
+              <el-option label="主动清理" value="0"></el-option>
+              <el-option label="被动清理" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="载重" prop="car_status">
+            <el-select v-model="form.car_load" placeholder="" :disabled="lookOrEdit">
+              <el-option label="8吨以下" value="0"></el-option>
+              <el-option label="8(含)-20吨" value="1"></el-option>
+              <el-option label="20(含)-30吨" value="2"></el-option>
+              <el-option label="30(含)-40吨" value="3"></el-option>
+              <el-option label="40(含)吨以上" value="4"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所属车队" prop="car_status">
+            <el-input v-model="form.fleet_name" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车辆照片">
             <el-col :span="24">

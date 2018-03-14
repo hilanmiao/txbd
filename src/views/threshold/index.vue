@@ -101,66 +101,79 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" title="添加&修改">
-        <el-form ref="form" :model="form" :rules="rules" label-width="120px" :inline="true">
-
-          <el-form-item label="dpf型号" prop="dpf_model">
-            <el-input v-model="form.dpf_model" style="width:80%;" :readonly="lookOrEdit"></el-input>
-          </el-form-item>
-
-          <el-form-item label="供应商" prop="supplier_id">
-            <el-select v-model="form.supplier_id" placeholder="请选择供应商" :disabled="lookOrEdit">
-              <el-option v-for="item in listSupp" :key="item.SUPPLIER_ID" :label="item.NAME"
-                         :value="item.SUPPLIER_ID"></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="T1最小值" prop="minT1">
-            <el-input v-model.number="form.minT1" placeholder="T1最小值" style="width:80%;"></el-input>
-          </el-form-item>
-
-          <el-form-item label="T1最大值" prop="maxT1">
-            <el-input v-model.number="form.maxT1" placeholder="T1最大值"></el-input>
-          </el-form-item>
-
-
-          <el-form-item label="T2最小值" prop="minT2">
-            <el-input v-model.number="form.minT2" style="width:80%;"></el-input>
-          </el-form-item>
-
-          <el-form-item label="T2最大值" prop="maxT2">
-            <el-input v-model.number="form.maxT2"></el-input>
-          </el-form-item>
-
-          <el-form-item label="T3最小值" prop="minT3">
-            <el-input v-model.number="form.minT3" style="width:80%;"></el-input>
-          </el-form-item>
-
-          <el-form-item label="T3最大值" prop="maxT3">
-            <el-input v-model.number="form.maxT3"></el-input>
-          </el-form-item>
-
-          <el-form-item label="P1最小值" prop="minP1">
-            <el-input v-model.number="form.minP1" style="width:80%;"></el-input>
-          </el-form-item>
-
-          <el-form-item label="P1最大值" prop="maxP1">
-            <el-input v-model.number="form.maxP1"></el-input>
-          </el-form-item>
-
-          <el-form-item label="P2最小值" prop="minP2">
-            <el-input v-model.number="form.minP2" style="width:80%;"></el-input>
-          </el-form-item>
-
-          <el-form-item label="P2最大值" prop="maxP2" style="width:50%;">
-            <el-input v-model.number="form.maxP2"></el-input>
-          </el-form-item>
-
-          <el-form-item>
-            <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading">保存
-            </el-button>
-            <el-button @click="qxSubmit('form')">关闭</el-button>
-          </el-form-item>
-
+        <el-form ref="form" :model="form" :rules="rules" label-width="110px" size="mini">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="dpf型号" prop="dpf_model">
+                <el-input v-model="form.dpf_model":readonly="lookOrEdit"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="供应商" prop="supplier_id">
+                <el-select v-model="form.supplier_id" placeholder="请选择供应商" :disabled="lookOrEdit">
+                  <el-option v-for="item in listSupp" :key="item.SUPPLIER_ID" :label="item.NAME"
+                             :value="item.SUPPLIER_ID"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="T1最小值" prop="minT1">
+                <el-input v-model.number="form.minT1" placeholder="T1最小值"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="T1最大值" prop="maxT1">
+                <el-input v-model.number="form.maxT1" placeholder="T1最大值"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="T2最小值" prop="minT2">
+                <el-input v-model.number="form.minT2"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="T2最大值" prop="maxT2">
+                <el-input v-model.number="form.maxT2"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="T3最小值" prop="minT3">
+                <el-input v-model.number="form.minT3"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="T3最大值" prop="maxT3">
+                <el-input v-model.number="form.maxT3"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="P1最小值" prop="minP1">
+                <el-input v-model.number="form.minP1"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="P1最大值" prop="maxP1">
+                <el-input v-model.number="form.maxP1"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="P2最小值" prop="minP2">
+                <el-input v-model.number="form.minP2"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="P2最大值" prop="maxP2">
+                <el-input v-model.number="form.maxP2"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item>
+                <el-button type="primary" @click="handleSubmit('form')" :loading="submitLoading">保存
+                </el-button>
+                <el-button @click="qxSubmit('form')">关闭</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
       </el-dialog>
     </div>

@@ -33,7 +33,7 @@
       <el-card>
         <el-col :xs="24" :sm="24">
           <div>
-            <el-form ref="form" :model="form" label-width="120px">
+            <el-form ref="form" :model="form" label-width="120px" size="mini">
               <el-col>
                 <el-form-item>
                   <el-col :span="2">车牌号</el-col>
@@ -97,13 +97,54 @@
                   <el-col :span="5">
                     <el-input v-model="form.car_manufacture_time" class="form-input" readonly></el-input>
                   </el-col>
-                  <el-col :span="2">安装前图片</el-col>
+                  <el-col :span="2">dpf类型</el-col>
                   <el-col :span="5">
                     <el-input v-model="form.dpf_model" class="form-input" readonly></el-input>
                   </el-col>
                   <el-col :span="2">供应商</el-col>
                   <el-col :span="5">
                     <el-input v-model="form.provinceName" class="form-input" readonly></el-input>
+                  </el-col>
+                </el-form-item>
+
+                <el-form-item>
+                  <el-col :span="2">车辆业务类别</el-col>
+                  <el-col :span="5">
+                    <el-select v-model="form.car_bus_type" placeholder="" disabled>
+                      <el-option label="客车" value="0"></el-option>
+                      <el-option label="普通货车" value="1"></el-option>
+                      <el-option label="危险品货车" value="1"></el-option>
+                    </el-select>
+                  </el-col>
+                  <el-col :span="2">已安装数据采集器</el-col>
+                  <el-col :span="5">
+                    <el-select v-model="form.collector" placeholder="" disabled>
+                      <el-option label="已安装" value="0"></el-option>
+                      <el-option label="未安装" value="1"></el-option>
+                    </el-select>
+                  </el-col>
+                  <el-col :span="2">设备类别</el-col>
+                  <el-col :span="5">
+                    <el-select v-model="form.dpf_type" placeholder="" disabled>
+                      <el-option label="主动清理" value="0"></el-option>
+                      <el-option label="被动清理" value="1"></el-option>
+                    </el-select>
+                  </el-col>
+                </el-form-item>
+                <el-form-item>
+                  <el-col :span="2">所属车队</el-col>
+                  <el-col :span="5">
+                    <el-input v-model="form.fleet_name" class="form-input" readonly></el-input>
+                  </el-col>
+                  <el-col :span="2">载重</el-col>
+                  <el-col :span="5">
+                    <el-select v-model="form.car_load" placeholder="" disabled>
+                      <el-option label="8吨以下" value="0"></el-option>
+                      <el-option label="8(含)-20吨" value="1"></el-option>
+                      <el-option label="20(含)-30吨" value="2"></el-option>
+                      <el-option label="30(含)-40吨" value="3"></el-option>
+                      <el-option label="40(含)吨以上" value="4"></el-option>
+                    </el-select>
                   </el-col>
                 </el-form-item>
 
