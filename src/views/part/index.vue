@@ -11,8 +11,10 @@
           <div>
             <el-input style="width: 150px;" size="mini" class="filter-item" placeholder="当前角色名称" v-model="curLabel">
             </el-input>
-            <el-button :disabled="!curLabel" type="primary" size="mini" icon="el-icon-edit" @click="handleEdit">编辑</el-button>
-            <el-button :disabled="!curLabel" type="danger" size="mini" icon="el-icon-search" @click="handleDelete">删除</el-button>
+            <el-button :disabled="!curLabel" type="primary" size="mini" icon="el-icon-edit" @click="handleEdit">编辑
+            </el-button>
+            <el-button :disabled="!curLabel" type="danger" size="mini" icon="el-icon-search" @click="handleDelete">删除
+            </el-button>
           </div>
         </div>
         <div class="tree-container"
@@ -48,7 +50,7 @@
 
 <script type="text/ecmascript-6">
   import {getListRole, postModelRole, putModelRole} from '@/api/part'
-  import {asyncRouterMap} from '@/router'
+  import {asyncRouterMapRole} from '@/router'
   import {getToken} from '@/utils/auth'
 
   export default {
@@ -91,7 +93,7 @@
       createMenuList() {
         this.treeLoading = true
         // 过滤路由表，生成菜单树
-        asyncRouterMap.forEach(item => {
+        asyncRouterMapRole.forEach(item => {
           if (item.children) {
             const menuGroup = {}
             menuGroup.isGroup = true
@@ -99,10 +101,12 @@
             menuGroup.name = item.name
             menuGroup.children = []
             item.children.forEach(child => {
-              menuGroup.children.push({
-                id: child.id,
-                name: child.name
-              })
+              if (!child.hidden) {
+                menuGroup.children.push({
+                  id: child.id,
+                  name: child.name
+                })
+              }
             })
             this.treeDataMenu.push(menuGroup)
           }
@@ -166,7 +170,16 @@
         this.curLabel = data.name
         this.treeData.some(item => {
           if (item.id === this.curId) {
-            this.$refs.treeMenu.setCheckedKeys(item.menu_ids.split(','))
+            // 不能主动选中根节点
+            const menu_ids = item.menu_ids.split(',')
+            asyncRouterMapRole.forEach(role => {
+              // 从原始路由过滤下是不是根节点
+              const index = menu_ids.findIndex(id => role.id === parseInt(id))
+              if (index > -1) {
+                menu_ids.splice(index, 1)
+              }
+            })
+            this.$refs.treeMenu.setCheckedKeys(menu_ids, false)
             return true
           }
         })
@@ -207,7 +220,7 @@
       },
       _postModelRole() {
         // 获取checked子节点数组
-        const menus = this.$refs.treeMenu.getCheckedKeys(false).join(',')
+        const menus = this.$refs.treeMenu.getCheckedKeys(false).concat(this.$refs.treeMenu.getHalfCheckedKeys()).join(',')
         if (!menus.length) {
           this.$message({
             type: 'error',
@@ -244,8 +257,8 @@
       },
       _putModelRole() {
         // 获取checked子节点数组
-        const menus = this.$refs.treeMenu.getCheckedKeys(false).join(',')
-        // const menus = this.$refs.treeMenu.getHalfCheckedKeys().join(',')
+        const menus = this.$refs.treeMenu.getCheckedKeys(false).concat(this.$refs.treeMenu.getHalfCheckedKeys()).join(',')
+        console.log(menus)
         if (!menus.length) {
           this.$message({
             type: 'error',

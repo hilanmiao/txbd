@@ -23,7 +23,7 @@
         default: '300px'
       },
       dataD: {
-        type: Object
+        type: Array
       }
     },
     data() {
@@ -57,30 +57,21 @@
       }
     },
     methods: {
-      setOptions({onLine, outLine} = {}) {
+      setOptions(dataD) {
         this.chart.setOption({
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          legend: {
-            left: 'center',
-            bottom: '10',
-            data: ['上线数', '未上线数']
+            formatter: '{b} : {c}'
           },
           calculable: true,
           series: [
             {
-              name: '上线统计',
+              name: '面积模式',
               type: 'pie',
-              radius: '55%',
-              center: ['50%', '38%'],
-              data: [
-                {value: onLine, name: '上线数'},
-                {value: outLine, name: '未上线数'}
-              ],
-              animationEasing: 'cubicInOut',
-              animationDuration: 2600
+              radius: [30, 80],
+              center: ['50%', '50%'],
+              roseType: 'area',
+              data: dataD
             }
           ]
         })

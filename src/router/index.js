@@ -41,41 +41,6 @@ export const constantRouterMap = [
       component: _import('dashboard/index')
     }]
   }
-
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: {title: 'Example', icon: 'example'},
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: _import('table/index'),
-  //       meta: {title: 'Table', icon: 'table'}
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: _import('tree/index'),
-  //       meta: {title: 'Tree', icon: 'tree'}
-  //     }
-  //   ]
-  // },
-  //
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: _import('form/index'),
-  //       meta: {title: 'Form', icon: 'form'}
-  //     }
-  //   ]
-  // }
 ]
 
 export default new Router({
@@ -84,6 +49,291 @@ export default new Router({
   routes: constantRouterMap
 })
 
+// 原始路由表，角色菜单显示用，不会改变
+export const asyncRouterMapRole = [
+  {
+    id: 1,
+    path: '/dpf',
+    component: Layout,
+    redirect: '/dpf/supplier',
+    name: 'DPF管理',
+    meta: {title: 'DPF管理', icon: 'form'},
+    children: [
+      {
+        id: 11,
+        path: 'supplier',
+        name: '供应商管理',
+        component: _import('supplier/index'),
+        meta: {title: '供应商管理', roles: ['admin']}
+      },
+      {
+        id: 12,
+        path: 'register',
+        name: '登记信息管理',
+        component: _import('register/index'),
+        meta: {title: '登记信息管理'}
+      },
+      {
+        id: 13,
+        path: 'equipment',
+        name: '设备信息管理',
+        component: _import('equipment/index'),
+        meta: {title: '设备信息管理'}
+      },
+      {
+        id: 14,
+        path: 'maintenance',
+        name: '维修厂管理',
+        component: _import('maintenance/index'),
+        meta: {title: '维修厂管理'}
+      },
+      {
+        id: 15,
+        path: 'maintenance_record',
+        name: '维修管理',
+        component: _import('maintenance_record/index'),
+        meta: {title: '维修管理'}
+      },
+      {
+        id: 16,
+        path: 'platform',
+        name: '下级平台管理',
+        component: _import('lower_platform/index'),
+        meta: {title: '下级平台管理'}
+      }
+    ]
+  },
+  {
+    id: 2,
+    path: '/Report',
+    component: Layout,
+    redirect: '/vehicle_report_run',
+    name: '统计分析',
+    meta: {title: '统计分析', icon: 'chart'},
+    children: [
+      {
+        id: 21,
+        path: 'report_create',
+        name: '安装监控数量统计',
+        component: _import('report_create/index'),
+        meta: {title: '安装监控数量统计'}
+      },
+      {
+        id: 22,
+        path: 'report_push',
+        name: '报表推送',
+        component: _import('report_push/index'),
+        meta: {title: '报表推送'}
+      },
+      {
+        id: 23,
+        path: 'report_online',
+        name: '在线率统计',
+        component: _import('report_online/index'),
+        meta: {title: '在线率统计'}
+      },
+      {
+        id: 24,
+        path: 'report_info',
+        name: '车辆信息统计',
+        component: _import('report_info/index'),
+        meta: {title: '车辆信息统计'}
+      },
+      {
+        id: 25,
+        path: 'report_alarm',
+        name: '车辆报警统计',
+        component: _import('report_alarm/index'),
+        meta: {title: '车辆报警统计'}
+      },
+      {
+        id: 26,
+        path: 'report_offline',
+        name: '车辆不在线统计',
+        component: _import('report_offline/index'),
+        meta: {title: '车辆不在线统计'}
+      },
+      {
+        id: 27,
+        path: 'report_mileage',
+        name: '里程统计',
+        component: _import('report_mileage/index'),
+        meta: {title: '里程统计'}
+      },
+      {
+        id: 28,
+        path: 'report_vehicle_city',
+        name: '地市车辆统计',
+        component: _import('report_vehicle_city/index'),
+        meta: {title: '地市车辆统计'}
+      },
+      {
+        id: 29,
+        path: 'report_vehicle',
+        name: '汽车指标统计',
+        component: _import('report_vehicle/index'),
+        meta: {title: '汽车指标统计'}
+      },
+      {
+        id: 30,
+        path: 'report_vehicle_single',
+        name: '单车指标统计',
+        component: _import('report_vehicle_single/index'),
+        meta: {title: '单车指标统计'}
+      },
+      {
+        id: 31,
+        path: 'report_early_warning',
+        name: '运营人员审核统计',
+        component: _import('report_early_warning/index'),
+        meta: {title: '运营人员审核统计'}
+      }
+    ]
+  },
+  {
+    id: 3,
+    path: '/Logs',
+    component: Layout,
+    redirect: '/Logs/system',
+    name: '日志管理',
+    meta: {title: '日志管理', icon: 'excel'},
+    children: [
+      {
+        id: 31,
+        path: 'system',
+        name: '系统日志',
+        component: _import('logs/system'),
+        meta: {title: '系统日志'}
+      },
+      {
+        id: 32,
+        path: 'platform',
+        name: '平台日志',
+        component: _import('logs/platform'),
+        meta: {title: '平台日志'}
+      },
+      {
+        id: 33,
+        path: 'valid',
+        name: '审核日志',
+        component: _import('logs/valid'),
+        meta: {title: '审核日志'}
+      }
+    ]
+  },
+  {
+    id: 4,
+    path: '/Notice',
+    component: Layout,
+    redirect: '/Notice/notice',
+    name: '公告管理',
+    meta: {title: '公告管理', icon: 'documentation'},
+    children: [
+      {
+        id: 41,
+        path: 'notice',
+        name: '平台公告',
+        component: _import('notice/index'),
+        meta: {title: '平台公告', icon: 'documentation'}
+      },
+      {
+        id: 42,
+        path: 'notice_create',
+        name: '公告添加编辑',
+        hidden: true,
+        component: _import('notice/create'),
+        meta: {title: '添加编辑', icon: 'documentation'}
+      }
+    ]
+  },
+  {
+    id: 5,
+    path: '/Warning',
+    component: Layout,
+    redirect: '/warning/sms',
+    name: '报警管理',
+    meta: {title: '报警管理', icon: 'documentation'},
+    children: [
+      {
+        id: 51,
+        path: 'sms',
+        name: '报警短信',
+        component: _import('sms/index'),
+        meta: {title: '报警短信'}
+      },
+      {
+        id: 52,
+        path: 'alarm',
+        name: '报警处理',
+        component: _import('alarm/index'),
+        meta: {title: '报警处理'}
+      },
+      {
+        id: 53,
+        path: 'time_threshold',
+        name: '时间阀值设置',
+        component: _import('time_threshold/index'),
+        meta: {title: '时间阀值设置'}
+      },
+      {
+        id: 54,
+        path: 'threshold',
+        name: 'dpf阀值设置',
+        component: _import('threshold/index'),
+        meta: {title: 'dpf阀值设置'}
+      },
+      {
+        id: 55,
+        path: 'history',
+        hidden: true,
+        name: '历史轨迹',
+        component: _import('history/index'),
+        meta: {title: '历史轨迹'}
+      },
+      {
+        id: 56,
+        path: 'early_warning_history',
+        name: '运营人员操作历史',
+        component: _import('early_warning_history/index'),
+        meta: {title: '运营人员操作历史'}
+      }
+    ]
+  },
+  {
+    id: 6,
+    path: '/System',
+    component: Layout,
+    redirect: '/System/user',
+    name: '系统管理',
+    meta: {title: '系统管理', icon: 'password', roles: ['admin']},
+    children: [
+      {
+        id: 61,
+        path: 'part',
+        name: '角色管理',
+        component: _import('part/index'),
+        meta: {title: '角色管理'}
+      },
+      {
+        id: 62,
+        path: 'user',
+        name: '用户管理',
+        component: _import('user/index'),
+        meta: {title: '用户管理'}
+      },
+      {
+        id: 63,
+        path: 'organ',
+        name: '机构管理',
+        component: _import('organ/index'),
+        meta: {title: '机构管理'}
+      }
+    ]
+  },
+  {path: '*', redirect: '/404', hidden: true}
+]
+
+// 新的路由表，会动态改变
 export const asyncRouterMap = [
   {
     id: 1,
@@ -214,6 +464,13 @@ export const asyncRouterMap = [
         name: '单车指标统计',
         component: _import('report_vehicle_single/index'),
         meta: {title: '单车指标统计'}
+      },
+      {
+        id: 31,
+        path: 'report_early_warning',
+        name: '运营人员审核统计',
+        component: _import('report_early_warning/index'),
+        meta: {title: '运营人员审核统计'}
       }
     ]
   },
@@ -316,6 +573,13 @@ export const asyncRouterMap = [
         name: '历史轨迹',
         component: _import('history/index'),
         meta: {title: '历史轨迹'}
+      },
+      {
+        id: 56,
+        path: 'early_warning_history',
+        name: '运营人员操作历史',
+        component: _import('early_warning_history/index'),
+        meta: {title: '运营人员操作历史'}
       }
     ]
   },

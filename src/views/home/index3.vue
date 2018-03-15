@@ -1059,7 +1059,9 @@
         if (!nodeChecked) {
           // 从监控列表移除
           const index = this.listCar.findIndex(item => item === data.id)
-          this.listCar.splice(index, 1)
+          if (index > -1) {
+            this.listCar.splice(index, 1)
+          }
         } else {
           this.carData.some(item => {
             if (item.id === data.id) {

@@ -24,3 +24,21 @@ export function doMark(params, id) {
     params
   })
 }
+
+// 运维人员操作历史明细
+export function getWarningHistory(params) {
+  return request({
+    url: 'v1/earlywarning/historys',
+    method: 'get',
+    params
+  })
+}
+
+// 运维人员审核统计
+export function getWarningReport(params) {
+  return request({
+    url: 'v1/earlywarning/report',
+    method: 'get',
+    params
+  })
+}
