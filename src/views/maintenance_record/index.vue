@@ -39,7 +39,7 @@
         highlight-current-row
         style="width: 100%">
         <el-table-column
-          prop="carNumber"
+          prop="carMark"
           label="车牌号"
           width="150">
         </el-table-column>
@@ -54,7 +54,7 @@
           width="150">
         </el-table-column>
         <el-table-column
-          prop="carType"
+          prop="carTypeNo"
           label="车辆型号"
           width="250">
         </el-table-column>
@@ -65,13 +65,12 @@
         </el-table-column>
         <el-table-column
           prop="dpfFactory"
-          label="dpf厂家"
-          width="120">
+          label="dpf厂家">
         </el-table-column>
-        <el-table-column
-          prop="maintainContent"
-          label="维护内容">
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="maintainContent"-->
+          <!--label="维护内容">-->
+        <!--</el-table-column>-->
         <el-table-column
           fixed="right"
           label="操作"
@@ -110,13 +109,13 @@
         <el-form ref="form" status-icon :rules="rules" :model="form" label-width="110px" size="mini">
           <el-row>
             <el-col :span="8">
-              <el-form-item label="车牌号" prop="carNumber">
-                <el-input v-model="form.carNumber" :disabled="lookOrEdit"></el-input>
+              <el-form-item label="车牌号" prop="carMark">
+                <el-input v-model="form.carMark" :disabled="lookOrEdit"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="车辆型号" prop="carType">
-                <el-input v-model="form.carType" :disabled="lookOrEdit"></el-input>
+              <el-form-item label="车辆型号" prop="carTypeNo">
+                <el-input v-model="form.carTypeNo" :disabled="lookOrEdit"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -184,7 +183,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="备注信息">
+              <el-form-item label="备注信息" prop="remark">
                 <el-input type="textarea" v-model="form.remark" :disabled="lookOrEdit"></el-input>
               </el-form-item>
             </el-col>
@@ -232,10 +231,10 @@
         form: {
           accessKey: '',
           accessSecret: '',
-          carNumber: '',
+          carMark: '',
           carOwnerName: '',
           carOwnerPhone: '',
-          carType: '',
+          carTypeNo: '',
           createUserType: '',
           dpfFactory: '',
           dpfId: '',
@@ -251,13 +250,13 @@
         },
         // 表单验证相关
         rules: {
-          carNumber: [
+          carMark: [
             {required: true, message: '请输入车牌号', trigger: 'blur'},
             {max: 15, message: '长度在15个字符内', trigger: 'blur'}
           ],
-          carType: [
+          carTypeNo: [
             {required: true, message: '请输入车辆型号', trigger: 'blur'},
-            {max: 20, message: '长度在20个字符内', trigger: 'blur'}
+            {max: 6, message: '长度在20个字符内', trigger: 'blur'}
           ],
           carOwnerName: [
             {required: true, message: '请输入车主姓名', trigger: 'blur'},
@@ -270,15 +269,15 @@
           ],
           dpfModel: [
             {required: true, message: '请输入dpf型号', trigger: 'change'},
-            {max: 20, message: '长度在20个字符内', trigger: 'blur'}
+            {max: 6, message: '长度在20个字符内', trigger: 'blur'}
           ],
           dpfId: [
             {required: true, message: '请输入dpf编码', trigger: 'change'},
-            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
+            {max: 10, message: '长度在30个字符内', trigger: 'blur'}
           ],
           dpfFactory: [
             {required: true, message: '请输入dpf厂家', trigger: 'change'},
-            {max: 35, message: '长度在35个字符内', trigger: 'blur'}
+            {max: 10, message: '长度在35个字符内', trigger: 'blur'}
           ],
           createUserType: [
             {required: true, message: '请选择信息上传人类型', trigger: 'change'}
@@ -288,7 +287,7 @@
           ],
           maintainShopName: [
             {required: true, message: '请输入维修厂', trigger: 'change'},
-            {max: 35, message: '长度在35个字符内', trigger: 'blur'}
+            {max: 10, message: '长度在35个字符内', trigger: 'blur'}
           ],
           maintainShopPhone: [
             {required: true, message: '请输入维修厂电话', trigger: 'change'},
@@ -306,7 +305,11 @@
           ],
           maintainContent: [
             {required: true, message: '请输入维修内容', trigger: 'change'},
-            {max: 200, message: '长度在200个字符内', trigger: 'blur'}
+            {max: 65, message: '长度在200个字符内', trigger: 'blur'}
+          ],
+          remark: [
+            {required: true, message: '请输入备注', trigger: 'change'},
+            {max: 65, message: '长度在200个字符内', trigger: 'blur'}
           ]
         },
         listCity: [],
@@ -560,6 +563,7 @@
       },
       _addSubmit() {
         const tempForm = Object.assign({}, this.form)
+        tempForm.createUserType = '1'
         addMain(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
@@ -580,6 +584,7 @@
       },
       _editSubmit() {
         const tempForm = Object.assign({}, this.form)
+        tempForm.createUserType = '2'
         editMain(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息

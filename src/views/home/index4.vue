@@ -883,8 +883,6 @@
     methods: {
       openTimer() {
         const that = this
-        // 获取基础数据
-        that._getCarBase()
         const worker = new Worker('/static/js/timer.js')
         worker.onmessage = function (event) {
           // console.log(event.data)
@@ -1338,6 +1336,8 @@
         this.webSocketClose()
         // 建立连接
         this.webSocketOpen()
+        // 获取基础数据
+        this._getCarBase()
       },
       handleWatchRemove(row) {
         // 查询是否已经在在监控中

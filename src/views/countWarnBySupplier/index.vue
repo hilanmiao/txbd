@@ -4,7 +4,7 @@
 
       <el-date-picker
         v-model="dateRange"
-        type="daterange"
+        type="datetimerange"
         align="right"
         unlink-panels
         value-format="yyyy-MM-dd"
@@ -29,14 +29,14 @@
           highlight-current-row
         >
           <el-table-column
-            prop="cityName"
-            label="城市"
-            width="100">
+            prop="NAME"
+            label="城市">
           </el-table-column>
 
           <el-table-column
-            prop="count"
+            prop="warnCount"
             label="数量"
+            width="100"
           >
           </el-table-column>
         </el-table>
@@ -47,9 +47,9 @@
         <bar-chart :dataArr="temperatureData"></bar-chart>
       </div>
     </el-col>
-    <el-col :span="10">
+    <el-col :span="7">
       <div class="chart-wrapper">
-        <h3>安装总数：<span style="color:red">{{totalCount}}</span> 次</h3>
+        <h3>报警总数：<span style="color:red">{{warmcount}}</span> 次</h3>
       </div>
       <div class="chart-wrapper" style="margin-top: 20px;">
         <pie-chart :dataArr2="pieDataList"></pie-chart>
@@ -61,7 +61,7 @@
 <script type="text/ecmascript-6">
   import BarChart from './components/BarChart'
   import PieChart from './components/PieChart'
-  import {getList} from '@/api/report_create'
+  import {getList} from '@/api/countWarnBySupplier'
 
   export default {
     components: {
@@ -73,7 +73,7 @@
         // 列表相关
         tableData: [],
         dateRange: '',
-        totalCount:'',
+        warmcount:'',
         listQuery: {
           startTime: '',
           endTime: ''
@@ -111,11 +111,11 @@
           cityName: [],
           count: []
         },
-       pieDataList:{
-         dataAll:[],
-         cityName:[]
+        pieDataList:{
+          dataAll:[],
+          cityName:[]
+        }
        }
-      }
     },
 
     created() {
@@ -141,31 +141,35 @@
         this.tableLoading = true
         this.pickerChange()
         getList(this.listQuery).then(response => {
-
+          this.warmcount=0
+          this.temperatureData.cityName =[]
+          this.temperatureData.count =[]
           this.pieDataList.cityName=[]
           this.pieDataList.dataAll=[]
-          this.temperatureData.cityName = []
-          this.temperatureData.count =[]
-          this.totalCount=0
           if (response.code === '200') {
             var dataA=response.data
-            this.tableData = dataA.cityCount
-            this.totalCount=dataA.totalCount
+            this.tableData = dataA.dataList
+            this.warmcount=dataA.totalWarn
             const city = []
             const coun = []
             const datalist=[]
-            for (let i = 0; i < dataA.cityCount.length; i++) {
-              city.push(dataA.cityCount[i].cityName)
-              coun.push(dataA.cityCount[i].count)
-              let pieData={value:dataA.cityCount[i].count,name:dataA.cityCount[i].cityName}
+
+            for (let i = 0; i < dataA.dataList.length; i++) {
+              let aname=dataA.dataList[i].NAME
+              if(aname.length>10){
+                aname=aname.substr(0,10)+"..."
+              }
+              city.push(aname)
+              coun.push(dataA.dataList[i].warnCount)
+              let pieData={value:dataA.dataList[i].warnCount,name:aname}
               datalist.push(pieData)
-            }
-            this.pieDataList.cityName= city
-            this.pieDataList.dataAll=datalist
+             }
             this.temperatureData.cityName = city
             this.temperatureData.count = coun
+            this.pieDataList.cityName= city
+            this.pieDataList.dataAll=datalist
           } else {
-             this.$message({
+            this.$message({
               type: 'error',
               message: response.message
             })
@@ -179,11 +183,11 @@
         // 显示loading
         this.loadingExport = true
 
-        const rows = [['城市', '数量']]
+        const rows = [['供应商', '报警数量']]
         this.tableData.forEach(item => {
           rows.push([
-            item.cityName,
-            item.count
+            item.NAME,
+            item.warnCount
           ])
         })
         let csvContent = 'data:text/csv;charset=utf-8,'

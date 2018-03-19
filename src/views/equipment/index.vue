@@ -37,7 +37,7 @@
           label="设备型号">
         </el-table-column>
         <el-table-column
-          width="120"
+          width="180"
           prop="createTime"
           label="创建时间">
         </el-table-column>

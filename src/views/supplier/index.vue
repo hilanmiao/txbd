@@ -52,11 +52,11 @@
           label="城市"
           width="150">
         </el-table-column>
-        <el-table-column
-          prop="business"
-          label="经营范围"
-          width="150">
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="business"-->
+          <!--label="经营范围"-->
+          <!--width="150">-->
+        <!--</el-table-column>-->
         <el-table-column
           prop="name"
           label="名称"
@@ -367,6 +367,10 @@
           supplier_id: [
             {required: true, message: '请填写供应商ID', trigger: 'blur'},
             {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+          ],
+          remark: [
+            {required: true, message: '请输入备注', trigger: 'change'},
+            {max: 200, message: '长度在200个字符内', trigger: 'blur'}
           ]
         },
         listCity: [],

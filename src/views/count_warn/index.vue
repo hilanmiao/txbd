@@ -35,7 +35,7 @@
           </el-table-column>
 
           <el-table-column
-            prop="count"
+            prop="warningCount"
             label="数量"
           >
           </el-table-column>
@@ -49,7 +49,7 @@
     </el-col>
     <el-col :span="10">
       <div class="chart-wrapper">
-        <h3>安装总数：<span style="color:red">{{totalCount}}</span> 次</h3>
+        <h3>报警总数：<span style="color:red">{{warmcount}}</span> 次</h3>
       </div>
       <div class="chart-wrapper" style="margin-top: 20px;">
         <pie-chart :dataArr2="pieDataList"></pie-chart>
@@ -61,7 +61,7 @@
 <script type="text/ecmascript-6">
   import BarChart from './components/BarChart'
   import PieChart from './components/PieChart'
-  import {getList} from '@/api/report_create'
+  import {getList} from '@/api/count_warn'
 
   export default {
     components: {
@@ -73,7 +73,7 @@
         // 列表相关
         tableData: [],
         dateRange: '',
-        totalCount:'',
+        warmcount:'',
         listQuery: {
           startTime: '',
           endTime: ''
@@ -111,11 +111,11 @@
           cityName: [],
           count: []
         },
-       pieDataList:{
-         dataAll:[],
-         cityName:[]
+        pieDataList:{
+          dataAll:[],
+          cityName:[]
+        }
        }
-      }
     },
 
     created() {
@@ -141,31 +141,31 @@
         this.tableLoading = true
         this.pickerChange()
         getList(this.listQuery).then(response => {
-
+          this.warmcount=0
+          this.temperatureData.cityName =[]
+          this.temperatureData.count =[]
           this.pieDataList.cityName=[]
           this.pieDataList.dataAll=[]
-          this.temperatureData.cityName = []
-          this.temperatureData.count =[]
-          this.totalCount=0
           if (response.code === '200') {
             var dataA=response.data
-            this.tableData = dataA.cityCount
-            this.totalCount=dataA.totalCount
+            this.tableData = dataA.cityWarnList
+            this.warmcount=dataA.totalWarn
             const city = []
             const coun = []
             const datalist=[]
-            for (let i = 0; i < dataA.cityCount.length; i++) {
-              city.push(dataA.cityCount[i].cityName)
-              coun.push(dataA.cityCount[i].count)
-              let pieData={value:dataA.cityCount[i].count,name:dataA.cityCount[i].cityName}
+
+            for (let i = 0; i < dataA.cityWarnList.length; i++) {
+              city.push(dataA.cityWarnList[i].cityName)
+              coun.push(dataA.cityWarnList[i].warningCount)
+              let pieData={value:dataA.cityWarnList[i].warningCount,name:dataA.cityWarnList[i].cityName}
               datalist.push(pieData)
-            }
-            this.pieDataList.cityName= city
-            this.pieDataList.dataAll=datalist
+             }
             this.temperatureData.cityName = city
             this.temperatureData.count = coun
+            this.pieDataList.cityName= city
+            this.pieDataList.dataAll=datalist
           } else {
-             this.$message({
+            this.$message({
               type: 'error',
               message: response.message
             })
@@ -183,7 +183,7 @@
         this.tableData.forEach(item => {
           rows.push([
             item.cityName,
-            item.count
+            item.warningCount
           ])
         })
         let csvContent = 'data:text/csv;charset=utf-8,'

@@ -4,7 +4,7 @@
       <span>
         <i class="el-icon-bell"></i>
       </span>
-      <a @click="dialogVisible = true">{{model.title}}</a>
+      <a @click="handleView">{{model.title}}</a>
     </div>
 
     <el-dialog :visible.sync="dialogVisible" title="公告详情">
@@ -18,13 +18,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListNotice} from '@/api/notice'
+  import {getListNotice, getModelNotice} from '@/api/notice'
 
   export default {
     data() {
       return {
         dialogVisible: false,
         model: {
+          id: '',
           title: '',
           content: ''
         }
@@ -34,6 +35,19 @@
       this._getList()
     },
     methods: {
+      handleView() {
+        this.dialogVisible = true
+        getModelNotice({id: this.model.id}).then(response => {
+          if (response.code === '200') {
+            this.model = response.data
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
+      },
       _getList() {
         getListNotice({limit: 1, offset: 0}).then(response => {
           if (response.code === '200') {

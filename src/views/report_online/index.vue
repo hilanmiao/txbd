@@ -1,13 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select @keyup.enter.native="handleFilter" v-model="listQuery.city_id" style="width:120px;" clearable
-                 placeholder="选择城市">
-        <el-option v-for="item in listCity" :key="item.id" :label="item.name"
-                   :value="item.id"></el-option>
-      </el-select>
+
       <el-date-picker
-        v-model="listQuery.dateRange"
+        v-model="dateRange"
         type="daterange"
         align="right"
         unlink-panels
@@ -19,60 +15,71 @@
       >
       </el-date-picker>
       <el-button type="primary" icon="el-icon-search" @click="searchData">搜索</el-button>
-      <!--<el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>-->
+      <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
     </div>
 
-    <el-row :gutter="32">
-      <el-col :lg="8" :sm="24" :xs="24">
-        <div class="chart-wrapper">
-          <el-card class="box-card">
-            <div>
-              <p><i class="el-icon-circle-check"></i>车辆总数：{{reportData.total}}</p>
-              <p><i class="el-icon-circle-check"></i>上线数：{{reportData.online}}</p>
-              <p><i class="el-icon-circle-check"></i>上线率：{{reportData.percent}}</p>
-            </div>
-          </el-card>
-        </div>
-      </el-col>
+    <el-col :span="7">
+      <div class="table-container">
+        <el-table
+          v-loading="tableLoading" element-loading-text="加载中..."
+          :data="tableData"
+          border
+          stripe
+          fit
+          class="el-table__body"
+          highlight-current-row
+        >
+          <el-table-column
+            prop="cityName"
+            label="城市"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            prop="total"
+            label="总数"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="onLine"
+            label="在线数量"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="rate"
+            label="在线率"
+          >
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-col>
 
-      <el-col :xs="24" :sm="24" :lg="16">
-        <div class="chart-wrapper">
-          <pie-chart :dataD="dataDetail"></pie-chart>
-        </div>
-      </el-col>
-    </el-row>
+    <el-col :span="15">
+      <div class="chart-wrapper">
+        <bar-chart :dataArr="temperatureData"></bar-chart>
+      </div>
+    </el-col>
+
   </div>
 </template>
 
-<script>
-  import PieChart from './components/PieChart'
-  import {getCitys} from '@/api/city'
-  import {getData} from '@/api/report_online'
+<script type="text/ecmascript-6">
+  import BarChart from './components/BarChart'
+  import {getList} from '@/api/report_online'
 
   export default {
-    name: 'dashboard-admin',
     components: {
-      PieChart
+      BarChart
+
     },
     data() {
       return {
+        // 列表相关
+        tableData: [],
+        dateRange: '',
         listQuery: {
-          dateRange: '',
           startTime: '',
-          endTime: '',
-          city_id: ''
+          endTime: ''
         },
-        listCity: [],
-        dataDetail: {
-          outLine: 0,
-          onLine: 0
-        },
-        reportData: {
-          total: 0,
-          online: 8888,
-          percent: '88.88%'
-        },
-        loadingExport: false,
         pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -99,57 +106,84 @@
               picker.$emit('pick', [start, end])
             }
           }]
-        }
+        },
+        loadingExport: false,
+        tableLoading: false,
+        temperatureData: {
+          cityName: [],
+          online: [],
+          offline:[]
+        },
+
       }
     },
+
     created() {
-      this._getCityList()
-      this.searchData()
+      this._getList()
     },
     methods: {
       pickerChange() {
-        if (this.listQuery.dateRange != null) {
-          this.listQuery.startTime = this.listQuery.dateRange[0]
-          this.listQuery.endTime = this.listQuery.dateRange[1]
+        if (this.dateRange != null) {
+          this.listQuery.startTime = this.dateRange[0]
+          this.listQuery.endTime = this.dateRange[1]
         } else {
           this.listQuery.startTime = null
           this.listQuery.endTime = null
         }
       },
       searchData() {
-        if (this.listQuery.city_id === '') {
-          this.listQuery.city_id = null
-        }
+        this._getList()
+      },
+      _getList() {
+        // 清空表格数据
+        this.tableData = []
+        // 设置表格loading效果
+        this.tableLoading = true
         this.pickerChange()
-        this._getData()
-      },
-      _getData() {
-        const params = this.listQuery
-        getData(params).then(response => {
-          this.reportData.online = response.data.onLine
-          this.reportData.percent = response.data.rate
-          this.reportData.total = response.data.total
-          this.dataDetail.onLine = response.data.onLine
-          this.dataDetail.outLine = response.data.total - response.data.onLine
+        getList(this.listQuery).then(response => {
+
+          this.temperatureData.cityName = []
+          this.temperatureData.online =[]
+          this.temperatureData.offline =[]
+          if (response.code === '200') {
+            var dataA=response.data
+            this.tableData = dataA.dataList
+            const city = ['城市']
+            const coun = ['在线']
+            const offcoun = ['离线']
+            for (let i = 0; i < dataA.dataList.length; i++) {
+              city.push(dataA.dataList[i].cityName)
+              coun.push(dataA.dataList[i].onLine)
+              offcoun.push(dataA.dataList[i].total-dataA.dataList[i].onLine)
+            }
+           this.temperatureData.cityName = city
+           this.temperatureData.online = coun
+           this.temperatureData.offline = offcoun
+          } else {
+             this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
         })
+        // 取消表格loading效果
+        this.tableLoading = false
       },
-      _getCityList() {
-        getCitys().then(response => {
-          this.listCity = response.data
-        })
-        this.listCity = getCitys()
-      },
+
       handleExport() {
         // 导出处理（简单做，后期可能会改用插件）
         // 显示loading
         this.loadingExport = true
 
-        const rows = [['总数', '上线数', '上线率']]
-        rows.push([
-          this.reportData.total,
-          this.reportData.online,
-          this.reportData.percent
-        ])
+        const rows = [['城市', '总数', '在线数', '在线率']]
+        this.tableData.forEach(item => {
+          rows.push([
+            item.cityName,
+            item.total,
+            item.onLine,
+            item.rate
+          ])
+        })
         let csvContent = 'data:text/csv;charset=utf-8,'
         rows.forEach(rowArray => {
           const row = rowArray.join(',')
@@ -171,10 +205,9 @@
   }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .chart-wrapper {
-    background: #fff;
-    padding: 16px 16px 0;
-    margin-bottom: 32px;
+<style scoped>
+  .el-table__body tr{
+    color:blue;
+    height:52px;
   }
 </style>

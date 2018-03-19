@@ -175,14 +175,28 @@ export const asyncRouterMapRole = [
         meta: {title: '汽车指标统计'}
       },
       {
-        id: 30,
+        id: 210,
         path: 'report_vehicle_single',
         name: '单车指标统计',
         component: _import('report_vehicle_single/index'),
         meta: {title: '单车指标统计'}
       },
       {
-        id: 31,
+        id: 211,
+        path: 'count_warn',
+        name: '车辆报警数量统计',
+        component: _import('count_warn/index'),
+        meta: {title: '车辆报警数量统计'}
+      },
+      {
+        id: 212,
+        path: 'countWarnBySupplier',
+        name: '供应商报警数量统计',
+        component: _import('countWarnBySupplier/index'),
+        meta: {title: '供应商报警数量统计'}
+      },
+      {
+        id: 213,
         path: 'report_early_warning',
         name: '运营人员审核统计',
         component: _import('report_early_warning/index'),
@@ -277,13 +291,20 @@ export const asyncRouterMapRole = [
       },
       {
         id: 54,
+        path: 'time_threshold2',
+        name: '时间&距离阀值',
+        component: _import('time_threshold2/index'),
+        meta: {title: '时间&距离阀值'}
+      },
+      {
+        id: 55,
         path: 'threshold',
         name: 'dpf阀值设置',
         component: _import('threshold/index'),
         meta: {title: 'dpf阀值设置'}
       },
       {
-        id: 55,
+        id: 56,
         path: 'history',
         hidden: true,
         name: '历史轨迹',
@@ -291,7 +312,7 @@ export const asyncRouterMapRole = [
         meta: {title: '历史轨迹'}
       },
       {
-        id: 56,
+        id: 57,
         path: 'early_warning_history',
         name: '运营人员操作历史',
         component: _import('early_warning_history/index'),
@@ -459,14 +480,28 @@ export const asyncRouterMap = [
         meta: {title: '汽车指标统计'}
       },
       {
-        id: 30,
+        id: 210,
         path: 'report_vehicle_single',
         name: '单车指标统计',
         component: _import('report_vehicle_single/index'),
         meta: {title: '单车指标统计'}
       },
       {
-        id: 31,
+        id: 211,
+        path: 'count_warn',
+        name: '车辆报警数量统计',
+        component: _import('count_warn/index'),
+        meta: {title: '车辆报警数量统计'}
+      },
+      {
+        id: 212,
+        path: 'countWarnBySupplier',
+        name: '供应商报警数量统计',
+        component: _import('countWarnBySupplier/index'),
+        meta: {title: '供应商报警数量统计'}
+      },
+      {
+        id: 213,
         path: 'report_early_warning',
         name: '运营人员审核统计',
         component: _import('report_early_warning/index'),
@@ -561,13 +596,20 @@ export const asyncRouterMap = [
       },
       {
         id: 54,
+        path: 'time_threshold2',
+        name: '时间&距离阀值',
+        component: _import('time_threshold2/index'),
+        meta: {title: '时间&距离阀值'}
+      },
+      {
+        id: 55,
         path: 'threshold',
         name: 'dpf阀值设置',
         component: _import('threshold/index'),
         meta: {title: 'dpf阀值设置'}
       },
       {
-        id: 55,
+        id: 56,
         path: 'history',
         hidden: true,
         name: '历史轨迹',
@@ -575,7 +617,7 @@ export const asyncRouterMap = [
         meta: {title: '历史轨迹'}
       },
       {
-        id: 56,
+        id: 57,
         path: 'early_warning_history',
         name: '运营人员操作历史',
         component: _import('early_warning_history/index'),

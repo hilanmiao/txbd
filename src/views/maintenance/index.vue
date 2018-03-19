@@ -665,7 +665,7 @@
         this.$refs.form.validate(valid => {
           if (valid) {
             // 照片上传手动验证
-            if (!this.form.img_url.length) {
+            if (!this.form.imgUrl.length) {
               this.imgRequired = '请上传照片'
               return false
             } else {
