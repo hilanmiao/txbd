@@ -201,6 +201,13 @@ export const asyncRouterMapRole = [
         name: '运营人员审核统计',
         component: _import('report_early_warning/index'),
         meta: {title: '运营人员审核统计'}
+      },
+      {
+        id: 214,
+        path: 'report_illegal',
+        name: '非法数据统计报表',
+        component: _import('report_illegal/index'),
+        meta: {title: '非法数据统计报表'}
       }
     ]
   },
@@ -506,6 +513,13 @@ export const asyncRouterMap = [
         name: '运营人员审核统计',
         component: _import('report_early_warning/index'),
         meta: {title: '运营人员审核统计'}
+      },
+      {
+        id: 214,
+        path: 'report_illegal',
+        name: '非法数据统计报表',
+        component: _import('report_illegal/index'),
+        meta: {title: '非法数据统计报表'}
       }
     ]
   },
