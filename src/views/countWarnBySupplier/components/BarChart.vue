@@ -80,7 +80,7 @@
             containLabel: true
           },
           yAxis: [{
-            name: '城市',
+            name: '供应商',
             type: 'category',
             data: cityName,
             axisTick: {

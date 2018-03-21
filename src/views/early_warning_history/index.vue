@@ -48,13 +48,13 @@
           width="250">
         </el-table-column>
         <el-table-column
-          prop="dispose_content "
+          prop="dispose_content"
           label="标记内容">
         </el-table-column>
         <el-table-column
-          prop="dispose_time "
+          prop="dispose_time"
           label="标记时间"
-          width="120">
+          width="180">
         </el-table-column>
       </el-table>
     </div>

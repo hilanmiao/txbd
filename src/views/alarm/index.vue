@@ -6,7 +6,7 @@
       <h2 class="cenTitle">
         报警车辆信息
         <img style="margin-left: 10%" :src="iconfault">
-        <span v-show="longTime" style="font-size:20px;color:#FF0000">离线时间过程</span>
+        <span v-show="longTime" style="font-size:20px;color:#FF0000">离线时间过长</span>
         <span v-show="moreBig" style="font-size:20px;color:#FF0000">温度压力异常</span>
       </h2>
     </div>

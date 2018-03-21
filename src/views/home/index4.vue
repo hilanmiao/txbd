@@ -175,7 +175,6 @@
                     </el-table-column>
                     <el-table-column
                       label="操作"
-                      width="60"
                     >
                       <template slot-scope="scope">
                         <template>
@@ -787,7 +786,7 @@
         componentLoadingSubmit: false,
         componentDialogFormVisible: false,
         // 车辆面板
-        leftTableHeight: '0',
+        leftTableHeight: '400',
         listCar: [],
         listCar2: [],
         loadingList: false,
@@ -803,6 +802,8 @@
         },
         showCarPanel: false,
         listCarWatch: [],
+        listCarWatchBase: [],
+        worker: null,
         // 警报相关
         showAlarm: false,
         controlPanelActiveName: '',
@@ -863,11 +864,21 @@
           }
         },
         deep: true
+      },
+      'listCarWatch': {
+        handler: function (val, oldVal) {
+          if (val.length) {
+            // 开启计时器
+            this.openTimer()
+            this._getCarBase()
+          } else {
+            // 关闭计时器
+            this.closeTimer()
+          }
+        }
       }
     },
     mounted() {
-      // 开启计时器
-      this.openTimer()
       this.setLayout()
       this.drawMap()
       // 监听resize事件
@@ -877,28 +888,32 @@
       }, 100)
       window.addEventListener('resize', this.__resizeHanlder)
       this._getCars()
+      this._getCarWarning()
       // 注册下方信息面板拉动事件
       this.registerPullEvent()
     },
     methods: {
       openTimer() {
         const that = this
-        const worker = new Worker('/static/js/timer.js')
-        worker.onmessage = function (event) {
+        this.worker = new Worker('/static/js/timer.js')
+        this.worker.onmessage = function (event) {
           // console.log(event.data)
           const seconds = event.data
           if (seconds <= 0) {
             // 获取基础数据
             that._getCarBase()
             // 重新开始循环
-            worker.postMessage(that.timeInterval)
+            that.worker.postMessage(that.timeInterval)
           }
         }
-        worker.onerror = function (error) {
+        this.worker.onerror = function (error) {
           console.log(error.filename, error.lineno, error.message)
-          worker.terminate()
+          that.worker.terminate()
         }
-        worker.postMessage(this.timeInterval)
+        this.worker.postMessage(this.timeInterval)
+      },
+      closeTimer() {
+        this.worker.terminate()
       },
       registerPullEvent() {
         const self = this
@@ -1071,16 +1086,21 @@
       mapMarker(cars) {
         // 响应填充基础数据
         cars.forEach(item => {
-          item.car_user_name = ''
-          item.car_user_phone = ''
-          item.dpf_high_lines = ''
-          item.dpf_maintain_num = ''
-          item.dpf_mileage_num = ''
-          item.dpf_online_num = ''
-          item.dpf_warning_num = ''
-          item.install_place_msg = ''
-          item.install_user_name = ''
-          item.install_user_phone = ''
+          this.listCarWatchBase.some(base => {
+            if (base.deviceno === item.deviceno) {
+              item.car_user_name = base.car_user_name
+              item.car_user_phone = base.car_user_phone
+              item.dpf_high_lines = base.dpf_high_lines
+              item.dpf_maintain_num = base.dpf_maintain_num
+              item.dpf_mileage_num = base.dpf_mileage_num
+              item.dpf_online_num = base.dpf_online_num
+              item.dpf_warning_num = base.dpf_warning_num
+              item.install_place_msg = base.install_place_msg
+              item.install_user_name = base.install_user_name
+              item.install_user_phone = base.install_user_phone
+              return true
+            }
+          })
         })
         // 填充数据
         this.listCarWatchReal = cars
@@ -1501,25 +1521,29 @@
       },
       _getCarBase() {
         if (this.listCarWatch.length) {
+          // 清空车辆基础信息列表
+          this.listCarWatchBase = []
           this.listCarWatch.forEach(item => {
             getCarBase(item.deviceno).then(response => {
               if (response.code === '200') {
-                this.listCarWatchReal.some(itemReal => {
-                  if (item.deviceno === itemReal.deviceno) {
-                    // itemReal = Object.assign(response.data, itemReal)
-                    itemReal.car_user_name = response.data.car_user_name
-                    itemReal.car_user_phone = response.data.car_user_phone
-                    itemReal.dpf_high_lines = response.data.dpf_high_lines
-                    itemReal.dpf_maintain_num = response.data.dpf_maintain_num
-                    itemReal.dpf_mileage_num = response.data.dpf_mileage_num
-                    itemReal.dpf_online_num = response.data.dpf_online_num
-                    itemReal.dpf_warning_num = response.data.dpf_warning_num
-                    itemReal.install_place_msg = response.data.install_place_msg
-                    itemReal.install_user_name = response.data.install_user_name
-                    itemReal.install_user_phone = response.data.install_user_phone
-                    return true
-                  }
-                })
+                // 循环添加
+                this.listCarWatchBase.push(Object.assign({deviceno: item.deviceno}, response.data))
+                // this.listCarWatchReal.some(itemReal => {
+                //   if (item.deviceno === itemReal.deviceno) {
+                //     // itemReal = Object.assign(response.data, itemReal)
+                //     itemReal.car_user_name = response.data.car_user_name
+                //     itemReal.car_user_phone = response.data.car_user_phone
+                //     itemReal.dpf_high_lines = response.data.dpf_high_lines
+                //     itemReal.dpf_maintain_num = response.data.dpf_maintain_num
+                //     itemReal.dpf_mileage_num = response.data.dpf_mileage_num
+                //     itemReal.dpf_online_num = response.data.dpf_online_num
+                //     itemReal.dpf_warning_num = response.data.dpf_warning_num
+                //     itemReal.install_place_msg = response.data.install_place_msg
+                //     itemReal.install_user_name = response.data.install_user_name
+                //     itemReal.install_user_phone = response.data.install_user_phone
+                //     return true
+                //   }
+                // })
               }
             })
           })

@@ -30,7 +30,7 @@
         >
           <el-table-column
             prop="NAME"
-            label="城市">
+            label="供应商">
           </el-table-column>
 
           <el-table-column
@@ -73,7 +73,7 @@
         // 列表相关
         tableData: [],
         dateRange: '',
-        warmcount:'',
+        warmcount: '',
         listQuery: {
           startTime: '',
           endTime: ''
@@ -111,11 +111,11 @@
           cityName: [],
           count: []
         },
-        pieDataList:{
-          dataAll:[],
-          cityName:[]
+        pieDataList: {
+          dataAll: [],
+          cityName: []
         }
-       }
+      }
     },
 
     created() {
@@ -141,33 +141,33 @@
         this.tableLoading = true
         this.pickerChange()
         getList(this.listQuery).then(response => {
-          this.warmcount=0
-          this.temperatureData.cityName =[]
-          this.temperatureData.count =[]
-          this.pieDataList.cityName=[]
-          this.pieDataList.dataAll=[]
+          this.warmcount = 0
+          this.temperatureData.cityName = []
+          this.temperatureData.count = []
+          this.pieDataList.cityName = []
+          this.pieDataList.dataAll = []
           if (response.code === '200') {
-            var dataA=response.data
+            var dataA = response.data
             this.tableData = dataA.dataList
-            this.warmcount=dataA.totalWarn
+            this.warmcount = dataA.totalWarn
             const city = []
             const coun = []
-            const datalist=[]
+            const datalist = []
 
             for (let i = 0; i < dataA.dataList.length; i++) {
-              let aname=dataA.dataList[i].NAME
-              if(aname.length>10){
-                aname=aname.substr(0,10)+"..."
+              let aname = dataA.dataList[i].NAME
+              if (aname.length > 10) {
+                aname = aname.substr(0, 10) + "..."
               }
               city.push(aname)
               coun.push(dataA.dataList[i].warnCount)
-              let pieData={value:dataA.dataList[i].warnCount,name:aname}
+              let pieData = {value: dataA.dataList[i].warnCount, name: aname}
               datalist.push(pieData)
-             }
+            }
             this.temperatureData.cityName = city
             this.temperatureData.count = coun
-            this.pieDataList.cityName= city
-            this.pieDataList.dataAll=datalist
+            this.pieDataList.cityName = city
+            this.pieDataList.dataAll = datalist
           } else {
             this.$message({
               type: 'error',
