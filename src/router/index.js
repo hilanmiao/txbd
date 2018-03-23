@@ -114,9 +114,9 @@ export const asyncRouterMapRole = [
       {
         id: 21,
         path: 'report_create',
-        name: '安装监控数量统计',
+        name: 'dpf安装数量统计',
         component: _import('report_create/index'),
-        meta: {title: '安装监控数量统计'}
+        meta: {title: 'dpf安装数量统计'}
       },
       {
         id: 22,
@@ -184,9 +184,9 @@ export const asyncRouterMapRole = [
       {
         id: 211,
         path: 'count_warn',
-        name: '车辆报警数量统计',
+        name: '17地市报警数量统计',
         component: _import('count_warn/index'),
-        meta: {title: '车辆报警数量统计'}
+        meta: {title: '17地市报警数量统计'}
       },
       {
         id: 212,
@@ -285,9 +285,9 @@ export const asyncRouterMapRole = [
       {
         id: 52,
         path: 'alarm',
-        name: '报警处理',
+        name: '预警处理',
         component: _import('alarm/index'),
-        meta: {title: '报警处理'}
+        meta: {title: '预警处理'}
       },
       {
         id: 53,
@@ -426,9 +426,9 @@ export const asyncRouterMap = [
       {
         id: 21,
         path: 'report_create',
-        name: '安装监控数量统计',
+        name: 'dpf安装数量统计',
         component: _import('report_create/index'),
-        meta: {title: '安装监控数量统计'}
+        meta: {title: 'dpf安装数量统计'}
       },
       {
         id: 22,
@@ -496,9 +496,9 @@ export const asyncRouterMap = [
       {
         id: 211,
         path: 'count_warn',
-        name: '车辆报警数量统计',
+        name: '17地市报警数量统计',
         component: _import('count_warn/index'),
-        meta: {title: '车辆报警数量统计'}
+        meta: {title: '17地市报警数量统计'}
       },
       {
         id: 212,
@@ -597,9 +597,9 @@ export const asyncRouterMap = [
       {
         id: 52,
         path: 'alarm',
-        name: '报警处理',
+        name: '预警处理',
         component: _import('alarm/index'),
-        meta: {title: '报警处理'}
+        meta: {title: '预警处理'}
       },
       {
         id: 53,

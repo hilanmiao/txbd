@@ -4,7 +4,7 @@
 
     <div>
       <h2 class="cenTitle">
-        报警车辆信息
+        预警车辆信息
         <img style="margin-left: 10%" :src="iconfault">
         <span v-show="longTime" style="font-size:20px;color:#FF0000">离线时间过长</span>
         <span v-show="moreBig" style="font-size:20px;color:#FF0000">温度压力异常</span>
@@ -184,36 +184,36 @@
           afterdays: ''
         },
         form: {
-          // id: '1231',
-          // installId: '1',
-          // dpfStatus: '0',
-          // warning_time: '2018-3-6 09:21:00',
-          // dpfInfo: '恶搞发生过撒广东省分公司的分公司东方故事大概',
-          // car_user_name: '掌声那',
-          // car_user_phone: '15656565656',
-          // install_place_msg: '三等功SD敢达',
-          // install_user_name: '是涤公',
-          // install_user_phone: '11111111111',
-          // dpf_warning_num: '3',
-          // dpf_maintain_num: '1',
-          // dpf_mileage_num: '23',
-          // dpf_online_num: '12',
-          // dpf_high_lines: '2'
-          id: '',
-          installId: '',
-          dpfStatus: '',
-          warning_time: '',
-          dpfInfo: '',
-          car_user_name: '',
-          car_user_phone: '',
-          install_place_msg: '',
-          install_user_name: '',
-          install_user_phone: '',
-          dpf_warning_num: '',
-          dpf_maintain_num: '',
-          dpf_mileage_num: '',
-          dpf_online_num: '',
-          dpf_high_lines: ''
+          id: '1231',
+          installId: '1',
+          dpfStatus: '0',
+          warning_time: '2018-03-22 09:21:00',
+          dpfInfo: 'dpf温度异常',
+          car_user_name: '张胜利',
+          car_user_phone: '15656565656',
+          install_place_msg: '济南dpf修理厂',
+          install_user_name: '李东',
+          install_user_phone: '18353674768',
+          dpf_warning_num: '3次',
+          dpf_maintain_num: '1次',
+          dpf_mileage_num: '4000公里',
+          dpf_online_num: '12小时',
+          dpf_high_lines: '80%'
+          // id: '',
+          // installId: '',
+          // dpfStatus: '',
+          // warning_time: '',
+          // dpfInfo: '',
+          // car_user_name: '',
+          // car_user_phone: '',
+          // install_place_msg: '',
+          // install_user_name: '',
+          // install_user_phone: '',
+          // dpf_warning_num: '',
+          // dpf_maintain_num: '',
+          // dpf_mileage_num: '',
+          // dpf_online_num: '',
+          // dpf_high_lines: ''
         },
         img_url_45: '',
         before_install_img_url: '',
@@ -221,7 +221,7 @@
       }
     },
     created() {
-      this._getWarning()
+      // this._getWarning()
       this.getGrade()
     },
     destroyed() {
@@ -331,11 +331,11 @@
       },
       _nono() {
         if (this.form.id == null || this.form.id === '') {
-          console.log('无数据，不需默认处理')
+          // console.log('无数据，不需默认处理')
           return
         }
         noHandle(this.form.id).then(responce => {
-          console.log('已将未操作数据，进行未处理操作')
+          // console.log('已将未操作数据，进行未处理操作')
         })
       },
       _doMark() {

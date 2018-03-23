@@ -27,11 +27,15 @@
           stripe
           fit
           highlight-current-row
+          @row-click="detailView=true"
         >
           <el-table-column
             prop="cityName"
-            label="城市"
-            width="100">
+            label="城市">
+            <template slot-scope="scope">
+              {{scope.row.cityName}}
+              <el-button type="success" size="mini" icon="el-icon-search" @click="detailView=true"></el-button>
+            </template>
           </el-table-column>
 
           <el-table-column
@@ -55,6 +59,77 @@
         <pie-chart :dataArr2="pieDataList"></pie-chart>
       </div>
     </el-col>
+
+    <div class="others-container">
+      <el-dialog :visible.sync="detailView" title="查看详情">
+        <el-date-picker
+          size="middle"
+          v-model="dateRange"
+          type="daterange"
+          align="right"
+          unlink-panels
+          value-format="yyyy-MM-dd"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          @change="pickerChange"
+        >
+        </el-date-picker>
+        <el-button type="primary" size="middle" icon="el-icon-search" @click="searchData">搜索</el-button>
+        <div>
+          <p></p>
+        </div>
+        <el-table
+          v-loading="tableLoading" element-loading-text="加载中..."
+          :data="tableDetail"
+          border
+          stripe
+          fit
+          highlight-current-row
+          style="width: 100%">
+
+          <el-table-column
+            prop="car_sup"
+            label="供应商">
+          </el-table-column>
+
+          <el-table-column
+            prop="car_number"
+            label="车牌号">
+          </el-table-column>
+
+          <el-table-column
+            prop="car_user_name"
+            label="车主姓名">
+          </el-table-column>
+
+          <el-table-column
+            prop="car_type_code"
+            label="车型">
+          </el-table-column>
+
+          <el-table-column
+            prop="car_user_phone"
+            label="联系方式">
+          </el-table-column>
+
+          <el-table-column
+            prop="warm_reason"
+            label="报警原因">
+          </el-table-column>
+
+        </el-table>
+        <el-pagination
+          :page-sizes="[10, 40, 80, 100, 1000]"
+          :page-size="10"
+          :total="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+        >
+        </el-pagination>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 
@@ -71,9 +146,10 @@
     data() {
       return {
         // 列表相关
+        detailView: false,
         tableData: [],
         dateRange: '',
-        warmcount:'',
+        warmcount: '',
         listQuery: {
           startTime: '',
           endTime: ''
@@ -111,11 +187,11 @@
           cityName: [],
           count: []
         },
-        pieDataList:{
-          dataAll:[],
-          cityName:[]
+        pieDataList: {
+          dataAll: [],
+          cityName: []
         }
-       }
+      }
     },
 
     created() {
@@ -141,29 +217,30 @@
         this.tableLoading = true
         this.pickerChange()
         getList(this.listQuery).then(response => {
-          this.warmcount=0
-          this.temperatureData.cityName =[]
-          this.temperatureData.count =[]
-          this.pieDataList.cityName=[]
-          this.pieDataList.dataAll=[]
+          this.warmcount = 0
+          this.temperatureData.cityName = []
+          this.temperatureData.count = []
+          this.pieDataList.cityName = []
+          this.pieDataList.dataAll = []
           if (response.code === '200') {
-            var dataA=response.data
+            this.makeData()
+            var dataA = response.data
             this.tableData = dataA.cityWarnList
-            this.warmcount=dataA.totalWarn
+            this.warmcount = dataA.totalWarn
             const city = []
             const coun = []
-            const datalist=[]
+            const datalist = []
 
             for (let i = 0; i < dataA.cityWarnList.length; i++) {
               city.push(dataA.cityWarnList[i].cityName)
               coun.push(dataA.cityWarnList[i].warningCount)
-              let pieData={value:dataA.cityWarnList[i].warningCount,name:dataA.cityWarnList[i].cityName}
+              let pieData = {value: dataA.cityWarnList[i].warningCount, name: dataA.cityWarnList[i].cityName}
               datalist.push(pieData)
-             }
+            }
             this.temperatureData.cityName = city
             this.temperatureData.count = coun
-            this.pieDataList.cityName= city
-            this.pieDataList.dataAll=datalist
+            this.pieDataList.cityName = city
+            this.pieDataList.dataAll = datalist
           } else {
             this.$message({
               type: 'error',
@@ -173,6 +250,50 @@
         })
         // 取消表格loading效果
         this.tableLoading = false
+      },
+      makeData() {
+        this.tableDetail = [
+          {
+            car_sup: '淄博天星公司',
+            warm_reason: '前端温度异常',
+            car_user_phone: '15653253156',
+            car_type_code: '东风',
+            car_user_name: '张世强',
+            car_number: '鲁BWF568'
+          },
+          {
+            car_sup: '青岛高新DPF长',
+            warm_reason: '前端温度异常',
+            car_user_phone: '18263367138',
+            car_type_code: '东风',
+            car_user_name: '李代义',
+            car_number: '鲁LG6547'
+          },
+          {
+            car_sup: '山东歌尓公司',
+            warm_reason: '离线时间异常',
+            car_user_phone: '17171681713',
+            car_type_code: '斯太尔',
+            car_user_name: '张良涛',
+            car_number: '鲁E8544T'
+          },
+          {
+            car_sup: '山东中盛公司',
+            warm_reason: '前压力异常',
+            car_user_phone: '18866266178',
+            car_type_code: '东风',
+            car_user_name: '王全安',
+            car_number: '鲁V789T8'
+          },
+          {
+            car_sup: '山东中盛公司',
+            warm_reason: '离线时间异常',
+            car_user_phone: '15689248745',
+            car_type_code: '斯太尔',
+            car_user_name: '何子翔',
+            car_number: '鲁B23W68'
+          }
+        ]
       },
       handleExport() {
         // 导出处理（简单做，后期可能会改用插件）
