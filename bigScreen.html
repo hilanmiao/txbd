@@ -86,6 +86,7 @@
       width: 28%;
       background: url("/static/image/bg_frame2.png") no-repeat center center;
       background-size: 100% 100%;
+      height: 300px;
     }
 
     .pie-wrapper .pie {
@@ -105,6 +106,7 @@
       width: 28%;
       background: url("/static/image/bg_frame1.png") no-repeat center center;
       background-size: 100% 100%;
+      height: 300px;
     }
 
     .bar-wrapper .bar {
@@ -252,12 +254,6 @@
         font-size: 16px;
       }
 
-      /*#pie {*/
-      /*height: 225px !important;*/
-      /*}*/
-      /*#bar {*/
-      /*height: 220px !important;*/
-      /*}*/
       .info-wrapper {
         top: 100px;
         height: 80px;
@@ -360,11 +356,7 @@
       </tr>
       <tr>
         <td>鲁G12345</td>
-<<<<<<< HEAD
         <td>dpf0001</td>
-=======
-        <td>dpf000001</td>
->>>>>>> 96b6a443a87cea9711fb3301df34b301b57d8cc8
         <td>23.03,<br>113.75</td>
         <td>车辆定位异常</td>
         <td>150℃</td>
@@ -17559,7 +17551,7 @@
   pieChart.setOption({
     tooltip: {
       trigger: 'item',
-      formatter: "{b} : {c}"
+      formatter: '{b} : {c}'
     },
     calculable: true,
     series: [
@@ -17606,12 +17598,12 @@
       splitLine: {show: false},
       axisLine: {show: false},
       axisTick: {show: false},
-      axisLabel: {margin: 2, textStyle: {color: '#fff'}},
+      axisLabel: {margin: 2, textStyle: {color: '#fff'}}
     },
     yAxis: {
       type: 'category',
       axisLabel: {margin: 2, interval: 0, textStyle: {color: '#fff'}},
-      data: ["菏泽", "滨州", "聊城", "德州", "临沂", "莱芜", "日照", "威海", "泰安", "济宁", "潍坊", "烟台", "东营", "枣庄", "淄博", "青岛", "济南"]
+      data: ['菏泽', '滨州', '聊城', '德州', '临沂', '莱芜', '日照', '威海', '泰安', '济宁', '潍坊', '烟台', '东营', '枣庄', '淄博', '青岛', '济南']
     },
     calculable: true,
     series: [{
