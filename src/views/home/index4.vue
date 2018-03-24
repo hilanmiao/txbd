@@ -736,9 +736,9 @@
       </div>
     </div>
 
-    <remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>
-    <remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/D3SvgOverlay.js"></remote-js>
-    <remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/CarTrack.js"></remote-js>
+    <!--<remote-js src="http://cdn.bootcss.com/d3/3.5.17/d3.js"></remote-js>-->
+    <!--<remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/D3SvgOverlay.js"></remote-js>-->
+    <!--<remote-js src="http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/CarTrack.js"></remote-js>-->
   </div>
 </template>
 

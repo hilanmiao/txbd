@@ -1,7 +1,5 @@
 <template>
   <div class="app-container">
-
-
     <div>
       <h2 class="cenTitle">
         预警车辆信息
@@ -13,21 +11,13 @@
 
     <el-row :gutter="20" class="backImg" :style="{backgroundImage: 'url(' + backimg + ')' }">
       <el-col :span="16">
-
-
         <div class="info">
-
           <el-col :span="20">
-
-
             <div class="centerDetail">
-
               <el-col :span="4">
                 <img :src="imgcar" alt="">
               </el-col>
-
               <el-col :span="20">
-
                 <div class="detalForm">
                   <table class="detalTable">
                     <tr>
@@ -85,7 +75,6 @@
                   <img :src="before_install_img_url" alt="">
                   安装前照片
                 </div>
-
                 <div>
                   <img :src="after_install_img_url" alt="">
                   安装后照片
@@ -96,12 +85,9 @@
         </div>
       </el-col>
 
-
       <el-col :span="5">
-
         <el-form label-width="80px" style="margin-top: 50px;">
           <!-- <el-form-item style="margin-top: 50px;">-->
-
           <table style="width: 100%;margin-top:30%;">
             <tr>
               <td>
@@ -141,12 +127,8 @@
           <span style="margin-top: 15px;color:#8492a6;font-weight:bold;">今日处理任务</span>
           <span style="font-size:40px;color:#FF0000">99</span>
         </div>
-
       </el-col>
-
     </el-row>
-
-
   </div>
 </template>
 

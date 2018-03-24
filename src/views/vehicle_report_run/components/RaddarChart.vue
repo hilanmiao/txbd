@@ -5,7 +5,6 @@
 <script>
   import echarts from 'echarts'
 
-  require('echarts/theme/macarons') // echarts theme
   import {debounce} from '@/utils'
 
   const animationDuration = 3000

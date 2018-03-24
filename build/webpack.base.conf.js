@@ -3,7 +3,7 @@ var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -82,6 +82,7 @@ module.exports = {
     ]
   },
   externals: {
-    'T': 'T'
+    'T': 'T',
+    'echarts': 'echarts'
   }
 }
