@@ -892,6 +892,10 @@
       // 注册下方信息面板拉动事件
       this.registerPullEvent()
     },
+    destroyed() {
+      this.closeTimer()
+      this.webSocketClose()
+    },
     methods: {
       openTimer() {
         const that = this
@@ -913,7 +917,9 @@
         this.worker.postMessage(this.timeInterval)
       },
       closeTimer() {
-        this.worker.terminate()
+        if (this.worker) {
+          this.worker.terminate()
+        }
       },
       registerPullEvent() {
         const self = this

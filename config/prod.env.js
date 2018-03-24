@@ -1,4 +1,5 @@
 const IP = '47.104.154.2'
+const FileIP = '118.31.228.98:8089'
 
 module.exports = {
   NODE_ENV: '"production"',
@@ -7,6 +8,6 @@ module.exports = {
   BASE_IP: `"${IP}"`,
   BASE_API: `"http://${IP}/api/"`,
   WEB_SOCKET: `"ws://${IP}/socketWebServer/"`,
-  IMG_SERVER_PATH: `"http://${IP}/file/show/"`,
-  EXCEL_SERVER_PATH: `"http://${IP}/file/show/"`
+  IMG_SERVER_PATH: `"http://${FileIP}/file/show/"`,
+  EXCEL_SERVER_PATH: `"http://${FileIP}/file/show/"`
 }
