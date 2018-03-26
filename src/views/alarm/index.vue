@@ -21,9 +21,8 @@
                 <div class="detalForm">
                   <table class="detalTable">
                     <tr>
-                      <td><img :src="wartime"><span class="tableTit">预警时间:</span><span class="tableCon">{{form.warning_time}}</span>
+                      <td colspan="2"><img :src="wartime"><span class="tableTit">预警时间:</span><span class="tableCon">{{form.warning_time}}</span>
                       </td>
-                      <td></td>
                     </tr>
                     <tr>
                       <td><img :src="person"><span class="tableTit">车主姓名:</span><span class="tableCon">{{form.car_user_name}}</span>

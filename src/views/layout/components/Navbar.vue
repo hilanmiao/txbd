@@ -10,7 +10,8 @@
 
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+          <!--<img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">-->
+          <img class="user-avatar" src="/static/image/txlogo.png">
           <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -24,10 +25,7 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
     </div>
-
-
   </el-menu>
 </template>
 
