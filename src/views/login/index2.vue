@@ -89,11 +89,16 @@
     color: #fff
   }
 
+  .content {
+    margin-top: 150px;
+  }
+
   .content > img {
     display: block;
     width: 40%;
     margin-top: 7%;
     margin-left: 5%;
+    margin: 0 auto;
   }
 
   .login {
@@ -102,6 +107,8 @@
     width: 965px;
     height: 421px;
     padding: 90px 0 0 94px;
+    margin: 0 auto;
+    margin-top: 100px;
   }
 
   .login > img {

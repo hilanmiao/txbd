@@ -34,7 +34,7 @@
             >
             <template slot-scope="scope">
               {{scope.row.cityName}}
-              <el-button type="success" size="mini" icon="el-icon-search" @click="dialogFormVisible=true"></el-button>
+              <el-button type="success" size="mini" icon="el-icon-search" @click="showDetail(scope.row.city_id)"></el-button>
             </template>
           </el-table-column>
 
@@ -64,7 +64,7 @@
       <el-dialog :visible.sync="dialogFormVisible" title="查看详情">
         <el-date-picker
           size="middle"
-          v-model="dateRange"
+          v-model="dateRange2"
           type="daterange"
           align="right"
           unlink-panels
@@ -72,15 +72,15 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           :picker-options="pickerOptions"
-          @change="pickerChange"
+          @change="pickerChange2"
         >
         </el-date-picker>
-        <el-button type="primary" size="middle" icon="el-icon-search" @click="searchData">搜索</el-button>
+        <el-button type="primary" size="middle" icon="el-icon-search" @click="searchData2">搜索</el-button>
         <div>
           <p></p>
         </div>
         <el-table
-          v-loading="tableLoading" element-loading-text="加载中..."
+          v-loading="tableLoading2" element-loading-text="加载中..."
           :data="tableData2"
           border
           stripe
@@ -88,41 +88,39 @@
           highlight-current-row
         >
           <el-table-column
-            prop="t3"
+            prop="cityName"
+            label="城市">
+          </el-table-column>
+          <el-table-column
+            prop="car_number"
             label="车牌号">
           </el-table-column>
           <el-table-column
-            prop="t4"
+            prop="car_user_name"
             label="车主姓名">
           </el-table-column>
           <el-table-column
-            prop="t5"
-            label="联系电话">
+            prop="install_place_msg"
+            label="安装地点">
           </el-table-column>
           <el-table-column
-            prop="t6"
-            label="安装时间">
+            prop="install_user_name"
+            label="安装人姓名">
           </el-table-column>
           <el-table-column
-            prop="t7"
-            label="车辆颜色">
+            prop="createTime"
+            label="信息上传时间">
           </el-table-column>
-          <el-table-column
-            prop="t8"
-            label="汽车类型">
-          </el-table-column>
-          <el-table-column
-            prop="t9"
-            label="载重">
-          </el-table-column>
-
         </el-table>
         <el-pagination
-          :page-sizes="[5, 40, 80, 100, 1000]"
-          :page-size="5"
-          :total="100"
+          :page-sizes="[5, 10, 40, 80, 100, 1000]"
+          :page-size="listQuery2.limit"
+          :current-page.sync="listQuery2.page"
+          :total="total2"
           layout="total, sizes, prev, pager, next, jumper"
           background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         >
         </el-pagination>
       </el-dialog>
@@ -134,6 +132,7 @@
   import BarChart from './components/BarChart'
   import PieChart from './components/PieChart'
   import {getList} from '@/api/report_create'
+  import {getMainList as getRegisterList} from '@/api/register'
 
   export default {
     components: {
@@ -142,79 +141,6 @@
     },
     data() {
       return {
-        dialogFormVisible: false,
-        tableData2: [
-          {
-            t1: '交通厅',
-            t2: '2018-03-22 10:22:25',
-            t3: '鲁G5258P',
-            t4: '李龙',
-            t5: '18353674768',
-            t6: '2018-03-22 10:22:25',
-            t7: '蓝色',
-            t8: '货车',
-            t9: '10吨',
-            t10: '已安装',
-            t11: '6次',
-            t12: 'dpf温度异常'
-          },
-          {
-            t1: '交通厅',
-            t2: '2018-03-22 10:22:25',
-            t3: '鲁G809CP',
-            t4: '张三营',
-            t5: '18353674768',
-            t6: '2018-03-22 10:22:25',
-            t7: '蓝色',
-            t8: '货车',
-            t9: '10吨',
-            t10: '已安装',
-            t11: '6次',
-            t12: 'dpf温度异常'
-          },
-          {
-            t1: '交通厅',
-            t2: '2018-03-22 10:22:25',
-            t3: '鲁G4453C',
-            t4: '汤云',
-            t5: '18353674768',
-            t6: '2018-03-22 10:22:25',
-            t7: '绿色',
-            t8: '货车',
-            t9: '20吨',
-            t10: '已安装',
-            t11: '10次',
-            t12: 'dpf压力异常'
-          },
-          {
-            t1: '交通厅',
-            t2: '2018-03-22 10:22:25',
-            t3: '鲁G12234',
-            t4: '王鸥',
-            t5: '18353674768',
-            t6: '2018-03-22 10:22:25',
-            t7: '白色',
-            t8: '货车',
-            t9: '30吨',
-            t10: '已安装',
-            t11: '3次',
-            t12: 'dpf定位异常'
-          },
-          {
-            t1: '交通厅',
-            t2: '2018-03-22 10:22:25',
-            t3: '鲁G5556AG',
-            t4: '张强',
-            t5: '18353674768',
-            t6: '2018-03-22 10:22:25',
-            t7: '棕红色',
-            t8: '货车',
-            t9: '15吨',
-            t10: '已安装',
-            t11: '2次',
-            t12: 'dpf温度异常'
-          }
-        ],
         // 列表相关
         tableData: [],
         dateRange: '',
@@ -222,6 +148,18 @@
         listQuery: {
           startTime: '',
           endTime: ''
+        },
+        dateRange2: '',
+        dialogFormVisible: false,
+        tableData2: [],
+        total2: 0,
+        listQuery2: {
+          startTime: '',
+          city_id: '',
+          endTime: '',
+          limit: 5,
+          offset: 0,
+          page: 1
         },
         pickerOptions: {
           shortcuts: [{
@@ -252,6 +190,7 @@
         },
         loadingExport: false,
         tableLoading: false,
+        tableLoading2: false,
         temperatureData: {
           cityName: [],
           count: []
@@ -262,7 +201,19 @@
         }
       }
     },
-
+    watch: {
+      'listQuery2.page': {
+        handler: function (val, oldVal) {
+          // 拼装查询用的offset
+          if (val > 1) {
+            this.listQuery2.offset = (val - 1) * this.listQuery2.limit
+          } else {
+            this.listQuery2.offset = 0
+          }
+        },
+        deep: true
+      }
+    },
     created() {
       this._getList()
     },
@@ -276,8 +227,58 @@
           this.listQuery.endTime = null
         }
       },
+      pickerChange2() {
+        if (this.dateRange2 != null) {
+          this.listQuery2.startTime = this.dateRange2[0]
+          this.listQuery2.endTime = this.dateRange2[1]
+        } else {
+          this.listQuery2.startTime = null
+          this.listQuery2.endTime = null
+        }
+      },
       searchData() {
         this._getList()
+      },
+      searchData2() {
+        this._getRegisterList()
+      },
+      showDetail(cityId) {
+        this.listQuery2.city_id = cityId
+        this.dialogFormVisible = true
+        this._getRegisterList()
+      },
+      handleSizeChange(val) {
+        // 每页显示条数改变处理
+        this.listQuery2.limit = val
+        this.listQuery2.page = 1
+        this._getRegisterList()
+      },
+      handleCurrentChange(val) {
+        // 页码改变处理
+        this.listQuery2.page = val
+        this._getRegisterList()
+      },
+      _getRegisterList() {
+        // 清空表格数据
+        this.tableData2 = []
+        // 设置表格loading效果
+        this.tableLoading2 = true
+        this.pickerChange2()
+        getRegisterList(this.listQuery2).then(response => {
+          if (response.code === '200') {
+            // 设置表格数据
+            this.tableData2 = response.data.dataList
+            // 设置分页插件数据总数
+            this.total2 = response.data.count
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
+        // 取消表格loading效果
+        this.tableLoading2 = false
       },
       _getList() {
         // 清空表格数据
@@ -286,7 +287,6 @@
         this.tableLoading = true
         this.pickerChange()
         getList(this.listQuery).then(response => {
-
           this.pieDataList.cityName = []
           this.pieDataList.dataAll = []
           this.temperatureData.cityName = []
@@ -302,7 +302,7 @@
             for (let i = 0; i < dataA.cityCount.length; i++) {
               city.push(dataA.cityCount[i].cityName)
               coun.push(dataA.cityCount[i].count)
-              let pieData = {value: dataA.cityCount[i].count, name: dataA.cityCount[i].cityName}
+              const pieData = {value: dataA.cityCount[i].count, name: dataA.cityCount[i].cityName}
               datalist.push(pieData)
             }
             this.pieDataList.cityName = city

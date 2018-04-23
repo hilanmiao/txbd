@@ -57,27 +57,24 @@
     },
     methods: {
       initChart() {
-        console.log(12312312)
         this.chart = echarts.init(this.$el, 'macarons')
         this.setOptions(this.dataArr2)
       },
-      setOptions({cityName,dataAll}= {}) {
-        console.log(cityName)
-        console.log(dataAll)
+      setOptions({cityName, dataAll} = {}) {
         this.chart.setOption({
           tooltip: {
             trigger: 'item',
-            formatter: "{a} <br/>{b}: {c} ({d}%)"
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
           },
           legend: {
             orient: 'vertical',
             x: 'left',
-            data:cityName
+            data: cityName
           },
           series: [
             {
-              name:'PDF安装数量',
-              type:'pie',
+              name: 'PDF安装数量',
+              type: 'pie',
               radius: ['50%', '70%'],
               avoidLabelOverlap: false,
               label: {
@@ -98,7 +95,7 @@
                   show: false
                 }
               },
-              data:dataAll
+              data: dataAll
             }
           ]
         })

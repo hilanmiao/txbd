@@ -9,10 +9,13 @@ export function getWarning() {
 }
 
 // 暂不处理
-export function noHandle(id) {
+export function noHandle(id, reason) {
   return request({
     url: 'v1/earlywarning/non/' + id,
-    method: 'put'
+    method: 'put',
+    params: {
+      reason: reason
+    }
   })
 }
 

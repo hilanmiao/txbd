@@ -7,3 +7,11 @@ export function getList(params) {
     params
   })
 }
+
+export function getDetailList(params) {
+  return request({
+    url: 'v1/statistics/onlineCarList',
+    method: 'get',
+    params
+  })
+}

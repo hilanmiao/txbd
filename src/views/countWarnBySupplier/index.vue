@@ -27,14 +27,14 @@
           stripe
           fit
           highlight-current-row
-          @row-click="detailView=true"
         >
           <el-table-column
             prop="NAME"
-            label="供应商" >
+            label="供应商">
             <template slot-scope="scope">
               {{scope.row.NAME}}
-              <el-button type="success" size="mini" icon="el-icon-search" @click="detailView=true"></el-button>
+              <el-button type="success" size="mini" icon="el-icon-search"
+                         @click="showDetail(scope.row.SUPPLIER_ID)"></el-button>
             </template>
           </el-table-column>
 
@@ -62,10 +62,10 @@
     </el-col>
 
     <div class="others-container">
-      <el-dialog :visible.sync="detailView" title="查看详情">
+      <el-dialog :visible.sync="dialogFormVisible" title="查看详情">
         <el-date-picker
           size="middle"
-          v-model="dateRange"
+          v-model="dateRange2"
           type="daterange"
           align="right"
           unlink-panels
@@ -73,64 +73,63 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           :picker-options="pickerOptions"
-          @change="pickerChange"
+          @change="pickerChange2"
         >
         </el-date-picker>
-        <el-button type="primary" size="middle" icon="el-icon-search" @click="searchData">搜索</el-button>
+        <el-button type="primary" size="middle" icon="el-icon-search" @click="searchData2">搜索</el-button>
         <div>
           <p></p>
         </div>
         <el-table
-          v-loading="tableLoading" element-loading-text="加载中..."
-          :data="tableDetail"
+          v-loading="tableLoading2" element-loading-text="加载中..."
+          :data="tableData2"
           border
           stripe
           fit
           highlight-current-row
-          style="width: 100%">
-
+        >
           <el-table-column
-            prop="car_city"
-            label="城市">
-          </el-table-column>
-
-          <el-table-column
-            prop="car_number"
+            prop="PLATENUMBER"
             label="车牌号">
           </el-table-column>
-
           <el-table-column
-            prop="car_user_name"
+            prop="CAR_USER_NAME"
             label="车主姓名">
           </el-table-column>
-
           <el-table-column
-            prop="car_type_code"
-            label="车型">
+            prop="CAR_USER_PHONE"
+            label="车主电话">
           </el-table-column>
-
           <el-table-column
-            prop="car_user_phone"
-            label="联系方式">
+            prop="DEVICENO"
+            label="设备编号">
           </el-table-column>
-
           <el-table-column
-            prop="warm_reason"
-            label="报警原因">
+            prop="DPF_MODEL"
+            label="DPF类型">
           </el-table-column>
-
+          <el-table-column
+            prop="WARNNINGCONTENT"
+            label="报警内容">
+          </el-table-column>
+          <el-table-column
+            prop="WARNNINGTIME"
+            label="报警时间">
+          </el-table-column>
         </el-table>
         <el-pagination
-          :page-sizes="[10, 40, 80, 100, 1000]"
-          :page-size="10"
-          :total="100"
+          :page-sizes="[5, 10, 40, 80, 100, 1000]"
+          :page-size="listQuery2.limit"
+          :current-page.sync="listQuery2.page"
+          :total="total2"
           layout="total, sizes, prev, pager, next, jumper"
           background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         >
         </el-pagination>
       </el-dialog>
     </div>
-
 
   </div>
 </template>
@@ -138,7 +137,7 @@
 <script type="text/ecmascript-6">
   import BarChart from './components/BarChart'
   import PieChart from './components/PieChart'
-  import {getList} from '@/api/countWarnBySupplier'
+  import {getList, getDetailList as getRegisterList} from '@/api/countWarnBySupplier'
 
   export default {
     components: {
@@ -149,7 +148,6 @@
       return {
         // 列表相关
         tableData: [],
-        tableDetail:[],
         dateRange: '',
         warmcount: '',
         listQuery: {
@@ -193,10 +191,36 @@
           dataAll: [],
           cityName: []
         },
-      detailView:false
+        // 模态框相关
+        dateRange2: '',
+        dialogFormVisible: false,
+        tableData2: [],
+        total2: 0,
+        listQuery2: {
+          startTime: '',
+          city_id: '',
+          endTime: '',
+          limit: 5,
+          offset: 0,
+          page: 1,
+          supplier_id: ''
+        },
+        tableLoading2: false
       }
     },
-
+    watch: {
+      'listQuery2.page': {
+        handler: function (val, oldVal) {
+          // 拼装查询用的offset
+          if (val > 1) {
+            this.listQuery2.offset = (val - 1) * this.listQuery2.limit
+          } else {
+            this.listQuery2.offset = 0
+          }
+        },
+        deep: true
+      }
+    },
     created() {
       this._getList()
     },
@@ -226,7 +250,6 @@
           this.pieDataList.cityName = []
           this.pieDataList.dataAll = []
           if (response.code === '200') {
-            this.makeData()
             var dataA = response.data
             this.tableData = dataA.dataList
             this.warmcount = dataA.totalWarn
@@ -258,15 +281,6 @@
         // 取消表格loading效果
         this.tableLoading = false
       },
-      makeData(){
-        this.tableDetail=[
-          {car_city:'青岛',warm_reason:'前端温度异常',car_user_phone:'15653253156',car_type_code:'东风',car_user_name:'张世强',car_number:'鲁BWF568'},
-          {car_city:'日照',warm_reason:'前端温度异常',car_user_phone:'18263367138',car_type_code:'东风',car_user_name:'李代义',car_number:'鲁LG6547'},
-          {car_city:'东营',warm_reason:'离线时间异常',car_user_phone:'17171681713',car_type_code:'斯太尔',car_user_name:'张良涛',car_number:'鲁E8544T'},
-          {car_city:'潍坊',warm_reason:'前压力异常',car_user_phone:'18866266178',car_type_code:'东风',car_user_name:'王全安',car_number:'鲁V789T8'},
-          {car_city:'青岛',warm_reason:'离线时间异常',car_user_phone:'15689248745',car_type_code:'斯太尔',car_user_name:'何子翔',car_number:'鲁B23W68'}
-        ]
-      },
       handleExport() {
         // 导出处理（简单做，后期可能会改用插件）
         // 显示loading
@@ -295,6 +309,56 @@
 
         // 隐藏loading
         this.loadingExport = false
+      },
+      pickerChange2() {
+        if (this.dateRange2 != null) {
+          this.listQuery2.startTime = this.dateRange2[0]
+          this.listQuery2.endTime = this.dateRange2[1]
+        } else {
+          this.listQuery2.startTime = null
+          this.listQuery2.endTime = null
+        }
+      },
+      searchData2() {
+        this._getRegisterList()
+      },
+      showDetail(supplierId) {
+        this.listQuery2.supplier_id = supplierId
+        this.dialogFormVisible = true
+        this._getRegisterList()
+      },
+      handleSizeChange(val) {
+        // 每页显示条数改变处理
+        this.listQuery2.limit = val
+        this.listQuery2.page = 1
+        this._getRegisterList()
+      },
+      handleCurrentChange(val) {
+        // 页码改变处理
+        this.listQuery2.page = val
+        this._getRegisterList()
+      },
+      _getRegisterList() {
+        // 清空表格数据
+        this.tableData2 = []
+        // 设置表格loading效果
+        this.tableLoading2 = true
+        this.pickerChange2()
+        getRegisterList(this.listQuery2).then(response => {
+          if (response.code === '200') {
+            // 设置表格数据
+            this.tableData2 = response.data.dataList
+            // 设置分页插件数据总数
+            this.total2 = response.data.count
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
+        // 取消表格loading效果
+        this.tableLoading2 = false
       }
     }
   }

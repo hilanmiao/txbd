@@ -80,6 +80,19 @@
                 </div>
               </div>
             </div>
+
+            <div style="">
+              <el-col :span="4">
+                <span style="color:darkred">暂不处理记录:</span>
+              </el-col>
+              <el-col :span="20">
+                <el-table :data="form.records" border>
+                  <el-table-column prop="NAME" label="操作员"></el-table-column>
+                  <el-table-column prop="CONTENT" label="标记内容"></el-table-column>
+                  <el-table-column prop="CREATETIME" label="时间"></el-table-column>
+                </el-table>
+              </el-col>
+            </div>
           </el-col>
         </div>
       </el-col>
@@ -165,36 +178,36 @@
           afterdays: ''
         },
         form: {
-          id: '1231',
-          installId: '1',
-          dpfStatus: '0',
-          warning_time: '2018-03-22 09:21:00',
-          dpfInfo: 'dpf温度异常',
-          car_user_name: '张胜利',
-          car_user_phone: '15656565656',
-          install_place_msg: '济南dpf修理厂',
-          install_user_name: '李东',
-          install_user_phone: '18353674768',
-          dpf_warning_num: '3次',
-          dpf_maintain_num: '1次',
-          dpf_mileage_num: '4000公里',
-          dpf_online_num: '12小时',
-          dpf_high_lines: '80%'
-          // id: '',
-          // installId: '',
-          // dpfStatus: '',
-          // warning_time: '',
-          // dpfInfo: '',
-          // car_user_name: '',
-          // car_user_phone: '',
-          // install_place_msg: '',
-          // install_user_name: '',
-          // install_user_phone: '',
-          // dpf_warning_num: '',
-          // dpf_maintain_num: '',
-          // dpf_mileage_num: '',
-          // dpf_online_num: '',
-          // dpf_high_lines: ''
+          // id: '1231',
+          // installId: '1',
+          // dpfStatus: '0',
+          // warning_time: '2018-03-22 09:21:00',
+          // dpfInfo: 'dpf温度异常',
+          // car_user_name: '张胜利',
+          // car_user_phone: '15656565656',
+          // install_place_msg: '济南dpf修理厂',
+          // install_user_name: '李东',
+          // install_user_phone: '18353674768',
+          // dpf_warning_num: '3次',
+          // dpf_maintain_num: '1次',
+          // dpf_mileage_num: '4000公里',
+          // dpf_online_num: '12小时',
+          // dpf_high_lines: '80%'
+          id: '',
+          installId: '',
+          dpfStatus: '',
+          warning_time: '',
+          dpfInfo: '',
+          car_user_name: '',
+          car_user_phone: '',
+          install_place_msg: '',
+          install_user_name: '',
+          install_user_phone: '',
+          dpf_warning_num: '',
+          dpf_maintain_num: '',
+          dpf_mileage_num: '',
+          dpf_online_num: '',
+          dpf_high_lines: ''
         },
         img_url_45: '',
         before_install_img_url: '',
@@ -202,7 +215,7 @@
       }
     },
     created() {
-      // this._getWarning()
+      this._getWarning()
       this.getGrade()
     },
     destroyed() {
@@ -295,27 +308,37 @@
           })
           return
         }
-        noHandle(this.form.id).then(responce => {
-          if (responce.code === '201') {
-            this.$message({
-              type: 'success',
-              message: responce.message
-            })
-          } else {
-            this.$message({
-              type: 'error',
-              message: responce.message
-            })
-          }
+        this.$prompt('请输入暂不处理标记', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(({value}) => {
+          noHandle(this.form.id, value).then(responce => {
+            if (responce.code === '201') {
+              this.$message({
+                type: 'success',
+                message: responce.message
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: responce.message
+              })
+            }
+          })
+          this._getWarning()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消'
+          })
         })
-        this._getWarning()
       },
       _nono() {
         if (this.form.id == null || this.form.id === '') {
           // console.log('无数据，不需默认处理')
           return
         }
-        noHandle(this.form.id).then(responce => {
+        noHandle(this.form.id, '页面刷新或关闭浏览器').then(responce => {
           // console.log('已将未操作数据，进行未处理操作')
         })
       },

@@ -123,6 +123,26 @@
                       <el-option label="未安装" value="1"></el-option>
                     </el-select>
                   </el-col>
+                </el-form-item>
+                  <el-form-item>
+                    <el-col :span="2">数据采集器编号</el-col>
+                    <el-col :span="5">
+                      <el-input v-model="form.dataCollectorNo" class="form-input" readonly></el-input>
+                    </el-col>
+                    <el-col :span="2">数据采集器厂家</el-col>
+                    <el-col :span="5">
+                      <el-input v-model="form.dataCollectorFactory" class="form-input" readonly></el-input>
+                    </el-col>
+                    <el-col :span="2">数据采集器设备型号</el-col>
+                    <el-col :span="5">
+                      <el-input v-model="form.dataCollectorType" class="form-input" readonly></el-input>
+                    </el-col>
+                  </el-form-item>
+                <el-form-item>
+                  <el-col :span="2">物联网卡号</el-col>
+                  <el-col :span="5">
+                    <el-input v-model="form.networkCard" class="form-input" readonly></el-input>
+                  </el-col>
                   <el-col :span="2">设备类别</el-col>
                   <el-col :span="5">
                     <el-select v-model="form.dpf_type" placeholder="" disabled>
@@ -132,9 +152,9 @@
                   </el-col>
                 </el-form-item>
                 <el-form-item>
-                  <el-col :span="2">所属车队</el-col>
+                  <el-col :span="2">所属运输公司</el-col>
                   <el-col :span="5">
-                    <el-input v-model="form.fleet_name" class="form-input" readonly></el-input>
+                    <el-input v-model="form.fleetName" class="form-input" readonly></el-input>
                   </el-col>
                   <el-col :span="2">载重</el-col>
                   <el-col :span="5">

@@ -59,7 +59,7 @@
         </el-table-column>
         <el-table-column
           prop="createTime"
-          label="安装时间"
+          label="信息上传时间"
           width="170">
         </el-table-column>
         <el-table-column
@@ -135,6 +135,9 @@
           <el-form-item label="安装人电话" prop="install_user_phone">
             <el-input v-model="form.install_user_phone" :disabled="lookOrEdit"></el-input>
           </el-form-item>
+          <el-form-item label="信息上传时间" prop="install_user_phone">
+            <el-input v-model="form.createTime" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
           <el-form-item label="唯一标识" prop="qr_code">
             <el-input v-model="form.qr_code" style="width:80%;" :disabled="lookOrEdit"></el-input>
           </el-form-item>
@@ -172,9 +175,23 @@
               <el-option label="40(含)吨以上" value="4"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="所属车队" prop="car_status">
-            <el-input v-model="form.fleet_name" :disabled="lookOrEdit"></el-input>
+          <el-form-item label="所属运输公司" prop="car_status">
+            <el-input v-model="form.fleetName" :disabled="lookOrEdit"></el-input>
           </el-form-item>
+          <el-form-item label="数据采集器编号" prop="car_status">
+            <el-input v-model="form.dataCollectorNo" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="数据采集器厂家" prop="car_status">
+            <el-input v-model="form.dataCollectorFactory" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="数据采集器设备型号" prop="car_status">
+            <el-input v-model="form.dataCollectorType" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="数据采集器设备型号" prop="car_status">
+            <el-input v-model="form.dataCollectorType" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
+
+
           <el-form-item label="车辆照片">
             <el-col :span="24">
               <a style="color:#66b1ff" @click="openImageView(form.img_url_45)">45°照片</a>&nbsp;&nbsp;&nbsp;
