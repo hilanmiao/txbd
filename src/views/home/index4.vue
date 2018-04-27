@@ -142,7 +142,7 @@
           <div class="label">监控面板</div>
           <div class="search">
             <el-input placeholder="请输入设备编号" v-model="listQuery.carCode"></el-input>
-            <el-button @click="_getCarWarning">查询</el-button>
+            <el-button @click="refreshPanelData">查询</el-button>
           </div>
           <div class="citySelect">
             <el-select v-model="listQuery.city" placeholder="">
@@ -1420,6 +1420,10 @@
         // 页码改变处理
         this.listQuery.page = val
         this._getCars()
+      },
+      refreshPanelData() {
+        this._getCars()
+        this._getCarWarning()
       },
       _getCars() {
         // 设置表格loading效果

@@ -24,10 +24,10 @@
         fit
         highlight-current-row
         style="width: 100%">
-        <el-table-column
-          prop="dpf_code"
-          label="设备序号">
-        </el-table-column>
+        <!--<el-table-column-->
+        <!--prop="dpf_code"-->
+        <!--label="设备序号">-->
+        <!--</el-table-column>-->
         <el-table-column
           prop="supplier_name"
           label="供应商">
@@ -42,16 +42,16 @@
           label="创建时间">
         </el-table-column>
         <!--<el-table-column-->
-          <!--width="120"-->
-          <!--prop="create_user_name"-->
-          <!--label="创建人">-->
+        <!--width="120"-->
+        <!--prop="create_user_name"-->
+        <!--label="创建人">-->
         <!--</el-table-column>-->
         <!--<el-table-column-->
-          <!--width="120"-->
-          <!--label="设备状态">-->
-          <!--<template slot-scope="scope">-->
-            <!--<el-tag :type="scope.row.type | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>-->
-          <!--</template>-->
+        <!--width="120"-->
+        <!--label="设备状态">-->
+        <!--<template slot-scope="scope">-->
+        <!--<el-tag :type="scope.row.type | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>-->
+        <!--</template>-->
         <!--</el-table-column>-->
         <el-table-column
           fixed="right"
@@ -86,11 +86,11 @@
     <div class="others-container">
       <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
         <el-form ref="form" status-icon :rules="rules" :model="tempModel" label-width="80px" size="mini">
-          <el-form-item label="设备序号" prop="dpf_code">
-            <el-input v-model="tempModel.dpf_code"></el-input>
-          </el-form-item>
+          <!--<el-form-item label="设备序号" prop="dpf_code">-->
+          <!--<el-input v-model="tempModel.dpf_code"></el-input>-->
+          <!--</el-form-item>-->
           <el-form-item label="供应商" prop="supplier_id">
-            <el-select v-model="tempModel.supplier_id" placeholder="请选择供应商">
+            <el-select v-model="tempModel.supplier_id" placeholder="请选择供应商" :disabled="isEdit">
               <el-option v-for="item in listSupplier" :key="item.SUPPLIER_ID" :label="item.NAME"
                          :value="item.SUPPLIER_ID"></el-option>
             </el-select>
@@ -99,11 +99,11 @@
             <el-input v-model="tempModel.dpf_model"></el-input>
           </el-form-item>
           <!--<el-form-item label="状态" prop="type">-->
-            <!--<el-select v-model="tempModel.type" placeholder="请选择">-->
-              <!--<el-option label="未使用" value="0"></el-option>-->
-              <!--<el-option label="已使用" value="1"></el-option>-->
-              <!--<el-option label="已报废" value="2"></el-option>-->
-            <!--</el-select>-->
+          <!--<el-select v-model="tempModel.type" placeholder="请选择">-->
+          <!--<el-option label="未使用" value="0"></el-option>-->
+          <!--<el-option label="已使用" value="1"></el-option>-->
+          <!--<el-option label="已报废" value="2"></el-option>-->
+          <!--</el-select>-->
           <!--</el-form-item>-->
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="loadingSubmit">保存</el-button>
@@ -169,7 +169,8 @@
           ]
         },
         // 导出相关
-        loadingExport: false
+        loadingExport: false,
+        isEdit: false
       }
     },
     watch: {
@@ -221,9 +222,9 @@
           id: '',
           dpf_code: '',
           supplier_id: '',
-          dpf_model: '',
-          type: '0'
+          dpf_model: ''
         }
+        this.isEdit = false
       },
       handleCreate() {
         // 添加处理
@@ -235,6 +236,7 @@
         this.tempModel = Object.assign({}, row)
         // 编辑处理
         this.dialogFormVisible = true
+        this.isEdit = true
       },
       handleDelete(row) {
         // 使用对象拷贝赋值
@@ -355,7 +357,6 @@
         })
       },
       _putModelEnquipment() {
-        this.tempModel.type = '0'
         putModelEnquipment(this.tempModel).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息

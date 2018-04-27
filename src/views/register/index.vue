@@ -190,13 +190,16 @@
           <el-form-item label="数据采集器设备型号" prop="car_status">
             <el-input v-model="form.dataCollectorType" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-
-
           <el-form-item label="车辆照片">
             <el-col :span="24">
               <a style="color:#66b1ff" @click="openImageView(form.img_url_45)">45°照片</a>&nbsp;&nbsp;&nbsp;
               <a style="color:#66b1ff" @click="openImageView(form.before_install_img_url)">安装前照片</a>&nbsp;&nbsp;&nbsp;
               <a style="color:#66b1ff" @click="openImageView(form.after_install_img_url)">安装后照片</a>&nbsp;&nbsp;&nbsp;
+            </el-col>
+          </el-form-item>
+          <el-form-item label="环保合格证">
+            <el-col :span="24">
+              <a style="color:#66b1ff" @click="openImageView(form.hb_url)">环保合格证</a>&nbsp;&nbsp;&nbsp;
             </el-col>
           </el-form-item>
           <el-form-item>

@@ -1,5 +1,5 @@
-const IP = '47.104.154.2'
-// const IP = '192.168.1.18:8080'
+// const IP = '47.104.154.2'
+const IP = '192.168.1.198:8080'
 const FileIP = '118.31.228.98:8089'
 
 module.exports = {

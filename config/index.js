@@ -31,8 +31,7 @@ module.exports = {
     proxyTable: {
       '/v1': {
         // 通过本地服务器将你的请求转发到这个地址
-        target: `${process.env.BASE_API}`,
-        // target: 'http://192.168.1.111:8080/api/v1',
+        target: 'http://192.168.1.111:8080/api/v1',
         // target: 'http://192.168.10.106:8080/api/v1',
         // target: 'http://192.168.1.18:8080/api/v1',
         // 设置这个参数可以避免跨域

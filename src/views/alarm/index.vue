@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container alarm-wrapper">
     <div>
       <h2 class="cenTitle">
         预警车辆信息
@@ -77,6 +77,10 @@
                 <div>
                   <img :src="after_install_img_url" alt="">
                   安装后照片
+                </div>
+                <div>
+                  <img :src="hb_url" alt="">
+                  环保合格证
                 </div>
               </div>
             </div>
@@ -211,7 +215,8 @@
         },
         img_url_45: '',
         before_install_img_url: '',
-        after_install_img_url: ''
+        after_install_img_url: '',
+        hb_url: ''
       }
     },
     created() {
@@ -279,6 +284,7 @@
             this.img_url_45 = responce.data.img_url_45
             this.before_install_img_url = responce.data.before_install_img_url
             this.after_install_img_url = responce.data.after_install_img_url
+            this.hb_url = responce.data.hb_url
             if (responce.data.dpfStatus === '0') {
               this.moreBig = false
               this.longTime = true
@@ -297,6 +303,7 @@
             this.img_url_45 = ''
             this.before_install_img_url = ''
             this.after_install_img_url = ''
+            this.hb_url = ''
           }
         })
       },
@@ -310,7 +317,9 @@
         }
         this.$prompt('请输入暂不处理标记', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消'
+          cancelButtonText: '取消',
+          inputType: 'textarea',
+          customClass: 'my-prompt'
         }).then(({value}) => {
           noHandle(this.form.id, value).then(responce => {
             if (responce.code === '201') {
@@ -383,93 +392,100 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  .backImg {
-    background-repeat: no-repeat;
-    //width:2000;
-  }
-
-  .centerDetail {
-    padding-left: 10px;
-    width: 100%;
-    height: 60%;
-  }
-
-  .cenTitle {
-    margin-top: 10px;
-    text-align: center;
-    color: #005B74;
-    img {
-      vertical-align: middle;
-      margin-right: 10px;
+  .my-prompt {
+    .el-textarea__inner {
+      height: 120px !important;
     }
   }
 
-  .tableTit {
+  .alarm-wrapper {
+    .backImg {
+      background-repeat: no-repeat;
+      //width:2000;
+    }
 
-    color: #C0C0C0;
-  }
+    .centerDetail {
+      padding-left: 10px;
+      width: 100%;
+      height: 60%;
+    }
 
-  .tableCon {
-    color: #FF4B00;
-  }
-
-  .detalForm {
-    width: 100%;
-  }
-
-  .detalTable {
-    width: 100%;
-    height: 400px;
-    margin-left: 10%;
-    td {
+    .cenTitle {
+      margin-top: 10px;
+      text-align: center;
+      color: #005B74;
       img {
         vertical-align: middle;
         margin-right: 10px;
       }
     }
-  }
 
-  .description {
-    border: 1px solid #005B74;
-    width: 700px;
-    padding: 15px;
-    background-color: #E4F0F2;
-    color: #0094BE;
-  }
+    .tableTit {
 
-  .logo {
-    display: flex;
-    align-items: center;
-    img {
-      width: 40px;
-      height: 40px;
+      color: #C0C0C0;
+    }
+
+    .tableCon {
+      color: #FF4B00;
+    }
+
+    .detalForm {
+      width: 100%;
+    }
+
+    .detalTable {
+      width: 100%;
+      height: 400px;
+      margin-left: 10%;
+      td {
+        img {
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .description {
+      border: 1px solid #005B74;
+      width: 700px;
+      padding: 15px;
+      background-color: #E4F0F2;
+      color: #0094BE;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    .img-grid {
+      display: flex;
+      width: 100%;
+      img {
+        width: 200px;
+        height: 200px;
+      }
+      div {
+        margin: 50px;
+        text-align: center;
+        color: #005B74;
+        font-weight: bold;
+
+      }
+    }
+
+    .remind {
+      display: flex;
+      position: absolute;
+      margin-top: 120px;
+      margin-left: 70px;
+      img {
+        vertical-align: middle;
+      }
     }
   }
-
-  .img-grid {
-    display: flex;
-    width: 100%;
-    img {
-      width: 200px;
-      height: 200px;
-    }
-    div {
-      margin: 50px;
-      text-align: center;
-      color: #005B74;
-      font-weight: bold;
-
-    }
-  }
-
-  .remind {
-    display: flex;
-    position: absolute;
-    margin-top: 120px;
-    margin-left: 70px;
-    img {
-      vertical-align: middle;
-    }
-  }
-
 </style>

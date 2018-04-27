@@ -22,6 +22,7 @@ import Layout from '../views/layout/Layout'
   }
  **/
 export const constantRouterMap = [
+  {path: '/open_api', name: 'open_api', component: _import('open_api/index'), hidden: true},
   {path: '/login', name: 'login', component: _import('login/index3'), hidden: true},
   {path: '/home', component: _import('home/index4'), hidden: true},
   // {path: '/home2', component: _import('home/index2'), hidden: true},
@@ -312,7 +313,6 @@ export const asyncRouterMapRole = [
       {
         id: 56,
         path: 'history',
-        hidden: true,
         name: '历史轨迹',
         component: _import('history/index'),
         meta: {title: '历史轨迹'}
@@ -624,7 +624,6 @@ export const asyncRouterMap = [
       {
         id: 56,
         path: 'history',
-        hidden: true,
         name: '历史轨迹',
         component: _import('history/index'),
         meta: {title: '历史轨迹'}

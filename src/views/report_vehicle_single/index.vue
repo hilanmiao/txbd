@@ -124,20 +124,20 @@
                     </el-select>
                   </el-col>
                 </el-form-item>
-                  <el-form-item>
-                    <el-col :span="2">数据采集器编号</el-col>
-                    <el-col :span="5">
-                      <el-input v-model="form.dataCollectorNo" class="form-input" readonly></el-input>
-                    </el-col>
-                    <el-col :span="2">数据采集器厂家</el-col>
-                    <el-col :span="5">
-                      <el-input v-model="form.dataCollectorFactory" class="form-input" readonly></el-input>
-                    </el-col>
-                    <el-col :span="2">数据采集器设备型号</el-col>
-                    <el-col :span="5">
-                      <el-input v-model="form.dataCollectorType" class="form-input" readonly></el-input>
-                    </el-col>
-                  </el-form-item>
+                <el-form-item>
+                  <el-col :span="2">数据采集器编号</el-col>
+                  <el-col :span="5">
+                    <el-input v-model="form.dataCollectorNo" class="form-input" readonly></el-input>
+                  </el-col>
+                  <el-col :span="2">数据采集器厂家</el-col>
+                  <el-col :span="5">
+                    <el-input v-model="form.dataCollectorFactory" class="form-input" readonly></el-input>
+                  </el-col>
+                  <el-col :span="2">数据采集器设备型号</el-col>
+                  <el-col :span="5">
+                    <el-input v-model="form.dataCollectorType" class="form-input" readonly></el-input>
+                  </el-col>
+                </el-form-item>
                 <el-form-item>
                   <el-col :span="2">物联网卡号</el-col>
                   <el-col :span="5">
@@ -170,16 +170,20 @@
 
                 <el-form-item>
                   <el-col :span="2">45°图片</el-col>
-                  <el-col :span="5">
+                  <el-col :span="3">
                     <el-button type="primary" icon="el-icon-search" @click="lookimg(0)">查看图片</el-button>
                   </el-col>
                   <el-col :span="2">安装前图片</el-col>
-                  <el-col :span="5">
+                  <el-col :span="3">
                     <el-button type="primary" icon="el-icon-search" @click="lookimg(1)">查看图片</el-button>
                   </el-col>
                   <el-col :span="2">安装后图片</el-col>
-                  <el-col :span="5">
+                  <el-col :span="3">
                     <el-button type="primary" icon="el-icon-search" @click="lookimg(2)">查看图片</el-button>
+                  </el-col>
+                  <el-col :span="2">环保合格证</el-col>
+                  <el-col :span="3">
+                    <el-button type="primary" icon="el-icon-search" @click="lookimg(3)">查看图片</el-button>
                   </el-col>
                 </el-form-item>
               </el-col>
@@ -304,6 +308,11 @@
             if (this.form.after_install_img_url) {
               this.imageView = true
               this.imgDetail = process.env.IMG_SERVER_PATH + this.form.after_install_img_url
+            }
+          } else if (val === 3) {
+            if (this.form.hb_url) {
+              this.imageView = true
+              this.imgDetail = process.env.IMG_SERVER_PATH + this.form.hb_url
             }
           }
         } else {

@@ -52,11 +52,11 @@
           label="accessSecret">
         </el-table-column>
         <!--<el-table-column-->
-          <!--width="120"-->
-          <!--label="类型">-->
-          <!--<template slot-scope="scope">-->
-            <!--<el-tag :type="scope.row.type | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>-->
-          <!--</template>-->
+        <!--width="120"-->
+        <!--label="类型">-->
+        <!--<template slot-scope="scope">-->
+        <!--<el-tag :type="scope.row.type | typeTagFilter">{{scope.row.type | typeFilter}}</el-tag>-->
+        <!--</template>-->
         <!--</el-table-column>-->
         <el-table-column
           fixed="right"
@@ -90,7 +90,7 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="dialogFormVisible" title="添加&编辑" :before-close="handleBeforeClose">
-        <el-form ref="form"  status-icon :rules="rules" :model="tempModel" label-width="80px" size="mini">
+        <el-form ref="form" status-icon :rules="rules" :model="tempModel" label-width="80px" size="mini">
           <el-form-item label="平台名称" prop="name">
             <el-input v-model="tempModel.name"></el-input>
           </el-form-item>
@@ -100,12 +100,18 @@
           <el-form-item label="电话" prop="link_phone">
             <el-input v-model="tempModel.link_phone"></el-input>
           </el-form-item>
-          <!--<el-form-item label="类型" prop="type">-->
-            <!--<el-select v-model="tempModel.type" placeholder="请选择">-->
-              <!--<el-option label="市级平台" value="0"></el-option>-->
-              <!--<el-option label="供应商平台" value="1"></el-option>-->
-            <!--</el-select>-->
-          <!--</el-form-item>-->
+          <el-form-item label="类型" prop="type">
+            <el-select v-model="tempModel.type" placeholder="请选择">
+              <el-option label="市级平台" value="0"></el-option>
+              <el-option label="供应商平台" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="城市" v-show="this.tempModel.type === '0'">
+            <el-select v-model="tempModel.city_id" clearable placeholder="选择城市">
+              <el-option v-for="item in listCity" :key="item.id" :label="item.name"
+                         :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSubmit" :loading="loadingSubmit">保存</el-button>
             <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -117,12 +123,20 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListPlatform, postModelPlatform, putModelPlatform, deleteModelPlatform,exportEnquipment} from '@/api/lower_platform'
+  import {
+    getListPlatform,
+    postModelPlatform,
+    putModelPlatform,
+    deleteModelPlatform,
+    exportEnquipment
+  } from '@/api/lower_platform'
+  import {getCitys} from '@/api/city'
 
   export default {
     data() {
       return {
         // 列表相关
+        listCity: [],
         list: [],
         total: 0,
         loadingList: false,
@@ -140,7 +154,8 @@
           name: '',
           link_name: '',
           link_phone: '',
-          type: '0'
+          type: '',
+          city_id: ''
         },
         // 表单验证相关
         rules: {
@@ -200,6 +215,7 @@
     created() {
       // 获取列表数据
       this._getList()
+      this._getCityList()
     },
     methods: {
       resetTempModel() {
@@ -384,6 +400,12 @@
           // 取消表格loading效果
           this.loadingList = false
         })
+      },
+      _getCityList() {
+        getCitys().then(response => {
+          this.listCity = response.data
+        })
+        this.listCity = getCitys()
       }
     }
   }
