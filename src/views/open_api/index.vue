@@ -24,7 +24,14 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="车牌颜色" prop="carColor">
-              <el-input v-model="tempModel.carColor"></el-input>
+              <el-select v-model="tempModel.carColor" style="width:100%;" placeholder="车牌颜色">
+                <el-option value="1" label="蓝色"></el-option>
+                <el-option value="2" label="黄色"></el-option>
+                <el-option value="3" label="黑色"></el-option>
+                <el-option value="4" label="白色"></el-option>
+                <el-option value="9" label="其他"></el-option>
+                <el-option value="0" label="未上牌"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -119,8 +126,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="DPF编号" prop="dpfModel">
-              <el-select v-model="tempModel.dpfModel" style="width:100%;" placeholder="请选择城市">
+            <el-form-item label="DPF型号" prop="dpfModel">
+              <el-select v-model="tempModel.dpfModel" style="width:100%;" placeholder="请选择DPF型号">
                 <el-option v-for="item in listDpfModels" :key="item.id" :label="item.dpf_model"
                            :value="item.id"></el-option>
               </el-select>
@@ -274,7 +281,7 @@
           accessSecret: 'cea1177f',
           // 车辆业务类别(与甲方确认后定为三种1.客车 2.普通货车 3.危险品货车)
           carBusType: '',
-          // 车牌颜色，按照JT/T415-2006的5.4.12.未上牌时，取值为0 ,
+          // 车牌颜色 1:蓝色，2：黄色：3：黑色4：白色9：其他0：未上牌
           carColor: '',
           // 车辆出厂日期
           carCreateTime: '',
@@ -481,6 +488,18 @@
       'tempModel.supplierId': {
         handler: function (val, oldVal) {
           this._getDpfModels()
+        },
+        deep: true
+      },
+      'tempModel.accessKey': {
+        handler: function (val, oldVal) {
+          this._getSupplierList()
+        },
+        deep: true
+      },
+      'tempModel.accessSecret': {
+        handler: function (val, oldVal) {
+          this._getSupplierList()
         },
         deep: true
       }
