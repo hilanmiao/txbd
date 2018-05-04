@@ -32,3 +32,12 @@ export function exportEnquipment(params) {
     params
   })
 }
+
+// 查询DPF安装信息和报警信息
+export function getInfo(params) {
+  return request({
+    url: 'v1/installInfo/info',
+    method: 'get',
+    params
+  })
+}

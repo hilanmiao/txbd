@@ -30,7 +30,7 @@
                 placeholder="公司法人名称">
       </el-input>
       <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button type="primary" icon="el-icon-edit" @click="handleAdd()">添加</el-button>
+      <!--<el-button type="primary" icon="el-icon-edit" @click="handleAdd()">添加</el-button>-->
       <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
     </div>
 

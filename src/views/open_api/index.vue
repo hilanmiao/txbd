@@ -120,7 +120,10 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="DPF编号" prop="dpfModel">
-              <el-input v-model="tempModel.dpfModel"></el-input>
+              <el-select v-model="tempModel.dpfModel" style="width:100%;" placeholder="请选择城市">
+                <el-option v-for="item in listDpfModels" :key="item.id" :label="item.dpf_model"
+                           :value="item.id"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -168,7 +171,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="供应商" prop="supplier_id">
-              <el-select v-model="tempModel.supplier_id" placeholder="请选择供应商">
+              <el-select v-model="tempModel.supplierId" placeholder="请选择供应商">
                 <el-option v-for="item in listSupplier" :key="item.SUPPLIER_ID" :label="item.NAME"
                            :value="item.SUPPLIER_ID"></el-option>
               </el-select>
@@ -256,13 +259,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getSuppList, postModelDpf} from '@/api/open_api'
+  import {getSuppList, postModelDpf, getDpfModels} from '@/api/open_api'
 
   export default {
     data: function () {
       return {
         // 表单相关
         listSupplier: [],
+        listDpfModels: [],
         tempModel: {
           // key
           accessKey: 'a6758e88',
@@ -473,6 +477,14 @@
         ]
       }
     },
+    watch: {
+      'tempModel.supplierId': {
+        handler: function (val, oldVal) {
+          this._getDpfModels()
+        },
+        deep: true
+      }
+    },
     created() {
       this._getSupplierList()
     },
@@ -592,33 +604,48 @@
           // 处理图片路径
           tempForm.fortyFiveImgUrl[0].url = tempForm.fortyFiveImgUrl[0].url.replace(process.env.IMG_SERVER_PATH, '')
         }
-        tempForm.fortyFiveImgUrl = JSON.stringify(tempForm.fortyFiveImgUrl)
+        tempForm.fortyFiveImgUrl = tempForm.fortyFiveImgUrl[0].url
+        // tempForm.fortyFiveImgUrl = 'http://07.imgmini.eastday.com/mobile/20180503/20180503090908_177cb9860dd3e4557c7d74d8ff27cbdd_1.jpeg'
         if (tempForm.hbImgUrl.length > 0) {
           // 处理图片路径
           tempForm.hbImgUrl[0].url = tempForm.hbImgUrl[0].url.replace(process.env.IMG_SERVER_PATH, '')
         }
-        tempForm.hbImgUrl = JSON.stringify(tempForm.hbImgUrl)
+        tempForm.hbImgUrl = tempForm.hbImgUrl[0].url
+        // tempForm.hbImgUrl = 'http://07.imgmini.eastday.com/mobile/20180503/20180503090908_177cb9860dd3e4557c7d74d8ff27cbdd_1.jpeg'
         if (tempForm.installAfterImgUrl.length > 0) {
           // 处理图片路径
           tempForm.installAfterImgUrl[0].url = tempForm.installAfterImgUrl[0].url.replace(process.env.IMG_SERVER_PATH, '')
         }
-        tempForm.installAfterImgUrl = JSON.stringify(tempForm.installAfterImgUrl)
+        tempForm.installAfterImgUrl = tempForm.installAfterImgUrl[0].url
+        // tempForm.installAfterImgUrl = 'http://07.imgmini.eastday.com/mobile/20180503/20180503090908_177cb9860dd3e4557c7d74d8ff27cbdd_1.jpeg'
         if (tempForm.installBeforeImgUrl.length > 0) {
           // 处理图片路径
           tempForm.installBeforeImgUrl[0].url = tempForm.installBeforeImgUrl[0].url.replace(process.env.IMG_SERVER_PATH, '')
         }
-        tempForm.installBeforeImgUrl = JSON.stringify(tempForm.installBeforeImgUrl)
+        tempForm.installBeforeImgUrl = tempForm.installBeforeImgUrl[0].url
+        // tempForm.installBeforeImgUrl = 'http://07.imgmini.eastday.com/mobile/20180503/20180503090908_177cb9860dd3e4557c7d74d8ff27cbdd_1.jpeg'
         postModelDpf(tempForm).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
-            this.$message({
+            // this.$message({
+            //   type: 'success',
+            //   message: '操作成功!'
+            // })
+            this.$notify({
+              title: '成功',
+              message: '保存信息成功',
               type: 'success',
-              message: '操作成功!'
+              position: 'bottom-left'
             })
           } else {
-            this.$message({
-              type: 'error',
-              message: response.message
+            // this.$message({
+            //   type: 'error',
+            //   message: response.message
+            // })
+            this.$notify.error({
+              title: '错误',
+              message: response.message,
+              position: 'bottom-left'
             })
           }
           this.submitLoading = false
@@ -629,6 +656,24 @@
         getSuppList(params).then(response => {
           if (response.code === '200') {
             this.listSupplier = response.data
+          }
+        })
+      },
+      _getDpfModels() {
+        const params = {
+          accessKey: this.tempModel.accessKey,
+          accessSecret: this.tempModel.accessSecret,
+          supplier_id: this.tempModel.supplierId
+        }
+        getDpfModels(params).then(response => {
+          if (response.code === '200') {
+            // 设置表格数据
+            this.listDpfModels = response.data
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
           }
         })
       }

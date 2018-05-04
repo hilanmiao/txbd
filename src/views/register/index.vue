@@ -20,6 +20,10 @@
                 class="filter-item"
                 placeholder="车牌号">
       </el-input>
+      <el-select v-model="listQuery.supplier_id" placeholder="请选择供应商">
+        <el-option v-for="item in listSupp" :key="item.SUPPLIER_ID" :label="item.NAME"
+                   :value="item.SUPPLIER_ID"></el-option>
+      </el-select>
       <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
       <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
     </div>
@@ -36,6 +40,16 @@
         <el-table-column
           prop="cityName"
           label="城市"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="supplierName"
+          label="供应商"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="dpf_model"
+          label="DPF型号"
           width="150">
         </el-table-column>
         <el-table-column
@@ -217,11 +231,13 @@
   import {getMainList, lookMain, exportEnquipment} from '@/api/register'
   import {getCitys} from '@/api/city'
   import {getToken} from '@/utils/auth'
+  import {allSupp} from '@/api/supplier'
 
   export default {
     data() {
       return {
         // 列表相关
+        listSupp: [],
         tableData: [],
         total: 0,
         dateArea: '',
@@ -264,6 +280,7 @@
       }
     },
     created() {
+      this._getAllSupp()
       this._getList()
       this._getCityList()
     },
@@ -445,6 +462,18 @@
         setTimeout(() => {
           console.log('提交中')
         }, 2000)
+      },
+      _getAllSupp() {
+        allSupp().then(response => {
+          if (response.code === '200') {
+            this.listSupp = response.data
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
       }
     }
   }

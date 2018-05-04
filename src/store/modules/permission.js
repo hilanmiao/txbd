@@ -14,10 +14,15 @@ import {asyncRouterMap, constantRouterMap} from '@/router'
 // }
 // TODO: 这里改了
 function hasPermission(roles, route) {
-  if (route.id && !route.hidden) {
-    return roles.some(role => route.id === parseInt(role))
+  // 不显示首页到菜单上
+  if (route.id === 99) {
+    return false
   } else {
-    return true
+    if (route.id && !route.hidden) {
+      return roles.some(role => route.id === parseInt(role))
+    } else {
+      return true
+    }
   }
 }
 

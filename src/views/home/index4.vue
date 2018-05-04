@@ -753,6 +753,7 @@
   import {getCars, getCarHistory, getCarBase, getCarWarning} from '@/api/gis'
   import PieChart from './components/PieChart'
   import {debounce} from '@/utils'
+  import store from '@/store'
 
   export default {
     components: {
@@ -876,6 +877,15 @@
             this.closeTimer()
           }
         }
+      }
+    },
+    beforeRouteEnter(to, from, next) {
+      // 判断是否有权限进入监控页面
+      const index = JSON.stringify(store.getters.roles).indexOf('99')
+      if (index === -1) {
+        next({path: '/'})
+      } else {
+        next()
       }
     },
     mounted() {

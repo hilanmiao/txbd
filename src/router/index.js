@@ -76,9 +76,9 @@ export const asyncRouterMapRole = [
       {
         id: 13,
         path: 'equipment',
-        name: '设备信息管理',
+        name: '设备型号管理',
         component: _import('equipment/index'),
-        meta: {title: '设备信息管理'}
+        meta: {title: '设备型号管理'}
       },
       {
         id: 14,
@@ -100,6 +100,13 @@ export const asyncRouterMapRole = [
         name: '下级平台管理',
         component: _import('lower_platform/index'),
         meta: {title: '下级平台管理'}
+      },
+      {
+        id: 17,
+        path: 'info',
+        name: 'DPF安装&报警信息',
+        component: _import('register/info'),
+        meta: {title: 'DPF安装&报警信息'}
       }
     ]
   },
@@ -208,6 +215,13 @@ export const asyncRouterMapRole = [
         name: '非法数据统计报表',
         component: _import('report_illegal/index'),
         meta: {title: '非法数据统计报表'}
+      },
+      {
+        id: 215,
+        path: 'report_dpf_models',
+        name: 'dpf型号安装统计',
+        component: _import('report_dpf_models/index'),
+        meta: {title: 'dpf型号安装统计'}
       }
     ]
   },
@@ -354,6 +368,23 @@ export const asyncRouterMapRole = [
         name: '机构管理',
         component: _import('organ/index'),
         meta: {title: '机构管理'}
+      }
+    ]
+  },
+  {
+    id: 99,
+    path: '/home',
+    component: Layout,
+    redirect: '/home/home',
+    name: '首页',
+    meta: {title: '首页', icon: 'documentation'},
+    children: [
+      {
+        id: 991,
+        path: 'home',
+        name: '地图车辆实时监控',
+        component: _import('home/index4'),
+        meta: {title: '地图车辆实时监控', icon: 'documentation'}
       }
     ]
   },
@@ -387,9 +418,9 @@ export const asyncRouterMap = [
       {
         id: 13,
         path: 'equipment',
-        name: '设备信息管理',
+        name: '设备型号管理',
         component: _import('equipment/index'),
-        meta: {title: '设备信息管理'}
+        meta: {title: '设备型号管理'}
       },
       {
         id: 14,
@@ -411,6 +442,13 @@ export const asyncRouterMap = [
         name: '下级平台管理',
         component: _import('lower_platform/index'),
         meta: {title: '下级平台管理'}
+      },
+      {
+        id: 17,
+        path: 'info',
+        name: 'DPF安装&报警信息',
+        component: _import('register/info'),
+        meta: {title: 'DPF安装&报警信息'}
       }
     ]
   },
@@ -519,6 +557,13 @@ export const asyncRouterMap = [
         name: '非法数据统计报表',
         component: _import('report_illegal/index'),
         meta: {title: '非法数据统计报表'}
+      },
+      {
+        id: 215,
+        path: 'report_dpf_models',
+        name: 'dpf型号安装统计',
+        component: _import('report_dpf_models/index'),
+        meta: {title: 'dpf型号安装统计'}
       }
     ]
   },
@@ -665,6 +710,23 @@ export const asyncRouterMap = [
         name: '机构管理',
         component: _import('organ/index'),
         meta: {title: '机构管理'}
+      }
+    ]
+  },
+  {
+    id: 99,
+    path: '/home',
+    component: Layout,
+    redirect: '/home/home',
+    name: '首页',
+    meta: {title: '首页', icon: 'documentation'},
+    children: [
+      {
+        id: 991,
+        path: 'home',
+        name: '地图车辆实时监控',
+        component: _import('home/index4'),
+        meta: {title: '地图车辆实时监控', icon: 'documentation'}
       }
     ]
   },

@@ -49,13 +49,6 @@
           label="创建时间">
         </el-table-column>
         <el-table-column
-          width="120"
-          label="平台">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.from_system | typeTagFilter">{{scope.row.from_system | typeFilter}}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
           fixed="right"
           label="操作"
           width="130">
@@ -99,12 +92,6 @@
           </el-form-item>
           <el-form-item label="电话" prop="phone">
             <el-input v-model="tempModel.phone"></el-input>
-          </el-form-item>
-          <el-form-item label="平台">
-            <el-select v-model="tempModel.from_system" placeholder="请选择">
-              <el-option label="省级" value="0"></el-option>
-              <el-option label="市级" value="1"></el-option>
-            </el-select>
           </el-form-item>
           <el-form-item label="机构" prop="organid">
             <el-select v-model="tempModel.organid" placeholder="请选择">
