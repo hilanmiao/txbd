@@ -15,7 +15,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="车辆业务类别" prop="carBusType">
-              <el-select v-model="tempModel.carBusType" style="width:100%;" placeholder="请选择车辆业务类别">
+              <el-select v-model="tempModel.carBusType" style="width:100%;" placeholder="请选择">
                 <el-option label="客车" value="1"></el-option>
                 <el-option label="普通货车" value="2"></el-option>
                 <el-option label="危险品货车" value="3"></el-option>
@@ -94,7 +94,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="城市" prop="city_id">
-              <el-select v-model="tempModel.city_id" style="width:100%;" placeholder="请选择城市">
+              <el-select v-model="tempModel.city_id" style="width:100%;" placeholder="请选择">
                 <el-option v-for="item in listCity" :key="item.id" :label="item.name"
                            :value="item.id"></el-option>
               </el-select>
@@ -127,7 +127,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="DPF型号" prop="dpfModel">
-              <el-select v-model="tempModel.dpfModel" style="width:100%;" placeholder="请选择DPF型号">
+              <el-select v-model="tempModel.dpfModel" style="width:100%;" placeholder="请选择">
                 <el-option v-for="item in listDpfModels" :key="item.id" :label="item.dpf_model"
                            :value="item.id"></el-option>
               </el-select>
@@ -178,7 +178,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="供应商" prop="supplier_id">
-              <el-select v-model="tempModel.supplierId" placeholder="请选择供应商">
+              <el-select v-model="tempModel.supplierId" placeholder="请选择">
                 <el-option v-for="item in listSupplier" :key="item.SUPPLIER_ID" :label="item.NAME"
                            :value="item.SUPPLIER_ID"></el-option>
               </el-select>
