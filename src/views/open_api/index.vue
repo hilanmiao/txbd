@@ -121,7 +121,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="dpfId" prop="dpfId">
+            <el-form-item label="DPF编号" prop="dpfId">
               <el-input v-model="tempModel.dpfId"></el-input>
             </el-form-item>
           </el-col>

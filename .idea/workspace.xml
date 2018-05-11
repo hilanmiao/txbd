@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f4419d72-e6ce-4484-a5d3-2969a6c30570" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/config/prod.env.js" afterPath="$PROJECT_DIR$/config/prod.env.js" />
+      <change beforePath="$PROJECT_DIR$/src/views/maintenance_record/index.vue" afterPath="$PROJECT_DIR$/src/views/maintenance_record/index.vue" />
       <change beforePath="$PROJECT_DIR$/src/views/open_api/index.vue" afterPath="$PROJECT_DIR$/src/views/open_api/index.vue" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -23,7 +25,7 @@
       <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/user/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6500">
+            <state relative-caret-position="0">
               <caret line="262" column="10" lean-forward="false" selection-start-line="262" selection-start-column="10" selection-end-line="262" selection-end-column="10" />
               <folding />
             </state>
@@ -124,8 +126,8 @@
       <file leaf-file-name="index.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/open_api/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="618" column="20" lean-forward="false" selection-start-line="618" selection-start-column="20" selection-end-line="618" selection-end-column="20" />
+            <state relative-caret-position="300">
+              <caret line="116" column="19" lean-forward="false" selection-start-line="116" selection-start-column="19" selection-end-line="116" selection-end-column="19" />
               <folding>
                 <element signature="n#el-form-item#0;n#el-col#3;n#el-row#0;n#el-form#0;n#el-card#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                 <element signature="n#el-form-item#0;n#el-col#13;n#el-row#0;n#el-form#0;n#el-card#0;n#div#0;n#template#0;n#!!top" expanded="false" />
@@ -144,26 +146,6 @@
                 <element signature="e#25063#25333#0" expanded="false" />
                 <element signature="e#25357#25862#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/register/index.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5800">
-              <caret line="232" column="2" lean-forward="false" selection-start-line="232" selection-start-column="2" selection-end-line="232" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -219,7 +201,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/views/report_offline/components/BarChart.vue" />
         <option value="$PROJECT_DIR$/src/views/report_online/components/BarChart.vue" />
         <option value="$PROJECT_DIR$/src/views/report_online/components/PieChart.vue" />
         <option value="$PROJECT_DIR$/src/views/report_vehicle/components/BarChart.vue" />
@@ -260,7 +241,6 @@
         <option value="$PROJECT_DIR$/src/views/register/index.vue" />
         <option value="$PROJECT_DIR$/src/api/report_dpf_models.js" />
         <option value="$PROJECT_DIR$/src/views/report_dpf_models/index.vue" />
-        <option value="$PROJECT_DIR$/config/prod.env.js" />
         <option value="$PROJECT_DIR$/src/views/user/index.vue" />
         <option value="$PROJECT_DIR$/src/views/maintenance/index.vue" />
         <option value="$PROJECT_DIR$/src/store/modules/permission.js" />
@@ -269,7 +249,9 @@
         <option value="$PROJECT_DIR$/src/permission.js" />
         <option value="$PROJECT_DIR$/src/views/home/index4.vue" />
         <option value="$PROJECT_DIR$/config/index.js" />
+        <option value="$PROJECT_DIR$/src/views/maintenance_record/index.vue" />
         <option value="$PROJECT_DIR$/src/views/open_api/index.vue" />
+        <option value="$PROJECT_DIR$/config/prod.env.js" />
       </list>
     </option>
   </component>
@@ -320,6 +302,11 @@
             <path>
               <item name="txbd" type="b2602c69:ProjectViewProjectNode" />
               <item name="txbd" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="txbd" type="b2602c69:ProjectViewProjectNode" />
+              <item name="txbd" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -331,14 +318,21 @@
             <path>
               <item name="txbd" type="b2602c69:ProjectViewProjectNode" />
               <item name="txbd" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="open_api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="txbd" type="b2602c69:ProjectViewProjectNode" />
+              <item name="txbd" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -461,11 +455,12 @@
       <workItem from="1525831398892" duration="357000" />
       <workItem from="1525832994997" duration="41000" />
       <workItem from="1525848521461" duration="223000" />
+      <workItem from="1525951267100" duration="659000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="965985000" />
+    <option name="totallyTimeSpent" value="966644000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -483,13 +478,13 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1480709" sideWeight="0.51984346" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1587479" sideWeight="0.51341" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22627737" sideWeight="0.4801565" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15762997" sideWeight="0.5081081" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15762997" sideWeight="0.5081081" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -676,13 +671,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/maintenance_record/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3550">
-          <caret line="156" column="33" lean-forward="true" selection-start-line="147" selection-start-column="16" selection-end-line="156" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/home/components/control.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -768,13 +756,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/prod.env.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/store/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
@@ -826,7 +807,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/user/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6500">
+        <state relative-caret-position="0">
           <caret line="262" column="10" lean-forward="false" selection-start-line="262" selection-start-column="10" selection-end-line="262" selection-end-column="10" />
           <folding />
         </state>
@@ -936,26 +917,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/index.js">
+    <entry file="file://$PROJECT_DIR$/config/prod.env.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
+        <state relative-caret-position="25">
+          <caret line="1" column="34" lean-forward="false" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/maintenance_record/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/register/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5800">
+        <state relative-caret-position="642">
           <caret line="232" column="2" lean-forward="false" selection-start-line="232" selection-start-column="2" selection-end-line="232" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="614">
+          <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/open_api/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="618" column="20" lean-forward="false" selection-start-line="618" selection-start-column="20" selection-end-line="618" selection-end-column="20" />
+        <state relative-caret-position="300">
+          <caret line="116" column="19" lean-forward="false" selection-start-line="116" selection-start-column="19" selection-end-line="116" selection-end-column="19" />
           <folding>
             <element signature="n#el-form-item#0;n#el-col#3;n#el-row#0;n#el-form#0;n#el-card#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#el-form-item#0;n#el-col#13;n#el-row#0;n#el-form#0;n#el-card#0;n#div#0;n#template#0;n#!!top" expanded="false" />
