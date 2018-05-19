@@ -78,7 +78,7 @@
           <template slot-scope="scope">
             <el-button type="success" size="mini" icon="el-icon-search" @click="handleView(scope.row)"></el-button>
             <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
-            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
+            <!--<el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>-->
           </template>
         </el-table-column>
       </el-table>

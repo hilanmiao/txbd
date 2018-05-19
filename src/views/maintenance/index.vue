@@ -541,9 +541,10 @@
         }
         lookMain(param, row.id).then(response => {
           if (response.code === '200') {
-            const imgUrl = JSON.parse(response.data.imgUrl)
-            if (imgUrl.length) {
-              imgUrl[0].url = process.env.IMG_SERVER_PATH + imgUrl[0].url
+            // const imgUrl = JSON.parse(response.data.imgUrl)
+            if (response.data.imgUrl.length) {
+              const imgUrl = [{name: '营业执照.' + response.data.imgUrl.substr(-3), url: ''}]
+              imgUrl[0].url = process.env.IMG_SERVER_PATH + response.data.imgUrl
               response.data.imgUrl = imgUrl
             }
             this.form = Object.assign({}, response.data)
@@ -565,9 +566,10 @@
         }
         lookMain(param, row.id).then(response => {
           if (response.code === '200') {
-            const imgUrl = JSON.parse(response.data.imgUrl)
-            if (imgUrl.length) {
-              imgUrl[0].url = process.env.IMG_SERVER_PATH + imgUrl[0].url
+            // const imgUrl = JSON.parse(response.data.imgUrl)
+            if (response.data.imgUrl.length) {
+              const imgUrl = [{name: '营业执照.' + response.data.imgUrl.substr(-3), url: ''}]
+              imgUrl[0].url = process.env.IMG_SERVER_PATH + response.data.imgUrl
               response.data.imgUrl = imgUrl
             }
             this.form = Object.assign({}, response.data)

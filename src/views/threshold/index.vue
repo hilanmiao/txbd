@@ -104,15 +104,18 @@
         <el-form ref="form" :model="form" :rules="rules" label-width="110px" size="mini">
           <el-row>
             <el-col :span="8">
-              <el-form-item label="dpf型号" prop="dpf_model">
-                <el-input v-model="form.dpf_model":readonly="lookOrEdit"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
               <el-form-item label="供应商" prop="supplier_id">
                 <el-select v-model="form.supplier_id" placeholder="请选择供应商" :disabled="lookOrEdit">
                   <el-option v-for="item in listSupp" :key="item.SUPPLIER_ID" :label="item.NAME"
                              :value="item.SUPPLIER_ID"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="dpf型号" prop="dpf_model">
+                <el-select v-model="form.dpf_model" placeholder="请选择" :disabled="lookOrEdit">
+                  <el-option v-for="item in listDpfModels" :key="item.id" :label="item.dpf_model"
+                             :value="item.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -183,6 +186,7 @@
 <script type="text/ecmascript-6">
   import {getList, addThre, editThre, deleThre} from '@/api/threshold'
   import {allSupp} from '@/api/supplier'
+  import {getListEnquipment} from '@/api/enquipment'
 
   export default {
     data() {
@@ -194,6 +198,7 @@
         lookOrEdit: false,
         T2: '',
         listSupp: [],
+        listDpfModels: [],
         tableData: [],
         // 表单相关
         form: {
@@ -273,6 +278,12 @@
           }
         },
         deep: true
+      },
+      'form.supplier_id': {
+        handler: function (val, oldVal) {
+          this._getDpfModels()
+        },
+        deep: true
       }
     },
     created() {
@@ -336,7 +347,7 @@
         this.resetTempModel()
         this.visibleView = true
         this.lookOrEdit = true
-        this.form = row
+        this.form = Object.assign({}, row)
       },
       handleDelete(row) {
         this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
@@ -407,7 +418,6 @@
         // 隐藏loading
         this.loadingExport = false
       },
-
       handleSearch() {
         this._getList()
       },
@@ -419,7 +429,6 @@
         this.offset = val
         this._getList()
       },
-
       handleSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           // 验证规则
@@ -488,6 +497,29 @@
         setTimeout(() => {
           console.log('提交中')
         }, 2000)
+      },
+      _getDpfModels() {
+        const params = {
+          limit: 1000000,
+          offset: 0,
+          supplier_name: ''
+        }
+        this.listSupp.some(item => {
+          if (item.SUPPLIER_ID === this.form.supplier_id) {
+            params.supplier_name = item.NAME
+            return true
+          }
+        })
+        if (!params.supplier_name) {
+          return
+        }
+        this.listDpfModels = []
+        getListEnquipment(params).then(response => {
+          if (response.code === '200') {
+            // 设置表格数据
+            this.listDpfModels = response.data.dataList
+          }
+        })
       }
     }
   }
