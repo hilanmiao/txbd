@@ -104,10 +104,16 @@
           <el-table-column
             prop="car_load"
             label="载重">
+            <template slot-scope="scope">
+              {{scope.row.car_load | loadFilter}}
+            </template>
           </el-table-column>
           <el-table-column
             prop="car_color"
-            label="颜色">
+            label="车牌颜色">
+            <template slot-scope="scope">
+              {{scope.row.car_color | colorFilter}}
+            </template>
           </el-table-column>
           <el-table-column
             prop="car_type_code"
@@ -209,6 +215,29 @@
           }
         },
         deep: true
+      }
+    },
+    filters: {
+      colorFilter(status) {
+        const statusMap = {
+          '1': '蓝色',
+          '2': '黄色',
+          '3': '黑色',
+          '4': '白色',
+          '9': '其他',
+          '0': '未上牌'
+        }
+        return statusMap[status]
+      },
+      loadFilter(status) {
+        const statusMap = {
+          '0': '8吨以下',
+          '1': '8(含)-20吨',
+          '2': '20(含)-30吨',
+          '3': '30(含)-40吨',
+          '4': '40(含)吨以上'
+        }
+        return statusMap[status]
       }
     },
     created() {

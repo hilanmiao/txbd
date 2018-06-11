@@ -2,10 +2,10 @@
   <div class="app-container">
 
     <div class="filter-container" style="padding-bottom: 10px;">
-      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.dpf_code" style="width: 200px;"
-                class="filter-item"
-                placeholder="DPF设备序号">
-      </el-input>
+      <!--<el-input @keyup.enter.native="handleFilter" v-model="listQuery.dpf_code" style="width: 200px;"-->
+                <!--class="filter-item"-->
+                <!--placeholder="设备型号">-->
+      <!--</el-input>-->
       <el-input @keyup.enter.native="handleFilter" v-model="listQuery.supplier_name" style="width: 200px;"
                 class="filter-item"
                 placeholder="供应商名称">
@@ -283,7 +283,7 @@
         // 显示loading
         this.loadingExport = true
         // 获取excel
-        exportEnquipment().then(response => {
+        exportEnquipment(this.listQuery).then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
             link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)

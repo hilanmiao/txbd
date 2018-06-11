@@ -261,6 +261,7 @@
       _getRegisterList() {
         // 清空表格数据
         this.tableData2 = []
+        this.total2 = 0
         // 设置表格loading效果
         this.tableLoading2 = true
         this.pickerChange2()

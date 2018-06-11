@@ -19,8 +19,8 @@
     data() {
       return {
         loginForm: {
-          username: 'admin',
-          password: '1'
+          username: '',
+          password: ''
         },
         loading: false
       }

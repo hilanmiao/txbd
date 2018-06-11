@@ -54,9 +54,16 @@
                   <el-col :span="5">
                     <el-input v-model="form.car_user_phone" class="form-input" readonly></el-input>
                   </el-col>
-                  <el-col :span="2">车辆颜色</el-col>
+                  <el-col :span="2">车牌颜色</el-col>
                   <el-col :span="5">
-                    <el-input v-model="form.car_color" class="form-input" readonly></el-input>
+                    <el-select v-model="form.car_color" placeholder="" class="form-input" disabled>
+                      <el-option value="1" label="蓝色"></el-option>
+                      <el-option value="2" label="黄色"></el-option>
+                      <el-option value="3" label="黑色"></el-option>
+                      <el-option value="4" label="白色"></el-option>
+                      <el-option value="9" label="其他"></el-option>
+                      <el-option value="0" label="未上牌"></el-option>
+                    </el-select>
                   </el-col>
                   <el-col :span="2">安装点</el-col>
                   <el-col :span="5">

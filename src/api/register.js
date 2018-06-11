@@ -27,7 +27,7 @@ export function lookMain(params, id) {
 // 导出
 export function exportEnquipment(params) {
   return request({
-    url: 'v1/repairFactory/export',
+    url: 'v1/installInfo/export',
     method: 'get',
     params
   })

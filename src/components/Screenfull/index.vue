@@ -48,6 +48,7 @@ export default {
         return false
       }
       screenfull.toggle()
+      this.$store.dispatch('ToggleFullScreen')
     }
   }
 }

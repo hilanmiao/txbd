@@ -49,7 +49,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListRole, postModelRole, putModelRole} from '@/api/part'
+  import {getListRole, postModelRole, putModelRole, deleteModelRole} from '@/api/part'
   import {asyncRouterMapRole} from '@/router'
   import {getToken} from '@/utils/auth'
 
@@ -146,9 +146,22 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
+            deleteModelRole(this.curId).then(response => {
+              if (response.code === '204') {
+                // 弹出提醒信息
+                this.$message({
+                  type: 'success',
+                  message: '操作成功!'
+                })
+                // 重新请求数据(带着原先的查询参数)
+                this.treeData = []
+                this._getListRole()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: response.message
+                })
+              }
             })
           }).catch(() => {
             this.$message({

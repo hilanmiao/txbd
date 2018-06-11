@@ -12,6 +12,7 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         @change="selectDate"
+        :picker-options="pickerOptions"
         style="width:300px;"
         clearable
       >
@@ -20,7 +21,7 @@
                 class="filter-item"
                 placeholder="车牌号">
       </el-input>
-      <el-select v-model="listQuery.supplier_id" placeholder="请选择供应商">
+      <el-select v-model="listQuery.supplier_id" clearable placeholder="请选择供应商">
         <el-option v-for="item in listSupp" :key="item.SUPPLIER_ID" :label="item.NAME"
                    :value="item.SUPPLIER_ID"></el-option>
       </el-select>
@@ -119,13 +120,24 @@
           <el-form-item label="dpf型号" prop="dpf_model">
             <el-input v-model="form.dpf_model" :disabled="lookOrEdit"></el-input>
           </el-form-item>
+          <el-form-item label="dpf编码" prop="dpf_id">
+            <el-input v-model="form.dpf_id" :disabled="lookOrEdit"></el-input>
+          </el-form-item>
           <el-form-item label="车辆编号" prop="car_number">
             <el-input v-model="form.car_number" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="颜色" prop="car_color">
-            <el-input v-model="form.car_color" :disabled="lookOrEdit"></el-input>
+          <el-form-item label="车牌颜色" prop="car_color">
+            <!--<el-input v-model="form.car_color" :disabled="lookOrEdit"></el-input>-->
+            <el-select v-model="form.car_color" style="width:100%;" :disabled="lookOrEdit">
+              <el-option value="1" label="蓝色"></el-option>
+              <el-option value="2" label="黄色"></el-option>
+              <el-option value="3" label="黑色"></el-option>
+              <el-option value="4" label="白色"></el-option>
+              <el-option value="9" label="其他"></el-option>
+              <el-option value="0" label="未上牌"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="型号">
+          <el-form-item label="车辆型号">
             <el-input v-model="form.car_type_code" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车主姓名" prop="car_user_name">
@@ -152,9 +164,9 @@
           <el-form-item label="信息上传时间" prop="install_user_phone">
             <el-input v-model="form.createTime" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="唯一标识" prop="qr_code">
-            <el-input v-model="form.qr_code" style="width:80%;" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
+          <!--<el-form-item label="唯一标识" prop="qr_code">-->
+          <!--<el-input v-model="form.qr_code" style="width:80%;" :disabled="lookOrEdit"></el-input>-->
+          <!--</el-form-item>-->
           <el-form-item label="车辆出厂日期" prop="car_manufacture_time">
             <el-input v-model="form.car_manufacture_time" :disabled="lookOrEdit"></el-input>
           </el-form-item>
@@ -201,9 +213,9 @@
           <el-form-item label="数据采集器设备型号" prop="car_status">
             <el-input v-model="form.dataCollectorType" :disabled="lookOrEdit"></el-input>
           </el-form-item>
-          <el-form-item label="数据采集器设备型号" prop="car_status">
-            <el-input v-model="form.dataCollectorType" :disabled="lookOrEdit"></el-input>
-          </el-form-item>
+          <!--<el-form-item label="数据采集器设备型号" prop="car_status">-->
+          <!--<el-input v-model="form.dataCollectorType" :disabled="lookOrEdit"></el-input>-->
+          <!--</el-form-item>-->
           <el-form-item label="车辆照片">
             <el-col :span="24">
               <a style="color:#66b1ff" @click="openImageView(form.img_url_45)">45°照片</a>&nbsp;&nbsp;&nbsp;
@@ -236,6 +248,33 @@
   export default {
     data() {
       return {
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
         // 列表相关
         listSupp: [],
         tableData: [],
@@ -262,7 +301,8 @@
           car_number: '',
           limit: 10,
           offset: 0,
-          page: 1
+          page: 1,
+          supplier_id: ''
         }
       }
     },
@@ -400,7 +440,7 @@
         // 显示loading
         this.loadingExport = true
         // 获取excel
-        exportEnquipment().then(response => {
+        exportEnquipment(this.listQuery).then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
             link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
@@ -427,14 +467,17 @@
         }
       },
       handleSearch() {
+        this.total = 0
+        this.listQuery.page = 1
         this._getList()
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
+        this.listQuery.page = 1
         this._getList()
       },
       handleCurrentChange(val) {
-        this.offset = val
+        this.listQuery.page = val
         this._getList()
       },
       handleSubmit() {

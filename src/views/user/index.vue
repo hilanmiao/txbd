@@ -2,11 +2,11 @@
   <div class="app-container">
 
     <div class="filter-container" style="padding-bottom: 10px;">
-      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.name" style="width: 200px;"
-                class="filter-item"
-                placeholder="名称">
-      </el-input>
-      <el-button type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+      <!--<el-input @keyup.enter.native="handleFilter" v-model="listQuery.name" style="width: 200px;"-->
+                <!--class="filter-item"-->
+                <!--placeholder="名称">-->
+      <!--</el-input>-->
+      <!--<el-button type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>-->
       <el-button type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <!--<el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>-->
     </div>
@@ -409,7 +409,7 @@
             // 设置表格数据
             this.list = response.data
             // 设置分页插件数据总数
-            this.total = response.data.message
+            this.total = parseInt(response.message)
           } else {
             this.$message({
               type: 'error',

@@ -73,6 +73,11 @@
           width="120">
         </el-table-column>
         <el-table-column
+          prop="own_name"
+          label="法人"
+          width="120">
+        </el-table-column>
+        <el-table-column
           prop="address"
           label="地址">
         </el-table-column>
@@ -498,16 +503,16 @@
         }
       },
       handleBeforeUpload(file) {
-        // const isJPG = file.type === 'image/jpeg'
-        const isLt2M = file.size / 1024 / 1024 * 10
-        // if (!isJPG) {
-        //   this.$message.error('上传头像图片只能是 JPG 格式!')
-        //   return false
-        // }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过10MB!')
+        const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
+        // const isLt2M = file.size / 1024 / 1024 * 10
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG,PNG 格式!')
           return false
         }
+        // if (!isLt2M) {
+        //   this.$message.error('上传头像图片大小不能超过10MB!')
+        //   return false
+        // }
         // return isJPG && isLt2M
         return true
       },
@@ -602,7 +607,7 @@
         // 显示loading
         this.loadingExport = true
         // 获取excel
-        exportEnquipment().then(response => {
+        exportEnquipment(this.listQuery).then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
             link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
@@ -629,14 +634,17 @@
         }
       },
       handleSearch() {
+        this.total = 0
+        this.listQuery.page = 1
         this._getList()
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
+        this.listQuery.page = 1
         this._getList()
       },
       handleCurrentChange(val) {
-        this.offset = val
+        this.listQuery.page = val
         this._getList()
       },
       handleSubmit(formName) {

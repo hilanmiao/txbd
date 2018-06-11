@@ -46,7 +46,7 @@ export function getModelPlatform(id) {
 // 导出
 export function exportEnquipment(params) {
   return request({
-    url: 'v1/repairFactory/export',
+    url: 'v1/lowerplatform/export',
     method: 'get',
     params
   })

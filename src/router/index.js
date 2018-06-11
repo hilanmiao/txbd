@@ -130,7 +130,8 @@ export const asyncRouterMapRole = [
         path: 'report_push',
         name: '报表推送',
         component: _import('report_push/index'),
-        meta: {title: '报表推送'}
+        meta: {title: '报表推送'},
+        hidden: true
       },
       {
         id: 23,
@@ -144,14 +145,16 @@ export const asyncRouterMapRole = [
         path: 'report_info',
         name: '车辆信息统计',
         component: _import('report_info/index'),
-        meta: {title: '车辆信息统计'}
+        meta: {title: '车辆信息统计'},
+        hidden: true
       },
       {
         id: 25,
         path: 'report_alarm',
         name: '车辆报警统计',
         component: _import('report_alarm/index'),
-        meta: {title: '车辆报警统计'}
+        meta: {title: '车辆报警统计'},
+        hidden: true
       },
       {
         id: 26,
@@ -165,21 +168,24 @@ export const asyncRouterMapRole = [
         path: 'report_mileage',
         name: '里程统计',
         component: _import('report_mileage/index'),
-        meta: {title: '里程统计'}
+        meta: {title: '里程统计'},
+        hidden: true
       },
       {
         id: 28,
         path: 'report_vehicle_city',
         name: '地市车辆统计',
         component: _import('report_vehicle_city/index'),
-        meta: {title: '地市车辆统计'}
+        meta: {title: '地市车辆统计'},
+        hidden: true
       },
       {
         id: 29,
         path: 'report_vehicle',
         name: '汽车指标统计',
         component: _import('report_vehicle/index'),
-        meta: {title: '汽车指标统计'}
+        meta: {title: '汽车指标统计'},
+        hidden: true
       },
       {
         id: 210,
@@ -238,14 +244,16 @@ export const asyncRouterMapRole = [
         path: 'system',
         name: '系统日志',
         component: _import('logs/system'),
-        meta: {title: '系统日志'}
+        meta: {title: '系统日志'},
+        hidden: true
       },
       {
         id: 32,
         path: 'platform',
         name: '平台日志',
         component: _import('logs/platform'),
-        meta: {title: '平台日志'}
+        meta: {title: '平台日志'},
+        hidden: true
       },
       {
         id: 33,
@@ -294,7 +302,8 @@ export const asyncRouterMapRole = [
         path: 'sms',
         name: '报警短信',
         component: _import('sms/index'),
-        meta: {title: '报警短信'}
+        meta: {title: '报警短信'},
+        hidden: true
       },
       {
         id: 52,
@@ -472,7 +481,8 @@ export const asyncRouterMap = [
         path: 'report_push',
         name: '报表推送',
         component: _import('report_push/index'),
-        meta: {title: '报表推送'}
+        meta: {title: '报表推送'},
+        hidden: true
       },
       {
         id: 23,
@@ -486,14 +496,16 @@ export const asyncRouterMap = [
         path: 'report_info',
         name: '车辆信息统计',
         component: _import('report_info/index'),
-        meta: {title: '车辆信息统计'}
+        meta: {title: '车辆信息统计'},
+        hidden: true
       },
       {
         id: 25,
         path: 'report_alarm',
         name: '车辆报警统计',
         component: _import('report_alarm/index'),
-        meta: {title: '车辆报警统计'}
+        meta: {title: '车辆报警统计'},
+        hidden: true
       },
       {
         id: 26,
@@ -507,21 +519,24 @@ export const asyncRouterMap = [
         path: 'report_mileage',
         name: '里程统计',
         component: _import('report_mileage/index'),
-        meta: {title: '里程统计'}
+        meta: {title: '里程统计'},
+        hidden: true
       },
       {
         id: 28,
         path: 'report_vehicle_city',
         name: '地市车辆统计',
         component: _import('report_vehicle_city/index'),
-        meta: {title: '地市车辆统计'}
+        meta: {title: '地市车辆统计'},
+        hidden: true
       },
       {
         id: 29,
         path: 'report_vehicle',
         name: '汽车指标统计',
         component: _import('report_vehicle/index'),
-        meta: {title: '汽车指标统计'}
+        meta: {title: '汽车指标统计'},
+        hidden: true
       },
       {
         id: 210,
@@ -580,14 +595,16 @@ export const asyncRouterMap = [
         path: 'system',
         name: '系统日志',
         component: _import('logs/system'),
-        meta: {title: '系统日志'}
+        meta: {title: '系统日志'},
+        hidden: true
       },
       {
         id: 32,
         path: 'platform',
         name: '平台日志',
         component: _import('logs/platform'),
-        meta: {title: '平台日志'}
+        meta: {title: '平台日志'},
+        hidden: true
       },
       {
         id: 33,
@@ -636,7 +653,8 @@ export const asyncRouterMap = [
         path: 'sms',
         name: '报警短信',
         component: _import('sms/index'),
-        meta: {title: '报警短信'}
+        meta: {title: '报警短信'},
+        hidden: true
       },
       {
         id: 52,

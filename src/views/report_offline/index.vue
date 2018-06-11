@@ -34,10 +34,6 @@
           label="车主电话">
         </el-table-column>
         <el-table-column
-          prop="car_color"
-          label="车身颜色">
-        </el-table-column>
-        <el-table-column
           fixed="right"
           label="操作"
           width="230">
@@ -93,9 +89,16 @@
             <el-col :span="10">
               <el-input v-model="form.car_number" style="width:80%;" :disabled="lookOrEdit"></el-input>
             </el-col>
-            <el-col :span="4">车身颜色</el-col>
+            <el-col :span="4">车牌颜色</el-col>
             <el-col :span="8">
-              <el-input v-model="form.car_color" :disabled="lookOrEdit"></el-input>
+              <el-select v-model="form.car_color" style="width:100%;" :disabled="lookOrEdit">
+                <el-option value="1" label="蓝色"></el-option>
+                <el-option value="2" label="黄色"></el-option>
+                <el-option value="3" label="黑色"></el-option>
+                <el-option value="4" label="白色"></el-option>
+                <el-option value="9" label="其他"></el-option>
+                <el-option value="0" label="未上牌"></el-option>
+              </el-select>
             </el-col>
           </el-form-item>
 

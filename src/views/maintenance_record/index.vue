@@ -12,6 +12,7 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         @change="selectDate"
+        :picker-options="pickerOptions"
         style="width:300px;"
         clearable
       >
@@ -67,10 +68,10 @@
           prop="dpfFactory"
           label="dpf厂家">
         </el-table-column>
-        <!--<el-table-column-->
-          <!--prop="maintainContent"-->
-          <!--label="维护内容">-->
-        <!--</el-table-column>-->
+        <el-table-column
+          prop="createTime"
+          label="维修时间">
+        </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
@@ -217,6 +218,33 @@
         }
       }
       return {
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
         // 列表相关
         tableData: [],
         total: 0,
@@ -326,31 +354,6 @@
           limit: 10,
           offset: 0,
           page: 1
-        },
-        pickerOptions: {
-          disabledDate(time) {
-            return time.getTime() > Date.now()
-          },
-          shortcuts: [{
-            text: '今天',
-            onClick(picker) {
-              picker.$emit('pick', new Date())
-            }
-          }, {
-            text: '昨天',
-            onClick(picker) {
-              const date = new Date()
-              date.setTime(date.getTime() - 3600 * 1000 * 24)
-              picker.$emit('pick', date)
-            }
-          }, {
-            text: '一周前',
-            onClick(picker) {
-              const date = new Date()
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', date)
-            }
-          }]
         }
       }
     },
@@ -509,7 +512,7 @@
         // 显示loading
         this.loadingExport = true
         // 获取excel
-        exportEnquipment().then(response => {
+        exportEnquipment(this.listQuery).then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
             link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
@@ -536,14 +539,17 @@
         }
       },
       handleSearch() {
+        this.total = 0
+        this.listQuery.page = 1
         this._getList()
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
+        this.listQuery.page = 1
         this._getList()
       },
       handleCurrentChange(val) {
-        this.offset = val
+        this.listQuery.page = val
         this._getList()
       },
       handleSubmit() {

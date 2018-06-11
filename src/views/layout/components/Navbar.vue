@@ -4,7 +4,7 @@
     <breadcrumb></breadcrumb>
     <div class="right-menu">
       <notice></notice>
-      <el-tooltip effect="dark" content="全屏" placement="bottom">
+      <el-tooltip effect="dark" :content="fullScreenContent" placement="bottom">
         <screenfull class="screenfull right-menu-item"></screenfull>
       </el-tooltip>
 
@@ -43,11 +43,26 @@
       Screenfull,
       Notice
     },
+    data() {
+      return {
+        fullScreenContent: '全屏'
+      }
+    },
     computed: {
       ...mapGetters([
         'sidebar',
-        'avatar'
+        'avatar',
+        'fullscreen'
       ])
+    },
+    watch: {
+      'fullscreen' (val) {
+        if (val) {
+          this.fullScreenContent = '退出全屏'
+        } else {
+          this.fullScreenContent = '全屏'
+        }
+      }
     },
     methods: {
       toggleSideBar() {
@@ -74,7 +89,7 @@
       float: left;
       padding: 0 10px;
     }
-    .breadcrumb-container{
+    .breadcrumb-container {
       float: left;
     }
     .errLog-container {
@@ -84,7 +99,7 @@
     .right-menu {
       float: right;
       height: 100%;
-      &:focus{
+      &:focus {
         outline: none;
       }
       .right-menu-item {
@@ -94,7 +109,7 @@
       .screenfull {
         height: 20px;
       }
-      .international{
+      .international {
         vertical-align: top;
       }
       .theme-switch {

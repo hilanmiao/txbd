@@ -28,9 +28,9 @@ export function putModelRole(params) {
 }
 
 // 删除
-export function deleteModelPlatform(id) {
+export function deleteModelRole(id) {
   return request({
-    url: 'v1/lowerplatform/' + id,
+    url: 'v1/user/role/' + id,
     method: 'delete'
   })
 }

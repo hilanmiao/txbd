@@ -104,6 +104,33 @@
   export default {
     data() {
       return {
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
         // 列表相关
         list: [],
         total: 100,
@@ -165,6 +192,15 @@
       this._getList()
     },
     methods: {
+      pickerChange() {
+        if (this.dateRange != null) {
+          this.listQuery.startTime = this.dateRange[0]
+          this.listQuery.endTime = this.dateRange[1]
+        } else {
+          this.listQuery.startTime = null
+          this.listQuery.endTime = null
+        }
+      },
       resetTempModel() {
         // 重置表单
         this.tempModel = {

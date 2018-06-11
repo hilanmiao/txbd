@@ -95,6 +95,9 @@
         allSupp().then(response => {
           if (response.code === '200') {
             this.listSupp = response.data
+            // 默认选中第一个
+            this.listQuery.supplier_id = this.listSupp[0].SUPPLIER_ID
+            this.searchData()
           } else {
             this.$message({
               type: 'error',

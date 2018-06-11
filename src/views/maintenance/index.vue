@@ -9,9 +9,10 @@
         unlink-panels
         value-format="yyyy-MM-dd"
         range-separator="-"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
+        start-placeholder="创建开始日期"
+        end-placeholder="创建结束日期"
         @change="selectDate"
+        :picker-options="pickerOptions"
         style="width:300px;"
         clearable
       >
@@ -71,6 +72,10 @@
         <el-table-column
           prop="registeredAddress"
           label="地址">
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="创建时间">
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -267,6 +272,33 @@
         }
       }
       return {
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        },
         // 列表相关
         tableData: [],
         total: 0,
@@ -519,16 +551,16 @@
         this.imageView = false
       },
       handleBeforeUpload(file) {
-        // const isJPG = file.type === 'image/jpeg'
-        const isLt2M = file.size / 1024 / 1024 * 10
-        // if (!isJPG) {
-        //   this.$message.error('上传头像图片只能是 JPG 格式!')
-        //   return false
-        // }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过10MB!')
+        const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
+        // const isLt2M = file.size / 1024 / 1024 * 10
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG,PNG 格式!')
           return false
         }
+        // if (!isLt2M) {
+        //   this.$message.error('上传头像图片大小不能超过10MB!')
+        //   return false
+        // }
         // return isJPG && isLt2M
         return true
       },
@@ -566,10 +598,9 @@
         }
         lookMain(param, row.id).then(response => {
           if (response.code === '200') {
-            // const imgUrl = JSON.parse(response.data.imgUrl)
-            if (response.data.imgUrl.length) {
-              const imgUrl = [{name: '营业执照.' + response.data.imgUrl.substr(-3), url: ''}]
-              imgUrl[0].url = process.env.IMG_SERVER_PATH + response.data.imgUrl
+            const imgUrl = JSON.parse(response.data.imgUrl)
+            if (imgUrl.length) {
+              imgUrl[0].url = process.env.IMG_SERVER_PATH + imgUrl[0].url
               response.data.imgUrl = imgUrl
             }
             this.form = Object.assign({}, response.data)
@@ -625,7 +656,7 @@
         // 显示loading
         this.loadingExport = true
         // 获取excel
-        exportEnquipment().then(response => {
+        exportEnquipment(this.listQuery).then(response => {
           if (response.code === '200') {
             const link = document.createElement('a')
             link.setAttribute('href', process.env.EXCEL_SERVER_PATH + response.data)
@@ -652,14 +683,17 @@
         }
       },
       handleSearch() {
+        this.total = 0
+        this.listQuery.page = 1
         this._getList()
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
+        this.listQuery.page = 1
         this._getList()
       },
       handleCurrentChange(val) {
-        this.offset = val
+        this.listQuery.page = val
         this._getList()
       },
       handleSubmit() {

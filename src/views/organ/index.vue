@@ -3,7 +3,7 @@
 
     <div class="filter-container" style="padding-bottom: 10px;">
       <el-button type="primary" icon="el-icon-edit" @click="handleAdd()">添加</el-button>
-      <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
+      <!--<el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>-->
     </div>
 
     <div class="table-container">
@@ -45,7 +45,8 @@
         :page-sizes="[10, 40, 80, 100, 1000]"
         :page-size="listQuery.limit"
         :current-page.sync="listQuery.page"
-        layout=" sizes, prev, pager, next, jumper"
+        :total="total"
+        layout="total, sizes, prev, pager, next, jumper"
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -146,6 +147,7 @@
         getListOrgan(this.listQuery).then(response => {
           if (response.code === '200') {
             this.tableData = response.data
+            this.total = parseInt(response.message)
           } else {
             this.$message({
               type: 'error',
@@ -192,10 +194,11 @@
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
+        this.listQuery.page = 1
         this._getList()
       },
       handleCurrentChange(val) {
-        this.offset = val
+        this.listQuery.page = val
         this._getList()
       },
 

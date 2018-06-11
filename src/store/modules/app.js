@@ -4,7 +4,8 @@ const app = {
   state: {
     sidebar: {
       opened: !+Cookies.get('sidebarStatus')
-    }
+    },
+    fullscreen: false
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -14,11 +15,17 @@ const app = {
         Cookies.set('sidebarStatus', 0)
       }
       state.sidebar.opened = !state.sidebar.opened
+    },
+    TOGGLE_FULLSCREEN: state => {
+      state.fullscreen = !state.fullscreen
     }
   },
   actions: {
     ToggleSideBar: ({commit}) => {
       commit('TOGGLE_SIDEBAR')
+    },
+    ToggleFullScreen: ({commit}) => {
+      commit('TOGGLE_FULLSCREEN')
     }
   }
 }

@@ -34,10 +34,9 @@
       dataArr: {
         deep: true,
         handler(val) {
-           this.setOptions(val)
+          this.setOptions(val)
         }
-      },
-
+      }
     },
     mounted() {
       this.chart = echarts.init(this.$el, 'macarons')
@@ -51,22 +50,24 @@
 
       this.chart.on('click', function (event) {
         console.log(event)
-        var dimension = event.dataIndex+1;
+        var dimension = event.dataIndex + 1
         if (dimension) {
-          //var dimension = xAxisInfo.value + 1;
-          console.log(dimension)
-          this.setOption({
-            series: {
-              id: 'pie',
-              label: {
-                formatter: '{b}: {@[' + dimension + ']} ({d}%)'
-              },
-              encode: {
-                value: dimension,
-                tooltip: dimension
+          // var dimension = xAxisInfo.value + 1;
+          // console.log(dimension)
+          if (event.seriesType !== 'pie') {
+            this.setOption({
+              series: {
+                id: 'pie',
+                label: {
+                  formatter: event.name + '{b}: {@[' + dimension + ']} ({d}%)'
+                },
+                encode: {
+                  value: dimension,
+                  tooltip: dimension
+                }
               }
-            }
-          });
+            })
+          }
         }
       })
     },
@@ -77,15 +78,13 @@
       window.removeEventListener('resize', this.__resizeHanlder)
       this.chart.dispose()
       this.chart = null
-
     },
-
     methods: {
       initChart() {
         this.setOptions(this.dataArr)
       },
 
-      setOptions({cityName,online,offline} = {}){
+      setOptions({cityName, online, offline} = {}) {
         this.chart.setOption({
           legend: {},
           tooltip: {
@@ -95,7 +94,7 @@
             source: [
               cityName,
               offline,
-              online,
+              online
             ]
           },
           xAxis: {type: 'category'},
@@ -105,19 +104,20 @@
             {
               type: 'bar',
               smooth: true,
-              seriesLayoutBy: 'row',
+              seriesLayoutBy: 'row'
             },
-            {type: 'bar',
+            {
+              type: 'bar',
               smooth: true,
-              seriesLayoutBy:'row'
-             },
+              seriesLayoutBy: 'row'
+            },
             {
               type: 'pie',
               id: 'pie',
               radius: '30%',
               center: ['50%', '25%'],
               label: {
-                formatter: '{b}: {@潍坊市} ({d}%)'
+                formatter: '潍坊市{b}: {@潍坊市} ({d}%)'
               },
               encode: {
                 itemName: '城市',

@@ -7,9 +7,12 @@
         value-format="yyyy-MM-dd"
         unlink-panels
         clearable
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        :picker-options="pickerOptions"
       >
       </el-date-picker>
-      <el-input v-model="searchParams.username"
+      <el-input v-model="listQuery.username"
                 @keyup.enter.native="handleSearch"
                 style="width:120px;" clearable
                 placeholder="输入用户名"
@@ -43,8 +46,8 @@
       <el-pagination
         :page-sizes="[10, 20, 50, 100]"
         :total="total"
-        :page-size="searchParams.limit"
-        :current-page.sync="searchParams.page"
+        :page-size="listQuery.limit"
+        :current-page.sync="listQuery.page"
         layout=" total,sizes, prev, pager, next, jumper"
         background
         @size-change="sizeChange"
@@ -65,7 +68,7 @@
       return {
         dateArea: '',
         total: 0,
-        searchParams: {
+        listQuery: {
           starttime: '',
           endtime: '',
           username: '',
@@ -79,17 +82,44 @@
           content: '',
           createtime: ''
         },
-        dataTable: []
+        dataTable: [],
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+        }
       }
     },
     watch: {
-      'searchParams.page': {
+      'listQuery.page': {
         handler: function (val, oldVal) {
           // 拼装查询用的offset
           if (val > 1) {
-            this.searchParams.offset = (val - 1) * this.searchParams.limit
+            this.listQuery.offset = (val - 1) * this.listQuery.limit
           } else {
-            this.searchParams.offset = 0
+            this.listQuery.offset = 0
           }
         },
         deep: true
@@ -101,17 +131,19 @@
     methods: {
       handleSearch() {
         if (this.dateArea) {
-          this.searchParams.starttime = this.dateArea[0]
-          this.searchParams.endtime = this.dateArea[1]
+          this.listQuery.starttime = this.dateArea[0]
+          this.listQuery.endtime = this.dateArea[1]
         } else {
-          this.searchParams.starttime = ''
-          this.searchParams.endtime = ''
+          this.listQuery.starttime = ''
+          this.listQuery.endtime = ''
         }
+        this.total = 0
+        this.listQuery.page = 1
         this.getList()
       },
       getList() {
         this.dataTable = []
-        getLogList(this.searchParams).then(response => {
+        getLogList(this.listQuery).then(response => {
           if (response.code === '200') {
             this.dataTable = response.data.dataList
             this.total = response.data.count
@@ -124,11 +156,12 @@
         })
       },
       sizeChange(val) {
-        this.searchParams.limit = val
+        this.listQuery.limit = val
+        this.listQuery.page = 1
         this.getList()
       },
       currentChange(val) {
-        this.searchParams.offset = val
+        this.listQuery.page = val
         this.getList()
       }
     }
