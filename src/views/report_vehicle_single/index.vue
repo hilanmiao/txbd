@@ -8,10 +8,10 @@
 
       <el-date-picker
         v-model="dateArea"
-        type="daterange"
+        type="datetimerange"
         align="right"
         unlink-panels
-        value-format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd HH:mm:ss"
         range-separator="-"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
@@ -75,19 +75,19 @@
                   <el-col :span="5">
                     <el-input v-model="form.car_engine_number" class="form-input" readonly></el-input>
                   </el-col>
-                  <el-col :span="2">唯一标识</el-col>
-                  <el-col :span="5">
-                    <el-input v-model="form.qr_code" class="form-input" readonly></el-input>
-                  </el-col>
-                  <el-col :span="2">车主邮箱</el-col>
-                  <el-col :span="5">
-                    <el-input v-model="form.area" class="form-input" readonly></el-input>
-                  </el-col>
+                  <!--<el-col :span="2">唯一标识</el-col>-->
+                  <!--<el-col :span="5">-->
+                    <!--<el-input v-model="form.qr_code" class="form-input" readonly></el-input>-->
+                  <!--</el-col>-->
+                  <!--<el-col :span="2">车主邮箱</el-col>-->
+                  <!--<el-col :span="5">-->
+                    <!--<el-input v-model="form.area" class="form-input" readonly></el-input>-->
+                  <!--</el-col>-->
                 </el-form-item>
                 <el-form-item>
                   <el-col :span="2">安装时间</el-col>
                   <el-col :span="5">
-                    <el-input v-model="form.name" class="form-input" readonly></el-input>
+                    <el-input v-model="form.createTime" class="form-input" readonly></el-input>
                   </el-col>
                   <el-col :span="2">安装点负责人</el-col>
                   <el-col :span="5">
@@ -110,7 +110,7 @@
                   </el-col>
                   <el-col :span="2">供应商</el-col>
                   <el-col :span="5">
-                    <el-input v-model="form.provinceName" class="form-input" readonly></el-input>
+                    <el-input v-model="form.supplierName" class="form-input" readonly></el-input>
                   </el-col>
                 </el-form-item>
 
@@ -123,13 +123,13 @@
                       <el-option label="危险品货车" value="1"></el-option>
                     </el-select>
                   </el-col>
-                  <el-col :span="2">已安装数据采集器</el-col>
-                  <el-col :span="5">
-                    <el-select v-model="form.collector" placeholder="" disabled>
-                      <el-option label="已安装" value="0"></el-option>
-                      <el-option label="未安装" value="1"></el-option>
-                    </el-select>
-                  </el-col>
+                  <!--<el-col :span="2">已安装数据采集器</el-col>-->
+                  <!--<el-col :span="5">-->
+                    <!--<el-select v-model="form.collector" placeholder="" disabled>-->
+                      <!--<el-option label="已安装" value="0"></el-option>-->
+                      <!--<el-option label="未安装" value="1"></el-option>-->
+                    <!--</el-select>-->
+                  <!--</el-col>-->
                 </el-form-item>
                 <el-form-item>
                   <el-col :span="2">数据采集器编号</el-col>
@@ -373,10 +373,10 @@
               } else {
                 this.temperatureData = {t1: [], t2: [], t3: [], dcreatetime: []}
                 this.pressureDate = {p1: [], p2: [], dcreatetime: []}
-                this.$message({
-                  type: 'error',
-                  message: '未查到相关数据'
-                })
+                // this.$message({
+                //   type: 'error',
+                //   message: '未查到相关数据'
+                // })
               }
             } else {
               this.temperatureData = {t1: [], t2: [], t3: [], dcreatetime: []}

@@ -261,17 +261,18 @@
       _getRegisterList() {
         // 清空表格数据
         this.tableData2 = []
-        this.total2 = 0
         // 设置表格loading效果
         this.tableLoading2 = true
         this.pickerChange2()
         getRegisterList(this.listQuery2).then(response => {
+          // this.total2 = 0
           if (response.code === '200') {
             // 设置表格数据
             this.tableData2 = response.data.dataList
             // 设置分页插件数据总数
             this.total2 = response.data.count
           } else {
+            this.total2 = 0
             this.$message({
               type: 'error',
               message: response.message

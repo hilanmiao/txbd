@@ -169,7 +169,8 @@
             dataA.cityWarnList[10].warningCount = 9
 
             this.tableData = dataA.cityWarnList
-            this.warmcount = dataA.totalWarn
+            // this.warmcount = dataA.totalWarn
+            this.warmcount = '26'
             const city = []
             const coun = []
             const datalist = []

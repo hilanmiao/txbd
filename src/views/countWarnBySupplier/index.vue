@@ -351,6 +351,7 @@
             // 设置分页插件数据总数
             this.total2 = response.data.count
           } else {
+            this.total2 = 0
             this.$message({
               type: 'error',
               message: response.message

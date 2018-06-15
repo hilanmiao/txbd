@@ -14,10 +14,10 @@
               </el-input>
               <el-date-picker
                 v-model="dateRangeHistory"
-                type="daterange"
+                type="datetimerange"
                 align="right"
                 unlink-panels
-                value-format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 :picker-options="pickerOptions"

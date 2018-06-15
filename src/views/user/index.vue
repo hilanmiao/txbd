@@ -48,19 +48,19 @@
           prop="createtime"
           label="创建时间">
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="130">
-          <template slot-scope="scope">
-            <el-tooltip content="编辑" placement="top">
-              <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
-            </el-tooltip>
-            <el-tooltip content="删除" placement="top">
-              <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
-            </el-tooltip>
-          </template>
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--fixed="right"-->
+          <!--label="操作"-->
+          <!--width="130">-->
+          <!--<template slot-scope="scope">-->
+            <!--<el-tooltip content="编辑" placement="top">-->
+              <!--<el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>-->
+            <!--</el-tooltip>-->
+            <!--<el-tooltip content="删除" placement="top">-->
+              <!--<el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>-->
+            <!--</el-tooltip>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
       </el-table>
     </div>
 

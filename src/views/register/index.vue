@@ -180,12 +180,12 @@
               <el-option label="危险品货车" value="1"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="已安装数据采集器" prop="car_status">
-            <el-select v-model="form.collector" placeholder="" :disabled="lookOrEdit">
-              <el-option label="已安装" value="0"></el-option>
-              <el-option label="未安装" value="1"></el-option>
-            </el-select>
-          </el-form-item>
+          <!--<el-form-item label="已安装数据采集器" prop="car_status">-->
+            <!--<el-select v-model="form.collector" placeholder="" :disabled="lookOrEdit">-->
+              <!--<el-option label="已安装" value="0"></el-option>-->
+              <!--<el-option label="未安装" value="1"></el-option>-->
+            <!--</el-select>-->
+          <!--</el-form-item>-->
           <el-form-item label="设备类别" prop="car_status">
             <el-select v-model="form.dpf_type" placeholder="" :disabled="lookOrEdit">
               <el-option label="主动清理" value="0"></el-option>
