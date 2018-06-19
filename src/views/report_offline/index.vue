@@ -44,7 +44,7 @@
       </el-table>
     </div>
 
-   <div class="pagination-container" style="margin-top: 20px">
+    <div class="pagination-container" style="margin-top: 20px">
       <el-pagination
         :page-sizes="[10,20, 80, 100, 1000]"
         :page-size="listQuery.limit"
@@ -156,21 +156,19 @@
           </el-form-item>
 
 
-
           <el-form-item>
-           <el-button @click="visibleView = false">关闭</el-button>
+            <el-button @click="visibleView = false">关闭</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
     </div>
 
 
-
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {getList,getData} from '@/api/report_offline'
+  import {getList, getData} from '@/api/report_offline'
   import {getCitys} from '@/api/city'
 
   export default {
@@ -179,36 +177,36 @@
         // 列表相关
         tableData: [],
         total: 0,
-        lookOrEdit:true,
+        lookOrEdit: true,
         loadingExport: false,
         visibleView: false,
         listCity: [],
         listQuery: {
-         city_id: '0700',
-         limit: 10,
-         offset: 0,
-         page: 1
+          city_id: '0700',
+          limit: 10,
+          offset: 0,
+          page: 1
         },
-        form:{
-          cityName:'',
-          provinceName:'',
-          supplierName:'',
-          dpf_model:'',
-          car_number:'',
-          car_color:'',
-          car_type_code:'',
-          car_user_name:'',
-          car_user_identity_code:'',
-          car_user_phone:'',
-          car_engine_number:'',
-          install_place_msg:'',
-          install_user_name:'',
-          install_user_phone:'',
-          createTime:'',
-          createUserName:'',
-          qr_code:'',
-          car_manufacture_time:'',
-          car_status:''
+        form: {
+          cityName: '',
+          provinceName: '',
+          supplierName: '',
+          dpf_model: '',
+          car_number: '',
+          car_color: '',
+          car_type_code: '',
+          car_user_name: '',
+          car_user_identity_code: '',
+          car_user_phone: '',
+          car_engine_number: '',
+          install_place_msg: '',
+          install_user_name: '',
+          install_user_phone: '',
+          createTime: '',
+          createUserName: '',
+          qr_code: '',
+          car_manufacture_time: '',
+          car_status: ''
         }
       }
     },
@@ -230,15 +228,15 @@
       this._getCityList()
     },
     methods: {
-      _getData(){
-        if(this.listQuery.city_id==''){
+      _getData() {
+        if (this.listQuery.city_id == '') {
           this.$message({
             type: 'error',
-            message:'请选择城市'
+            message: '请选择城市'
           })
           return false
         }
-         this._getList(this.listQuery.city_id)
+        this._getList(this.listQuery.city_id)
       },
       _getList(city_id) {
         // 设置表格loading效果
@@ -247,12 +245,12 @@
         getList(city_id).then(response => {
           if (response.code === '200') {
             // 设置表格数据
-            this.tableData = response.data.slice(this.listQuery.offset,this.listQuery.offset+this.listQuery.limit)
-            this.total=response.data.length
+            this.tableData = response.data.slice(this.listQuery.offset, this.listQuery.offset + this.listQuery.limit)
+            this.total = response.data.length
             // 设置分页插件数据总数
-           } else {
-            this.tableData =[]
-            this.total=0
+          } else {
+            this.tableData = []
+            this.total = 0
             this.$message({
               type: 'error',
               message: response.message
@@ -289,8 +287,8 @@
       },
       handleView(row) {
         this.visibleView = true
-        getData(row.id).then(response=>{
-          this.form=response.data
+        getData(row.id).then(response => {
+          this.form = response.data
         })
       },
       selectDate() {
@@ -303,22 +301,31 @@
         }
       },
       handleSearch() {
-        this._getData()
+        this.total = 0
+        this.listQuery.page = 1
+        this.$nextTick(() => {
+          this._getData()
+        })
       },
-     handleSizeChange(val) {
+      handleSizeChange(val) {
         this.listQuery.limit = val
-        this._getData()
+        this.listQuery.page = 1
+        this.$nextTick(() => {
+          this._getData()
+        })
       },
       handleCurrentChange(val) {
-        this.offset = val
-        this._getData()
+        this.listQuery.page = val
+        this.$nextTick(() => {
+          this._getData()
+        })
       },
       _getCityList() {
         getCitys().then(response => {
           this.listCity = response.data
         })
         this.listCity = getCitys()
-      },
+      }
     }
   }
 </script>

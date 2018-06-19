@@ -16,7 +16,7 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         @change="selectDate"
-        style="width:300px;"
+        style="width:400px;"
         clearable
       >
       </el-date-picker>

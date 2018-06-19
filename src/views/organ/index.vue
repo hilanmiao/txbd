@@ -195,11 +195,15 @@
       handleSizeChange(val) {
         this.listQuery.limit = val
         this.listQuery.page = 1
-        this._getList()
+        this.$nextTick(() => {
+          this._getList()
+        })
       },
       handleCurrentChange(val) {
         this.listQuery.page = val
-        this._getList()
+        this.$nextTick(() => {
+          this._getList()
+        })
       },
 
       handleSubmit(formName) {

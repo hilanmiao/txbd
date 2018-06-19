@@ -304,18 +304,24 @@
         // 搜索处理
         this.total = 0
         this.listQuery.page = 1
-        this._getList()
+        this.$nextTick(() => {
+          this._getList()
+        })
       },
       handleSizeChange(val) {
         // 每页显示条数改变处理
         this.listQuery.limit = val
         this.listQuery.page = 1
-        this._getList()
+        this.$nextTick(() => {
+          this._getList()
+        })
       },
       handleCurrentChange(val) {
         // 页码改变处理
         this.listQuery.page = val
-        this._getList()
+        this.$nextTick(() => {
+          this._getList()
+        })
       },
       _deleteModelEnquipment() {
         deleteModelEnquipment(this.tempModel.id).then(response => {

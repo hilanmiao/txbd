@@ -252,6 +252,7 @@
           this.listQuery.startTime = null
           this.listQuery.endTime = null
         }
+        this.dateRange2 = this.dateRange
       },
       searchData() {
         this._getList()
@@ -331,23 +332,33 @@
         }
       },
       searchData2() {
-        this._getRegisterList()
+        this.total2 = 0
+        this.listQuery2.page = 1
+        this.$nextTick(() => {
+          this._getRegisterList()
+        })
       },
       showDetail(cityId) {
         this.listQuery2.city_id = cityId
         this.dialogFormVisible = true
-        this._getRegisterList()
+        this.$nextTick(() => {
+          this._getRegisterList()
+        })
       },
       handleSizeChange(val) {
         // 每页显示条数改变处理
         this.listQuery2.limit = val
         this.listQuery2.page = 1
-        this._getRegisterList()
+        this.$nextTick(() => {
+          this._getRegisterList()
+        })
       },
       handleCurrentChange(val) {
         // 页码改变处理
         this.listQuery2.page = val
-        this._getRegisterList()
+        this.$nextTick(() => {
+          this._getRegisterList()
+        })
       },
       _getRegisterList() {
         // 清空表格数据

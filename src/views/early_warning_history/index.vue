@@ -156,15 +156,24 @@
         }
       },
       handleSearch() {
-        this._getList()
+        this.total = 0
+        this.listQuery.page = 1
+        this.$nextTick(() => {
+          this._getList()
+        })
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
-        this._getList()
+        this.listQuery.page = 1
+        this.$nextTick(() => {
+          this._getList()
+        })
       },
       handleCurrentChange(val) {
-        this.offset = val
-        this._getList()
+        this.listQuery.page = val
+        this.$nextTick(() => {
+          this._getList()
+        })
       }
     }
   }

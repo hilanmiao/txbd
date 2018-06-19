@@ -139,7 +139,9 @@
         }
         this.total = 0
         this.listQuery.page = 1
-        this.getList()
+        this.$nextTick(() => {
+          this.getList()
+        })
       },
       getList() {
         this.dataTable = []
@@ -158,11 +160,15 @@
       sizeChange(val) {
         this.listQuery.limit = val
         this.listQuery.page = 1
-        this.getList()
+        this.$nextTick(() => {
+          this.getList()
+        })
       },
       currentChange(val) {
         this.listQuery.page = val
-        this.getList()
+        this.$nextTick(() => {
+          this.getList()
+        })
       }
     }
   }
