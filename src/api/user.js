@@ -19,11 +19,11 @@ export function postModelUser(params) {
 }
 
 // 修改
-export function putModelUser(data) {
+export function putModelUser(params) {
   return request({
-    url: 'v1/lowerplatform/update',
+    url: 'v1/user/',
     method: 'put',
-    data
+    params
   })
 }
 
@@ -37,9 +37,26 @@ export function deleteModelUser(id) {
 
 // 获取详情
 export function getModelUser(id) {
-  // return request({
-  //   url: 'v1/lowerplatform/' + id,
-  //   method: 'get'
-  // })
+  return request({
+    url: 'v1/user/' + id,
+    method: 'get'
+  })
+}
 
+// 冻结
+export function getDUser(params) {
+  return request({
+    url: 'v1/user/dUser',
+    method: 'get',
+    params
+  })
+}
+
+// 解冻
+export function getJUser(params) {
+  return request({
+    url: 'v1/user/jUser',
+    method: 'get',
+    params
+  })
 }

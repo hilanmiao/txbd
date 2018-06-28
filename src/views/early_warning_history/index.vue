@@ -38,14 +38,28 @@
           width="150">
         </el-table-column>
         <el-table-column
+          prop="car_user_name"
+          label="车主姓名">
+        </el-table-column>
+        <el-table-column
+          prop="car_user_phone"
+          label="电话">
+        </el-table-column>
+        <el-table-column
+          prop="car_number"
+          label="车牌">
+        </el-table-column>
+        <el-table-column
+          prop="dpf_id"
+          label="DPF编码">
+        </el-table-column>
+        <el-table-column
           prop="dpfInfo"
-          label="DPF异常信息描述"
-          width="150">
+          label="DPF异常信息描述">
         </el-table-column>
         <el-table-column
           prop="warning_time"
-          label="发出预警时间"
-          width="250">
+          label="发出预警时间">
         </el-table-column>
         <el-table-column
           prop="dispose_content"

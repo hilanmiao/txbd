@@ -15,3 +15,11 @@ export function addOrgan(params) {
     params
   })
 }
+
+export function editOrgan(params, id) {
+  return request({
+    url: 'v1/organ/' + id,
+    method: 'put',
+    params
+  })
+}

@@ -15,7 +15,7 @@
       >
       </el-date-picker>
       <el-button type="primary" icon="el-icon-search" @click="searchData">搜索</el-button>
-      <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
+      <!--<el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>-->
     </div>
 
     <el-col :span="4">

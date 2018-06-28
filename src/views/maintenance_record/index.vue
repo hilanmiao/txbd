@@ -75,10 +75,10 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="230">
+          width="100">
           <template slot-scope="scope">
             <el-button type="success" size="mini" icon="el-icon-search" @click="handleView(scope.row)"></el-button>
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
+            <!--<el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>-->
             <!--<el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>-->
           </template>
         </el-table-column>
@@ -107,7 +107,7 @@
 
     <div class="others-container">
       <el-dialog :visible.sync="visibleView" :title="titMsg">
-        <el-form ref="form" status-icon :rules="rules" :model="form" label-width="110px" size="mini">
+        <el-form ref="form" status-icon :model="form" label-width="110px" size="mini">
           <el-row>
             <el-col :span="8">
               <el-form-item label="车牌号" prop="carMark">

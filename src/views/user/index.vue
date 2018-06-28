@@ -2,11 +2,11 @@
   <div class="app-container">
 
     <div class="filter-container" style="padding-bottom: 10px;">
-      <!--<el-input @keyup.enter.native="handleFilter" v-model="listQuery.name" style="width: 200px;"-->
-                <!--class="filter-item"-->
-                <!--placeholder="名称">-->
-      <!--</el-input>-->
-      <!--<el-button type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>-->
+      <el-input @keyup.enter.native="handleFilter" v-model="listQuery.name" style="width: 200px;"
+                class="filter-item"
+                placeholder="名称">
+      </el-input>
+      <el-button type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <!--<el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>-->
     </div>
@@ -48,19 +48,22 @@
           prop="createtime"
           label="创建时间">
         </el-table-column>
-        <!--<el-table-column-->
-          <!--fixed="right"-->
-          <!--label="操作"-->
-          <!--width="130">-->
-          <!--<template slot-scope="scope">-->
-            <!--<el-tooltip content="编辑" placement="top">-->
-              <!--<el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>-->
-            <!--</el-tooltip>-->
-            <!--<el-tooltip content="删除" placement="top">-->
-              <!--<el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>-->
-            <!--</el-tooltip>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
+        <el-table-column
+          fixed="right"
+          label="操作"
+          width="130">
+          <template slot-scope="scope">
+            <el-tooltip content="编辑" placement="top" v-if="scope.row.status!=='1'">
+              <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip content="解冻" placement="top" v-if="scope.row.status==='1'">
+              <el-button type="success" size="mini" icon="el-icon-check" @click="handleJUser(scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip content="冻结" placement="top" v-if="scope.row.status==='0'">
+              <el-button type="danger" size="mini" icon="el-icon-error" @click="handleDUser(scope.row)"></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
 
@@ -116,7 +119,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListUser, postModelUser, putModelUser, deleteModelUser} from '@/api/user'
+  import {getModelUser, getListUser, postModelUser, putModelUser, deleteModelUser, getDUser, getJUser} from '@/api/user'
   import {getListOrgan} from '@/api/organ'
   import {getListRole} from '@/api/part'
 
@@ -132,7 +135,8 @@
           limit: 10,
           offset: 0,
           username: '',
-          sort: '+id'
+          sort: '+id',
+          name: ''
         },
         // 表单相关
         listCity: [],
@@ -239,10 +243,66 @@
         this.dialogFormVisible = true
       },
       handleEdit(row) {
-        // 使用对象拷贝赋值
-        this.tempModel = Object.assign({}, row)
         // 编辑处理
         this.dialogFormVisible = true
+        getModelUser(row.id).then(response => {
+          if (response.code === '200') {
+            this.tempModel = Object.assign({}, response.data)
+            this.tempModel.role_id = parseInt(this.tempModel.role_id)
+          }
+        })
+      },
+      // handleDelete(row) {
+      //   // 使用对象拷贝赋值
+      //   this.tempModel = Object.assign({}, row)
+      //   // 删除确认
+      //   this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
+      //     confirmButtonText: '确定',
+      //     cancelButtonText: '取消',
+      //     type: 'warning'
+      //   }).then(() => {
+      //     // 删除
+      //     this._deleteModelPlatform()
+      //   }).catch(() => {
+      //     this.$message({
+      //       type: 'info',
+      //       message: '已取消删除'
+      //     })
+      //   })
+      // },
+      handleDUser(row) {
+        getDUser({id: row.id}).then(response => {
+          if (response.code === '204') {
+            this.$message({
+              type: 'success',
+              message: '冻结成功!'
+            })
+            // 重新请求数据(带着原先的查询参数)
+            this._getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
+      },
+      handleJUser(row) {
+        getJUser({id: row.id}).then(response => {
+          if (response.code === '204') {
+            this.$message({
+              type: 'success',
+              message: '解冻成功!'
+            })
+            // 重新请求数据(带着原先的查询参数)
+            this._getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+        })
       },
       handleDelete(row) {
         // 使用对象拷贝赋值
@@ -274,7 +334,7 @@
               this._postModelUser()
             } else {
               // 有id，是编辑
-              this._putModelPlatform()
+              this._putModelUser()
             }
           }
         })

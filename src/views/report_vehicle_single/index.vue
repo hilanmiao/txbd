@@ -3,7 +3,7 @@
     <div class="app-container">
 
       <el-input v-model="listQuery.key" style="width:200px;"
-                class="filter-item" placeholder="车牌号或者dpf编号" clearable>
+                class="filter-item" placeholder="车牌号或者采集器编号" clearable>
       </el-input>
 
       <el-date-picker
@@ -113,7 +113,6 @@
                     <el-input v-model="form.supplierName" class="form-input" readonly></el-input>
                   </el-col>
                 </el-form-item>
-
                 <el-form-item>
                   <el-col :span="2">车辆业务类别</el-col>
                   <el-col :span="5">
@@ -123,18 +122,15 @@
                       <el-option label="危险品货车" value="1"></el-option>
                     </el-select>
                   </el-col>
-                  <!--<el-col :span="2">已安装数据采集器</el-col>-->
-                  <!--<el-col :span="5">-->
-                    <!--<el-select v-model="form.collector" placeholder="" disabled>-->
-                      <!--<el-option label="已安装" value="0"></el-option>-->
-                      <!--<el-option label="未安装" value="1"></el-option>-->
-                    <!--</el-select>-->
-                  <!--</el-col>-->
+                  <el-col :span="2">dpf编码</el-col>
+                  <el-col :span="5">
+                    <el-input v-model="form.dataCollectorNo" class="form-input" readonly></el-input>
+                  </el-col>
                 </el-form-item>
                 <el-form-item>
                   <el-col :span="2">数据采集器编号</el-col>
                   <el-col :span="5">
-                    <el-input v-model="form.dataCollectorNo" class="form-input" readonly></el-input>
+                    <el-input v-model="form.dpf_id" class="form-input" readonly></el-input>
                   </el-col>
                   <el-col :span="2">数据采集器厂家</el-col>
                   <el-col :span="5">

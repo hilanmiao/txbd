@@ -14,13 +14,13 @@
         @change="pickerChange"
       >
       </el-date-picker>
-      <el-radio-group value="月度">
+      <el-radio-group v-model="radio">
         <el-radio-button label="月度"></el-radio-button>
         <el-radio-button label="季度"></el-radio-button>
         <el-radio-button label="年度"></el-radio-button>
       </el-radio-group>
       <el-button type="primary" icon="el-icon-search" @click="searchData">搜索</el-button>
-      <el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>
+      <!--<el-button type="primary" icon="el-icon-download" @click="handleExport" :loading="loadingExport">导出</el-button>-->
     </div>
 
     <el-col :span="5">
@@ -85,6 +85,7 @@
     },
     data() {
       return {
+        radio: '年度',
         // 列表相关
         tableData: [],
         dateRange: '',

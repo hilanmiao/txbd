@@ -787,7 +787,7 @@
         componentLoadingSubmit: false,
         componentDialogFormVisible: false,
         // 车辆面板
-        leftTableHeight: '400',
+        leftTableHeight: '100%',
         listCar: [],
         listCar2: [],
         loadingList: false,
@@ -964,7 +964,7 @@
       },
       setLayout() {
         // this.$refs.leftCard.style.height = 1000 + 'px'
-        this.leftTableHeight = (window.innerHeight - 270)
+        this.leftTableHeight = (window.innerHeight - 270 - 40)
         this.$refs.map.style.height = (window.innerHeight - 344) + 'px'
         this.$refs.left.style.height = (window.innerHeight - 72) + 'px'
         this.$refs.control.style.width = this.$refs.right.offsetWidth - 20 + 'px'
@@ -1457,10 +1457,10 @@
             })
           } else {
             this.listCar = []
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
+            // this.$message({
+            //   type: 'error',
+            //   message: response.message
+            // })
           }
           // 取消表格loading效果
           this.loadingList = false
@@ -1470,12 +1470,7 @@
         // 设置表格loading效果
         this.loadingList2 = true
         // 请求表格数据
-        const params = {
-          carCode: this.carCode,
-          offset: 0,
-          limit: 1
-        }
-        getCarWarning(params).then(response => {
+        getCarWarning(this.listQuery).then(response => {
           if (response.code === '200') {
             // 设置表格数据
             this.listCar2 = response.data
@@ -1492,10 +1487,10 @@
             console.log(this.listCar2)
           } else {
             this.listCar2 = []
-            this.$message({
-              type: 'error',
-              message: response.message
-            })
+            // this.$message({
+            //   type: 'error',
+            //   message: response.message
+            // })
           }
           // 取消表格loading效果
           this.loadingList2 = false

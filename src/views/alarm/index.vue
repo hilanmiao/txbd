@@ -321,20 +321,27 @@
           inputType: 'textarea',
           customClass: 'my-prompt'
         }).then(({value}) => {
-          noHandle(this.form.id, value).then(responce => {
-            if (responce.code === '201') {
-              this.$message({
-                type: 'success',
-                message: responce.message
-              })
-            } else {
-              this.$message({
-                type: 'error',
-                message: responce.message
-              })
-            }
-          })
-          this._getWarning()
+          if (value) {
+            noHandle(this.form.id, value).then(responce => {
+              if (responce.code === '201') {
+                this.$message({
+                  type: 'success',
+                  message: responce.message
+                })
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: responce.message
+                })
+              }
+            })
+            this._getWarning()
+          } else {
+            this.$message({
+              type: 'info',
+              message: '请输入暂不处理标记！'
+            })
+          }
         }).catch(() => {
           this.$message({
             type: 'info',

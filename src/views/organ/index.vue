@@ -27,17 +27,16 @@
           prop="created_time"
           label="创建时间">
         </el-table-column>
-
-        <!--<el-table-column
+        <el-table-column
           fixed="right"
           label="操作"
           width="230">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)"></el-button>
-            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
+            <!--<el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>-->
           </template>
         </el-table-column>
-      --></el-table>
+      </el-table>
     </div>
 
     <div class="pagination-container" style="margin-top: 20px">
@@ -79,7 +78,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {getListOrgan, addOrgan} from '@/api/organ'
+  import {getListOrgan, addOrgan, editOrgan} from '@/api/organ'
 
   export default {
     data() {
@@ -162,6 +161,12 @@
         this.visibleView = true
         this.lookOrEdit = false
       },
+      handleEdit(row) {
+        // 使用对象拷贝赋值
+        this.form = Object.assign({}, row)
+        // 编辑处理
+        this.visibleView = true
+      },
       handleExport() {
         // 导出处理（简单做，后期可能会改用插件）
         // 显示loading
@@ -205,15 +210,15 @@
           this._getList()
         })
       },
-
       handleSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           // 验证规则
           if (valid) {
-            this._addSubmit()
-          } else {
-            console.log('error submit!!')
-            return false
+            if (!this.form.id) {
+              this._addSubmit()
+            } else {
+              this._editSubmit()
+            }
           }
         })
       },
@@ -225,6 +230,27 @@
         this.form.id = null
         const tempForm = Object.assign({}, this.form)
         addOrgan(tempForm).then(response => {
+          if (response.code === '201') {
+            // 弹出提醒信息
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            })
+            this.visibleView = false
+            this._getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.message
+            })
+          }
+          this.submitLoading = false
+        })
+      },
+      _editSubmit() {
+        const tempForm = Object.assign({}, this.form)
+        tempForm.organid = tempForm.id
+        editOrgan(tempForm, tempForm.id).then(response => {
           if (response.code === '201') {
             // 弹出提醒信息
             this.$message({

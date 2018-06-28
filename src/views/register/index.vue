@@ -121,7 +121,7 @@
             <el-input v-model="form.dpf_model" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="dpf编码" prop="dpf_id">
-            <el-input v-model="form.dpf_id" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.dataCollectorNo" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="车辆编号" prop="car_number">
             <el-input v-model="form.car_number" :disabled="lookOrEdit"></el-input>
@@ -205,7 +205,7 @@
             <el-input v-model="form.fleetName" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="数据采集器编号" prop="car_status">
-            <el-input v-model="form.dataCollectorNo" :disabled="lookOrEdit"></el-input>
+            <el-input v-model="form.dpf_id" :disabled="lookOrEdit"></el-input>
           </el-form-item>
           <el-form-item label="数据采集器厂家" prop="car_status">
             <el-input v-model="form.dataCollectorFactory" :disabled="lookOrEdit"></el-input>

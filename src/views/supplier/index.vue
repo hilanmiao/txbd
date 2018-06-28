@@ -302,11 +302,11 @@
         rules: {
           name: [
             {required: true, message: '请输入名称', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 16, message: '长度在16个字符内', trigger: 'blur'}
           ],
           e_code: [
             {required: true, message: '请输入企业代码', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'}
+            {max: 50, message: '长度在50个字符内', trigger: 'blur'}
           ],
           city_id: [
             {required: true, message: '请选择城市', trigger: 'change'}
@@ -316,11 +316,11 @@
           ],
           business: [
             {required: true, message: '请填写主营范围', trigger: 'blur'},
-            {max: 80, message: '长度在80个字符内', trigger: 'blur'}
+            {max: 85, message: '长度在85个字符内', trigger: 'blur'}
           ],
           address: [
             {required: true, message: '请填写企业地址', trigger: 'blur'},
-            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
+            {max: 33, message: '长度在33个字符内', trigger: 'blur'}
           ],
           finance_name: [
             {required: true, message: '请填写财务联系人', trigger: 'blur'},
@@ -328,7 +328,7 @@
           ],
           finance_phone: [
             {required: true, message: '请填写财务联系人电话', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'},
+            {max: 11, message: '长度在11个字符内', trigger: 'blur'},
             {validator: validatePhone, trigger: 'blur'}
           ],
           link_tel: [
@@ -342,7 +342,7 @@
           ],
           invoice_msg: [
             {required: true, message: '请填写开票信息', trigger: 'blur'},
-            {max: 30, message: '长度在30个字符内', trigger: 'blur'}
+            {max: 33, message: '长度在33个字符内', trigger: 'blur'}
           ],
           own_name: [
             {required: true, message: '请填写企业法人', trigger: 'blur'},
@@ -354,12 +354,12 @@
           ],
           link_phone: [
             {required: true, message: '请填写联系人手机', trigger: 'blur'},
-            {max: 15, message: '长度在15个字符内', trigger: 'blur'},
+            {max: 11, message: '长度在11个字符内', trigger: 'blur'},
             {validator: validatePhone, trigger: 'blur'}
           ],
           main_product: [
             {required: true, message: '请填写主要产品描述', trigger: 'blur'},
-            {max: 80, message: '长度在80个字符内', trigger: 'blur'}
+            {max: 58, message: '长度在58个字符内', trigger: 'blur'}
           ],
           registered_capital: [
             {required: true, message: '请填写注册资金', trigger: 'blur'},
@@ -375,7 +375,7 @@
           ],
           remark: [
             {required: true, message: '请输入备注', trigger: 'change'},
-            {max: 200, message: '长度在200个字符内', trigger: 'blur'}
+            {max: 85, message: '长度在85个字符内', trigger: 'blur'}
           ]
         },
         listCity: [],
