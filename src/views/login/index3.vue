@@ -1,14 +1,18 @@
 <template>
   <div class="login-container">
-    <div class="top">
-      <img src="/static/image/login_img_top.png"/>
-    </div>
-    <div class="login">
-      <h1>山东省DPF运行状态监控平台</h1>
-      <h2>Monitoring platform for DPF operation status of Shandong Province</h2>
-      <input type="text" name="user" id="user" v-model="loginForm.username"/>
-      <input type="password" name="key" id="key" v-model="loginForm.password"/>
-      <input type="button" id="submit" value="登录" @click="handleLogin"/>
+    <!--<div class="top">-->
+      <!--<img src="/static/image/login_img_top.png"/>-->
+    <!--</div>-->
+    <div class="login-content">
+      <div class="title">
+        <h1>山东省DPF运行状态监控平台</h1>
+        <h2>DPF operation status monitoring platform in Shandong Province</h2>
+      </div>
+      <div class="login">
+        <input type="text" name="user" id="user" v-model="loginForm.username"/>
+        <input type="password" name="key" id="key" v-model="loginForm.password"/>
+        <input type="button" id="submit" value="登录" @click="handleLogin"/>
+      </div>
     </div>
   </div>
 </template>
@@ -88,47 +92,63 @@
       width: 100%;
     }
 
-    .login {
-      width: 689px;
-      height: 344px;
-      margin: 18% auto 0;
-      background: url(/static/image/login_img_login.png) no-repeat;
-    }
+    .login-content {
+      position: fixed;
+      right: 100px;
+      top: 30%;
+      .login {
+        width: 680px;
+        height: 370px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: url(/static/image/login_img_login.png) no-repeat;
+      }
 
-    .login h1 {
-      text-align: center;
-      font-size: 25px;
-      color: #f3ac10;
-      font-weight: bold;
-      padding-top: 15px;
-    }
+      .title {
+        color: #0AA5FF;
+        text-align: center;
+        padding-bottom: 15px;
+        h1 {
+          font-size: 30px;
+          font-weight: bold;
+          letter-spacing: 5px;
+        }
+        h2 {
+          padding-top: 5px;
+          text-align: center;
+          font-size: 14px;
+        }
+      }
 
-    .login h2 {
-      text-align: center;
-      font-size: 12px;
-      color: #f3ac10;
-    }
+      .login input {
+        width: 260px;
+        height: 37px;
+        line-height: 36px;
+        background: none;
+        /*margin: 48px 0 0 240px;*/
+        padding: 0 10px;
+        /*display: block;*/
+        color: #fff;
+      }
 
-    .login input {
-      width: 260px;
-      height: 36px;
-      line-height: 36px;
-      background: none;
-      margin: 48px 0 0 240px;
-      padding: 0 10px;
-      display: block;
-      color: #fff;
-    }
+      .login input#user {
+        margin-top: 102px;
+        margin-left: 140px;
+      }
 
-    .login input#key {
-      margin-top: 50px;
-    }
+      .login input#key {
+        margin-top: 50px;
+        margin-left: 140px;
+      }
 
-    .login input#submit {
-      width: 320px;
-      margin: 56px 0 0 184px;
-      cursor: pointer;
-      font-size: 18px;
+      .login input#submit {
+        width: 320px;
+        margin-top: 50px;
+        margin-left: 100px;
+        cursor: pointer;
+        font-size: 18px;
+      }
     }
   }
 

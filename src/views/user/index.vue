@@ -125,6 +125,14 @@
 
   export default {
     data() {
+      // 自定义校验规则
+      var validatePhone = (rule, value, callback) => {
+        if (/^[\d]+$/.test(value)) {
+          callback()
+        } else {
+          callback(new Error('只能输入纯数字'))
+        }
+      }
       return {
         // 列表相关
         list: [],
@@ -170,7 +178,8 @@
           ],
           phone: [
             {required: true, message: '请输入手机号', trigger: 'blur'},
-            {max: 13, message: '长度在13个字符内', trigger: 'blur'}
+            {max: 13, message: '长度在13个字符内', trigger: 'blur'},
+            {validator: validatePhone, trigger: 'blur'}
           ],
           organid: [
             {required: true, message: '请选择机构', trigger: 'change'}
